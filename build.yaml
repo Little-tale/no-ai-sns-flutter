@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      mockito|mockBuilder:
+        enabled: false
+      freezed:
+        generate_for:
+          - lib/**.gen.dart
+      json_serializable:
+        generate_for:
+          - lib/**.gen.dart
