@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_ai_sns/design_system/theme/app_theme.dart';
 
 import '../core/constants/app_strings.dart';
 import 'app_router.dart';
@@ -10,9 +11,9 @@ class NoAiSnsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: AppStrings.appTitle,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.system,
       routerConfig: AppRouter.router,
     );
   }
