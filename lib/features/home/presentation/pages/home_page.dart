@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_ai_sns/features/home/presentation/sub_widgets/w_profile_circle_border.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +10,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Home'),
+        child: SafeArea(
+          child: Column(
+            children: [Text('Home'), ProfileCircleBorderWidget(size: 35)],
+          ),
+        ),
       ),
     );
   }
