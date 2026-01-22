@@ -52,6 +52,7 @@ dependencies:
 
   bloc: ^9.2.0
   flutter_bloc: ^9.1.1
+  smooth_page_indicator: ^2.0.1
 
 flutter_native_splash:
   color: "#d1f0e4" # 스플래시 화면의 배경색 설정
