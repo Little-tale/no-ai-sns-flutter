@@ -5,6 +5,7 @@ part 'feed_item_entity.gen.freezed.dart';
 @freezed
 sealed class FeedItemEntity with _$FeedItemEntity {
   factory FeedItemEntity({
+    required int id,
     required String creatorName,
     required String regDateText,
     required String contentText,
@@ -15,6 +16,7 @@ sealed class FeedItemEntity with _$FeedItemEntity {
   }) = _FeedItemEntity;
 
   static FeedItemEntity dummy = FeedItemEntity(
+    id: 1,
     creatorName: 'Dummy Name',
     regDateText: '2h ago',
     contentText: 'AI는 내곁에 있으면 좋으나 남에게 있어선 독이다.\n너무 무섭당. 살려주세요',

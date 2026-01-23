@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FeedItemEntity {
 
- String get creatorName; String get regDateText; String get contentText; bool get likeStatus; String get likeCountText; String get commentCountText; List<String> get imageUrls;
+ int get id; String get creatorName; String get regDateText; String get contentText; bool get likeStatus; String get likeCountText; String get commentCountText; List<String> get imageUrls;
 /// Create a copy of FeedItemEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $FeedItemEntityCopyWith<FeedItemEntity> get copyWith => _$FeedItemEntityCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedItemEntity&&(identical(other.creatorName, creatorName) || other.creatorName == creatorName)&&(identical(other.regDateText, regDateText) || other.regDateText == regDateText)&&(identical(other.contentText, contentText) || other.contentText == contentText)&&(identical(other.likeStatus, likeStatus) || other.likeStatus == likeStatus)&&(identical(other.likeCountText, likeCountText) || other.likeCountText == likeCountText)&&(identical(other.commentCountText, commentCountText) || other.commentCountText == commentCountText)&&const DeepCollectionEquality().equals(other.imageUrls, imageUrls));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedItemEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.creatorName, creatorName) || other.creatorName == creatorName)&&(identical(other.regDateText, regDateText) || other.regDateText == regDateText)&&(identical(other.contentText, contentText) || other.contentText == contentText)&&(identical(other.likeStatus, likeStatus) || other.likeStatus == likeStatus)&&(identical(other.likeCountText, likeCountText) || other.likeCountText == likeCountText)&&(identical(other.commentCountText, commentCountText) || other.commentCountText == commentCountText)&&const DeepCollectionEquality().equals(other.imageUrls, imageUrls));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,creatorName,regDateText,contentText,likeStatus,likeCountText,commentCountText,const DeepCollectionEquality().hash(imageUrls));
+int get hashCode => Object.hash(runtimeType,id,creatorName,regDateText,contentText,likeStatus,likeCountText,commentCountText,const DeepCollectionEquality().hash(imageUrls));
 
 @override
 String toString() {
-  return 'FeedItemEntity(creatorName: $creatorName, regDateText: $regDateText, contentText: $contentText, likeStatus: $likeStatus, likeCountText: $likeCountText, commentCountText: $commentCountText, imageUrls: $imageUrls)';
+  return 'FeedItemEntity(id: $id, creatorName: $creatorName, regDateText: $regDateText, contentText: $contentText, likeStatus: $likeStatus, likeCountText: $likeCountText, commentCountText: $commentCountText, imageUrls: $imageUrls)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $FeedItemEntityCopyWith<$Res>  {
   factory $FeedItemEntityCopyWith(FeedItemEntity value, $Res Function(FeedItemEntity) _then) = _$FeedItemEntityCopyWithImpl;
 @useResult
 $Res call({
- String creatorName, String regDateText, String contentText, bool likeStatus, String likeCountText, String commentCountText, List<String> imageUrls
+ int id, String creatorName, String regDateText, String contentText, bool likeStatus, String likeCountText, String commentCountText, List<String> imageUrls
 });
 
 
@@ -62,9 +62,10 @@ class _$FeedItemEntityCopyWithImpl<$Res>
 
 /// Create a copy of FeedItemEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? creatorName = null,Object? regDateText = null,Object? contentText = null,Object? likeStatus = null,Object? likeCountText = null,Object? commentCountText = null,Object? imageUrls = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? creatorName = null,Object? regDateText = null,Object? contentText = null,Object? likeStatus = null,Object? likeCountText = null,Object? commentCountText = null,Object? imageUrls = null,}) {
   return _then(_self.copyWith(
-creatorName: null == creatorName ? _self.creatorName : creatorName // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,creatorName: null == creatorName ? _self.creatorName : creatorName // ignore: cast_nullable_to_non_nullable
 as String,regDateText: null == regDateText ? _self.regDateText : regDateText // ignore: cast_nullable_to_non_nullable
 as String,contentText: null == contentText ? _self.contentText : contentText // ignore: cast_nullable_to_non_nullable
 as String,likeStatus: null == likeStatus ? _self.likeStatus : likeStatus // ignore: cast_nullable_to_non_nullable
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String creatorName,  String regDateText,  String contentText,  bool likeStatus,  String likeCountText,  String commentCountText,  List<String> imageUrls)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String creatorName,  String regDateText,  String contentText,  bool likeStatus,  String likeCountText,  String commentCountText,  List<String> imageUrls)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedItemEntity() when $default != null:
-return $default(_that.creatorName,_that.regDateText,_that.contentText,_that.likeStatus,_that.likeCountText,_that.commentCountText,_that.imageUrls);case _:
+return $default(_that.id,_that.creatorName,_that.regDateText,_that.contentText,_that.likeStatus,_that.likeCountText,_that.commentCountText,_that.imageUrls);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.creatorName,_that.regDateText,_that.contentText,_that.like
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String creatorName,  String regDateText,  String contentText,  bool likeStatus,  String likeCountText,  String commentCountText,  List<String> imageUrls)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String creatorName,  String regDateText,  String contentText,  bool likeStatus,  String likeCountText,  String commentCountText,  List<String> imageUrls)  $default,) {final _that = this;
 switch (_that) {
 case _FeedItemEntity():
-return $default(_that.creatorName,_that.regDateText,_that.contentText,_that.likeStatus,_that.likeCountText,_that.commentCountText,_that.imageUrls);}
+return $default(_that.id,_that.creatorName,_that.regDateText,_that.contentText,_that.likeStatus,_that.likeCountText,_that.commentCountText,_that.imageUrls);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +192,10 @@ return $default(_that.creatorName,_that.regDateText,_that.contentText,_that.like
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String creatorName,  String regDateText,  String contentText,  bool likeStatus,  String likeCountText,  String commentCountText,  List<String> imageUrls)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String creatorName,  String regDateText,  String contentText,  bool likeStatus,  String likeCountText,  String commentCountText,  List<String> imageUrls)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedItemEntity() when $default != null:
-return $default(_that.creatorName,_that.regDateText,_that.contentText,_that.likeStatus,_that.likeCountText,_that.commentCountText,_that.imageUrls);case _:
+return $default(_that.id,_that.creatorName,_that.regDateText,_that.contentText,_that.likeStatus,_that.likeCountText,_that.commentCountText,_that.imageUrls);case _:
   return null;
 
 }
@@ -206,9 +207,10 @@ return $default(_that.creatorName,_that.regDateText,_that.contentText,_that.like
 
 
 class _FeedItemEntity implements FeedItemEntity {
-   _FeedItemEntity({required this.creatorName, required this.regDateText, required this.contentText, required this.likeStatus, required this.likeCountText, required this.commentCountText, required final  List<String> imageUrls}): _imageUrls = imageUrls;
+   _FeedItemEntity({required this.id, required this.creatorName, required this.regDateText, required this.contentText, required this.likeStatus, required this.likeCountText, required this.commentCountText, required final  List<String> imageUrls}): _imageUrls = imageUrls;
   
 
+@override final  int id;
 @override final  String creatorName;
 @override final  String regDateText;
 @override final  String contentText;
@@ -233,16 +235,16 @@ _$FeedItemEntityCopyWith<_FeedItemEntity> get copyWith => __$FeedItemEntityCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedItemEntity&&(identical(other.creatorName, creatorName) || other.creatorName == creatorName)&&(identical(other.regDateText, regDateText) || other.regDateText == regDateText)&&(identical(other.contentText, contentText) || other.contentText == contentText)&&(identical(other.likeStatus, likeStatus) || other.likeStatus == likeStatus)&&(identical(other.likeCountText, likeCountText) || other.likeCountText == likeCountText)&&(identical(other.commentCountText, commentCountText) || other.commentCountText == commentCountText)&&const DeepCollectionEquality().equals(other._imageUrls, _imageUrls));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedItemEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.creatorName, creatorName) || other.creatorName == creatorName)&&(identical(other.regDateText, regDateText) || other.regDateText == regDateText)&&(identical(other.contentText, contentText) || other.contentText == contentText)&&(identical(other.likeStatus, likeStatus) || other.likeStatus == likeStatus)&&(identical(other.likeCountText, likeCountText) || other.likeCountText == likeCountText)&&(identical(other.commentCountText, commentCountText) || other.commentCountText == commentCountText)&&const DeepCollectionEquality().equals(other._imageUrls, _imageUrls));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,creatorName,regDateText,contentText,likeStatus,likeCountText,commentCountText,const DeepCollectionEquality().hash(_imageUrls));
+int get hashCode => Object.hash(runtimeType,id,creatorName,regDateText,contentText,likeStatus,likeCountText,commentCountText,const DeepCollectionEquality().hash(_imageUrls));
 
 @override
 String toString() {
-  return 'FeedItemEntity(creatorName: $creatorName, regDateText: $regDateText, contentText: $contentText, likeStatus: $likeStatus, likeCountText: $likeCountText, commentCountText: $commentCountText, imageUrls: $imageUrls)';
+  return 'FeedItemEntity(id: $id, creatorName: $creatorName, regDateText: $regDateText, contentText: $contentText, likeStatus: $likeStatus, likeCountText: $likeCountText, commentCountText: $commentCountText, imageUrls: $imageUrls)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$FeedItemEntityCopyWith<$Res> implements $FeedItemEntityCo
   factory _$FeedItemEntityCopyWith(_FeedItemEntity value, $Res Function(_FeedItemEntity) _then) = __$FeedItemEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String creatorName, String regDateText, String contentText, bool likeStatus, String likeCountText, String commentCountText, List<String> imageUrls
+ int id, String creatorName, String regDateText, String contentText, bool likeStatus, String likeCountText, String commentCountText, List<String> imageUrls
 });
 
 
@@ -270,9 +272,10 @@ class __$FeedItemEntityCopyWithImpl<$Res>
 
 /// Create a copy of FeedItemEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? creatorName = null,Object? regDateText = null,Object? contentText = null,Object? likeStatus = null,Object? likeCountText = null,Object? commentCountText = null,Object? imageUrls = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? creatorName = null,Object? regDateText = null,Object? contentText = null,Object? likeStatus = null,Object? likeCountText = null,Object? commentCountText = null,Object? imageUrls = null,}) {
   return _then(_FeedItemEntity(
-creatorName: null == creatorName ? _self.creatorName : creatorName // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,creatorName: null == creatorName ? _self.creatorName : creatorName // ignore: cast_nullable_to_non_nullable
 as String,regDateText: null == regDateText ? _self.regDateText : regDateText // ignore: cast_nullable_to_non_nullable
 as String,contentText: null == contentText ? _self.contentText : contentText // ignore: cast_nullable_to_non_nullable
 as String,likeStatus: null == likeStatus ? _self.likeStatus : likeStatus // ignore: cast_nullable_to_non_nullable

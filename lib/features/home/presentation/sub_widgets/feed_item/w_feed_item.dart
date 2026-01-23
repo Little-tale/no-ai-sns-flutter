@@ -16,8 +16,8 @@ class FeedItemWidget extends StatelessWidget {
       spacing: 8,
       children: [
         FeedTopSectionWidget(
-          userName: "No_AI",
-          regDate: "2h ago",
+          userName: entity.creatorName,
+          regDate: entity.regDateText,
         ).pSymmetric(h: 12),
 
         if (entity.imageUrls.isNotEmpty)
