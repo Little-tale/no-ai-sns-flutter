@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
+import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/BlocExam/presentation/pages/bloc_exam_page.dart';
@@ -21,6 +22,10 @@ class AppRouter {
       GoRoute(
         path: LoginPage.routeName,
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: OnboardPage.routeName,
+        builder: (context, state) => const OnboardPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
