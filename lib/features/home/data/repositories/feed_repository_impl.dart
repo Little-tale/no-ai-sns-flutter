@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
-import 'package:no_ai_sns/features/home/data/client/feed_posts_client.dart';
+import 'package:no_ai_sns/features/home/network/client/feed/feed_posts_client.dart';
 import 'package:no_ai_sns/features/home/data/mapper/feed_mapper.dart';
 import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/domain/repositories/feed_repository.dart';

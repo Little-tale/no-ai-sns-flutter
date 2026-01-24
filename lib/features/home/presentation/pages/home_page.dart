@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
-import 'package:no_ai_sns/features/home/data/client/feed_posts_client.dart';
+import 'package:no_ai_sns/features/home/network/client/feed/feed_posts_client.dart';
 import 'package:no_ai_sns/features/home/data/repositories/feed_repository_impl.dart';
 import 'package:no_ai_sns/features/home/presentation/bloc/home/home_state.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/feed_item/w_feed_item.dart';

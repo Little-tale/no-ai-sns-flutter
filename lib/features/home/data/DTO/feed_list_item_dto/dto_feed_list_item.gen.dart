@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:no_ai_sns/core/data/author/dto_author.gen.dart';
-import 'package:no_ai_sns/core/data/image_item_dto/dto_image_item.gen.dart';
+import 'package:no_ai_sns/core/data/DTO/author/dto_author.gen.dart';
+import 'package:no_ai_sns/core/data/DTO/image_item_dto/dto_image_item.gen.dart';
 
 part 'dto_feed_list_item.gen.freezed.dart';
 part 'dto_feed_list_item.gen.g.dart';
