@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
-import '../../../home/presentation/pages/home_page.dart';
 import '../../../BlocExam/presentation/pages/bloc_exam_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                context.go(HomePage.routeName);
+                context.go(OnboardPage.routeName);
               },
               child: const Text('Enter App'),
             ),
