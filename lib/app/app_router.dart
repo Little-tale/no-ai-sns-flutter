@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/BlocExam/presentation/pages/bloc_exam_page.dart';
@@ -65,6 +66,10 @@ class AppRouter {
       GoRoute(
         path: BlocExamPage.routeName,
         builder: (context, state) => const BlocExamPage(),
+      ),
+      GoRoute(
+        path: NotificationPage.routeName,
+        builder: (context, state) => const NotificationPage(),
       ),
     ],
   );
