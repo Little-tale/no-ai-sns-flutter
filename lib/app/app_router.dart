@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
 import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
@@ -21,6 +22,10 @@ class AppRouter {
       GoRoute(
         path: LoginPage.routeName,
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: RegisterPage.routeName,
+        builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
         path: OnboardPage.routeName,

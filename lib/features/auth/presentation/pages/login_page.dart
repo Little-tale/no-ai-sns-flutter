@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/design_system/design_system.dart';
+import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatelessWidget {
@@ -76,9 +78,7 @@ class LoginPage extends StatelessWidget {
                 Text("Don't have an account?"),
                 width8,
                 GestureDetector(
-                  onTap: () {
-                    debugPrint("회원가입");
-                  },
+                  onTap: () => context.go(RegisterPage.routeName),
                   child: Text(
                     "Sign Up",
                     style: TextStyle(
