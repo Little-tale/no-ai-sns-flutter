@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +34,11 @@ class _RegisterPageState extends State<RegisterPage> {
   String? _passwordError;
   String? _nicknameError;
 
+  // 닉네임 중복 체크
+  Timer? _nicknameDebounce;
+  bool _isCheckingNickname = false;
+  bool? _isNicknameAvailable;
+
   late final AuthClient _authClient;
 
   @override
@@ -55,6 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _nicknameController.dispose();
+    _nicknameDebounce?.cancel();
     super.dispose();
   }
 
@@ -72,6 +80,49 @@ class _RegisterPageState extends State<RegisterPage> {
       return '닉네임은 한글, 영문, 숫자, 밑줄만 사용할 수 있습니다.';
     }
     return null;
+  }
+
+  // 닉네임 중복 체크
+  Future<void> _checkNicknameAvailability(String nickname) async {
+    _nicknameDebounce?.cancel();
+
+    final formatError = _validateNickname(nickname);
+    if (formatError != null) {
+      setState(() {
+        _isNicknameAvailable = null;
+      });
+      return;
+    }
+
+    _nicknameDebounce = Timer(const Duration(milliseconds: 500), () async {
+      setState(() {
+        _isCheckingNickname = true;
+      });
+
+      try {
+        final response = await _authClient.checkNickname(nickname);
+        
+        if (!mounted) return;
+
+        setState(() {
+          _isNicknameAvailable = response.available;
+          _isCheckingNickname = false;
+          
+          if (!response.available) {
+            _nicknameError = '이미 사용 중인 닉네임입니다.';
+          } else {
+            _nicknameError = null;
+          }
+        });
+      } catch (e) {
+        if (!mounted) return;
+        
+        setState(() {
+          _isCheckingNickname = false;
+          _isNicknameAvailable = null;
+        });
+      }
+    });
   }
 
   // 비밀번호 : 8~72자, 영어+숫자
@@ -132,6 +183,17 @@ class _RegisterPageState extends State<RegisterPage> {
     final nicknameError = _validateNickname(nickname);
     if (nicknameError != null) {
       _showErrorDialog(nicknameError);
+      return;
+    }
+
+    // 닉네임 중복 체크 확인
+    if (_isNicknameAvailable == false) {
+      _showErrorDialog('이미 사용 중인 닉네임입니다.');
+      return;
+    }
+
+    if (_isNicknameAvailable == null) {
+      _showErrorDialog('닉네임 중복 체크를 진행 중입니다. 잠시만 기다려주세요.');
       return;
     }
 
@@ -261,10 +323,26 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: _nicknameController,
               enabled: !_isLoading,
               errorText: _nicknameError,
+              suffixIcon: _isCheckingNickname
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    )
+                  : _isNicknameAvailable == true
+                      ? const Icon(Icons.check_circle, color: Colors.green)
+                      : _isNicknameAvailable == false
+                          ? const Icon(Icons.error, color: Colors.red)
+                          : null,
               onChanged: (value) {
                 setState(() {
                   _nicknameError = _validateNickname(value);
                 });
+                // 닉네임 중복 체크 API 호출 (debounce 적용)
+                _checkNicknameAvailability(value);
               },
             ),
             height32,

@@ -46,6 +46,33 @@ class _AuthClient implements AuthClient {
     return _value;
   }
 
+  @override
+  Future<CheckNicknameResponseDTO> checkNickname(String nickname) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'nickname': nickname};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<CheckNicknameResponseDTO>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/users/check-nickname',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late CheckNicknameResponseDTO _value;
+    try {
+      _value = CheckNicknameResponseDTO.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||
