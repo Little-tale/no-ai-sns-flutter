@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/features/home/network/client/feed/feed_posts_client.dart';
 import 'package:no_ai_sns/features/home/data/repositories/feed_repository_impl.dart';
 import 'package:no_ai_sns/features/home/presentation/bloc/home/home_state.gen.dart';
+import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/bloc/comment_bloc.dart';
+import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/bloc/comment_state.gen.dart';
+import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_bottom_sheet.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/feed_item/w_feed_item.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/top_navigation_bar/w_top_navigation_bar.dart';
 import 'package:no_ai_sns/features/home/presentation/bloc/home/home_bloc.dart';
@@ -90,6 +94,22 @@ class _HomeViewState extends State<_HomeView> {
                     itemBuilder: (context, index) {
                       return FeedItemWidget(
                         entity: state.items[index],
+                        commentEvent: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            enableDrag: true,
+                            isDismissible: true,
+                            builder: (context) {
+                              final id = state.items[index].id;
+                              return BlocProvider(
+                                create: (_) => CommentBloc(CommentState()),
+                                child: CommentBottomSheetWidget(postID: id),
+                              );
+                            },
+                          );
+                        },
                       ).pOnly(bottom: 16).pOnly(top: 8);
                     },
                   ),

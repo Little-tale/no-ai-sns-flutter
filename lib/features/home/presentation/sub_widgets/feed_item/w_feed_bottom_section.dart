@@ -9,6 +9,7 @@ class FeedBottomSectionWidget extends StatefulWidget {
     required this.likesCountText,
     required this.commentCountText,
     required this.comment,
+    required this.commentEvent,
   });
 
   final String creatorName;
@@ -16,6 +17,8 @@ class FeedBottomSectionWidget extends StatefulWidget {
   final String likesCountText;
   final String commentCountText;
   final String comment;
+
+  final VoidCallback commentEvent;
 
   @override
   State<FeedBottomSectionWidget> createState() =>
@@ -30,7 +33,7 @@ class _FeedBottomSectionWidgetState extends State<FeedBottomSectionWidget> {
     return VStack(spacing: 4, [
       HStack(spacing: 8, [
         _likeButtonWidget().onTap(() => {}),
-        _commentButtonWidget(context).onTap(() => {}),
+        _commentButtonWidget(context).onTap(widget.commentEvent),
         Spacer(),
       ]),
       _bottomCommentWidget(context),
