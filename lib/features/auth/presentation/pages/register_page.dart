@@ -18,7 +18,7 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.sm),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: VStack([
             height24,
             Text("Email"),
@@ -35,6 +35,12 @@ class RegisterPage extends StatelessWidget {
               obscureText: true,
               isPasswordField: true,
               keyboardType: TextInputType.visiblePassword,
+            ),
+            height16,
+            Text("Nickname"),
+            height8,
+            AppTextField(
+              labelText: "Choose a unique name",
             ),
             height32,
             AppButton(

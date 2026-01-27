@@ -46,7 +46,7 @@ class LoginPage extends StatelessWidget {
 =======
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.sm),
+          padding: const EdgeInsets.all(AppSpacing.md),
           child: VStack([
             height24,
             Text("Email"),
