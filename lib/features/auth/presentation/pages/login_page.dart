@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/design_system/widgets/spacing.dart';
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -10,8 +12,8 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
       body: Center(
+<<<<<<< HEAD
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -30,6 +32,16 @@ class LoginPage extends StatelessWidget {
             // ),
           ],
         ),
+=======
+        child: VStack([
+          ElevatedButton(
+            onPressed: () {
+              context.go(OnboardPage.routeName);
+            },
+            child: const Text('온보딩 화면 이동'),
+          ),
+        ], alignment: MainAxisAlignment.center),
+>>>>>>> 48818a8 ([Ui] 위젯 간격 헬퍼 함수 추가, 로그인 화면에 VStack 추가)
       ),
     );
   }
