@@ -55,11 +55,16 @@ class LoginPage extends StatelessWidget {
             height8,
             AppTextField(
               labelText: "Enter your email",
+              keyboardType: TextInputType.emailAddress,
             ),
             height16,
             Text("Password"),
+            height8,
             AppTextField(
               labelText: "Enter your password",
+              obscureText: true,
+              isPasswordField: true,
+              keyboardType: TextInputType.visiblePassword,
             ),
           ], alignment: MainAxisAlignment.start),
         ),
