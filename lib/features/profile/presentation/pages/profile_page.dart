@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
 import 'package:no_ai_sns/features/profile/presentation/sub_widgets/w_profile_follow_info_section.dart';
@@ -39,7 +40,41 @@ class ProfilePage extends StatelessWidget {
                 followers: '12.3k',
                 following: '456',
                 postCount: '789',
-              ).pSymmetric(v: AppSpacing.xl).pSymmetric(h: AppSpacing.lg),
+              ).p(AppSpacing.lg),
+            ),
+
+            PinnedHeaderSliver(
+              child: Container(
+                color: context.theme.scaffoldBackgroundColor,
+                child: HStack([
+                  'My Posts'.text.semiBold
+                      .size(20)
+                      .make()
+                      .pSymmetric(v: AppSpacing.sm)
+                      .pOnly(left: AppSpacing.lg),
+
+                  const Spacer(),
+
+                  Icon(
+                    Icons.grid_on_rounded,
+                    color: context.theme.primaryColor,
+                  ).pOnly(right: AppSpacing.lg),
+                ]),
+              ),
+            ),
+
+            SliverGrid.builder(
+              itemCount: 20,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              itemBuilder: (context, index) {
+                return CachedNetworkImage(
+                  imageUrl:
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx2Z4LcJOPwaTwwqZ-qIxXxKicRR6sa-Ge6A&s",
+                  fit: BoxFit.cover,
+                ).onTap(() {});
+              },
             ),
           ],
         ),
