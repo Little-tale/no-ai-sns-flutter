@@ -14,6 +14,8 @@ class AppTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final int? maxLines;
   final bool enabled;
+  final String? errorText;
+  final ValueChanged<String>? onChanged;
 
   const AppTextField({
     super.key,
@@ -28,6 +30,8 @@ class AppTextField extends StatefulWidget {
     this.suffixIcon,
     this.maxLines = 1,
     this.enabled = true,
+    this.errorText,
+    this.onChanged,
   });
 
   @override
@@ -59,9 +63,11 @@ class _AppTextFieldState extends State<AppTextField> {
       keyboardType: widget.keyboardType,
       maxLines: widget.maxLines,
       enabled: widget.enabled,
+      onChanged: widget.onChanged,
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintText: widget.hintText,
+        errorText: widget.errorText,
         prefixIcon: widget.prefixIcon,
         
         // 비밀번호 필드일 때 토글 아이콘 표시
@@ -101,6 +107,13 @@ class _AppTextFieldState extends State<AppTextField> {
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
             color: isDark ? AppColors.aiRejectedDark : AppColors.aiRejected,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(
+            color: isDark ? AppColors.aiRejectedDark : AppColors.aiRejected,
+            width: 2,
           ),
         ),
 

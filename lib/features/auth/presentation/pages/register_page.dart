@@ -27,6 +27,11 @@ class _RegisterPageState extends State<RegisterPage> {
   final _nicknameController = TextEditingController();
   bool _isLoading = false;
 
+  // 에러 메시지 상태
+  String? _emailError;
+  String? _passwordError;
+  String? _nicknameError;
+
   late final AuthClient _authClient;
 
   @override
@@ -53,11 +58,80 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  // 닉네임 : 2~20자, 한글, 영문, 숫자, 밑줄 포함
+  String? _validateNickname(String value) {
+    if (value.isEmpty) {
+      return '닉네임을 입력해주세요.';
+    }
+    if (value.length < 2 || value.length > 20) {
+      return '닉네임은 2~20자 사이여야 합니다.';
+    }
+    // 한글, 영문, 숫자, 밑줄만 허용
+    final nicknameRegex = RegExp(r'^[가-힣a-zA-Z0-9_]+$');
+    if (!nicknameRegex.hasMatch(value)) {
+      return '닉네임은 한글, 영문, 숫자, 밑줄만 사용할 수 있습니다.';
+    }
+    return null;
+  }
+
+  // 비밀번호 : 8~72자, 영어+숫자
+  String? _validatePassword(String value) {
+    if (value.isEmpty) {
+      return '비밀번호를 입력해주세요.';
+    }
+    if (value.length < 8 || value.length > 72) {
+      return '비밀번호는 8~72자 사이여야 합니다.';
+    }
+    // 영문과 숫자만 허용
+    final passwordRegex = RegExp(r'^[a-zA-Z0-9]+$');
+    if (!passwordRegex.hasMatch(value)) {
+      return '비밀번호는 영문과 숫자만 사용할 수 있습니다.';
+    }
+    // 영문과 숫자 모두 포함 확인
+    final hasLetter = RegExp(r'[a-zA-Z]').hasMatch(value);
+    final hasDigit = RegExp(r'[0-9]').hasMatch(value);
+    if (!hasLetter || !hasDigit) {
+      return '비밀번호는 영문과 숫자를 모두 포함해야 합니다.';
+    }
+    return null;
+  }
+
+  // 이메일 검증
+  String? _validateEmail(String value) {
+    if (value.isEmpty) {
+      return '이메일을 입력해주세요.';
+    }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value)) {
+      return '올바른 이메일 형식이 아닙니다.';
+    }
+    return null;
+  }
+
   Future<void> _handleRegister() async {
-    if (_emailController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _nicknameController.text.isEmpty) {
-      _showErrorDialog('모든 필드를 입력해주세요.');
+    // 입력값 검증
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final nickname = _nicknameController.text.trim();
+
+    // 이메일 검증
+    final emailError = _validateEmail(email);
+    if (emailError != null) {
+      _showErrorDialog(emailError);
+      return;
+    }
+
+    // 비밀번호 검증
+    final passwordError = _validatePassword(password);
+    if (passwordError != null) {
+      _showErrorDialog(passwordError);
+      return;
+    }
+
+    // 닉네임 검증
+    final nicknameError = _validateNickname(nickname);
+    if (nicknameError != null) {
+      _showErrorDialog(nicknameError);
       return;
     }
 
@@ -67,9 +141,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       final request = RegisterRequestDTO(
-        email: _emailController.text.trim(),
-        nickname: _nicknameController.text.trim(),
-        password: _passwordController.text,
+        email: email,
+        nickname: nickname,
+        password: password,
       );
 
       await _authClient.register(request);
@@ -155,6 +229,12 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
               enabled: !_isLoading,
+              errorText: _emailError,
+              onChanged: (value) {
+                setState(() {
+                  _emailError = _validateEmail(value);
+                });
+              },
             ),
             height16,
             Text("Password"),
@@ -166,6 +246,12 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.visiblePassword,
               controller: _passwordController,
               enabled: !_isLoading,
+              errorText: _passwordError,
+              onChanged: (value) {
+                setState(() {
+                  _passwordError = _validatePassword(value);
+                });
+              },
             ),
             height16,
             Text("Nickname"),
@@ -174,6 +260,12 @@ class _RegisterPageState extends State<RegisterPage> {
               labelText: "Choose a unique name",
               controller: _nicknameController,
               enabled: !_isLoading,
+              errorText: _nicknameError,
+              onChanged: (value) {
+                setState(() {
+                  _nicknameError = _validateNickname(value);
+                });
+              },
             ),
             height32,
             AppButton(
