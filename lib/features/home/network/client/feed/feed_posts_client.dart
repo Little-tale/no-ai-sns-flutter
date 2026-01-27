@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:no_ai_sns/features/home/data/DTO/feed_comment_item_dto/dto_feed_comment_item.gen.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_list_item_dto/dto_feed_list_item.gen.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -10,6 +11,13 @@ abstract class FeedPostsClient {
 
   @GET('/posts')
   Future<List<FeedListItemDTO>> getTopRatedMovies({
+    @Query('limit') required int limit,
+    @Query('cursor') String? cursor,
+  });
+
+  @GET('/posts/{post_id}/comment')
+  Future<List<FeedCommentItemDTO>> getComments({
+    @Path('post_id') required int postId,
     @Query('limit') required int limit,
     @Query('cursor') String? cursor,
   });
