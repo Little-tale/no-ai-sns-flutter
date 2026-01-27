@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/design_system/design_system.dart';
-import 'package:no_ai_sns/design_system/widgets/app_text_field.dart';
-import 'package:no_ai_sns/design_system/widgets/spacing.dart';
-import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatelessWidget {
@@ -66,7 +62,34 @@ class LoginPage extends StatelessWidget {
               isPasswordField: true,
               keyboardType: TextInputType.visiblePassword,
             ),
-          ], alignment: MainAxisAlignment.start),
+            height32,
+            AppButton(
+              text: "Login",
+              width: double.infinity,
+              onPressed: () {
+                // 로그인 함수 연동
+              },
+            ),
+            height16,
+            Center(
+              child: HStack([
+                Text("Don't have an account?"),
+                width8,
+                GestureDetector(
+                  onTap: () {
+                    debugPrint("회원가입");
+                  },
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: AppColors.brand,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ]),
         ),
 >>>>>>> 2c1833f ([Project] gitignore 수정 후 추적하지 않던 파일 추가)
       ),
