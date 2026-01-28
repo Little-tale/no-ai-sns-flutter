@@ -1,16 +1,25 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_ai_sns/core/providers/feed_repository_provider.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/domain/repositories/feed_repository.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/home_state.gen.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class HomeNotifier extends StateNotifier<HomeState> {
-  HomeNotifier(this._repository) : super(const HomeState()) {
-    loadInitialFeed();
-  }
+part 'home_notifier.g.dart';
 
-  final FeedRepository _repository;
+@riverpod
+class HomeNotifier extends _$HomeNotifier {
+  late final FeedRepository _repository;
   static const int _limit = 20;
+
+  @override
+  HomeState build() {
+    _repository = ref.watch(feedRepositoryProvider);
+    
+    // build() 완료 후 초기 피드를 불러와야 state 접근 가능
+    Future.microtask(() => loadInitialFeed());
+    
+    return const HomeState();
+  }
 
   // 초기 피드 로드
   Future<void> loadInitialFeed() async {
@@ -66,9 +75,3 @@ class HomeNotifier extends StateNotifier<HomeState> {
     await loadInitialFeed();
   }
 }
-
-// HomeNotifier Provider
-final homeNotifierProvider = StateNotifierProvider<HomeNotifier, HomeState>((ref) {
-  final repository = ref.watch(feedRepositoryProvider);
-  return HomeNotifier(repository);
-});

@@ -31,7 +31,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
-    final notifier = ref.read(authNotifierProvider.notifier);
+    final notifier = ref.read(authProvider.notifier);
     final errorMessage = await notifier.login(email, password);
 
     if (!mounted) return;
@@ -77,7 +77,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authNotifierProvider);
+    final authState = ref.watch(authProvider);
 
     return Scaffold(
       body: SafeArea(

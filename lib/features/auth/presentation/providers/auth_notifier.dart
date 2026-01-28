@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:no_ai_sns/core/data/DTO/auth/dto_register_request.gen.dart';
 import 'package:no_ai_sns/core/network/auth/auth_client.dart';
 import 'package:no_ai_sns/core/providers/auth_client_provider.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_state.gen.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(this._authClient, this._storage) : super(const AuthState());
+part 'auth_notifier.g.dart';
 
-  final AuthClient _authClient;
-  final FlutterSecureStorage _storage;
+@riverpod
+class AuthNotifier extends _$AuthNotifier {
+  late final AuthClient _authClient;
+  late final FlutterSecureStorage _storage;
   Timer? _nicknameDebounce;
 
   // 토큰 저장 키
@@ -20,9 +21,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
   static const String _refreshTokenKey = 'refresh_token';
 
   @override
-  void dispose() {
-    _nicknameDebounce?.cancel();
-    super.dispose();
+  AuthState build() {
+    _authClient = ref.watch(authClientProvider);
+    _storage = ref.watch(secureStorageProvider);
+    
+    // 상태 초기화 시 timer 정리
+    ref.onDispose(() {
+      _nicknameDebounce?.cancel();
+    });
+    
+    return const AuthState();
   }
 
   // 이메일 검증
@@ -71,7 +79,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(passwordError: validatePassword(value));
   }
 
-  // 닉네임 에러 업데이트 및 중복 체크
+  // 닉네임 에러 업데이트, 중복 체크
   void updateNicknameError(String value) {
     state = state.copyWith(nicknameError: validateNickname(value));
     checkNicknameAvailability(value);
@@ -87,7 +95,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       return;
     }
 
-    _nicknameDebounce = Timer(const Duration(milliseconds: 500), () async {
+    _nicknameDebounce = Timer(const Duration(milliseconds: 300), () async {
       state = state.copyWith(isCheckingNickname: true);
 
       try {
@@ -224,13 +232,5 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 // FlutterSecureStorage Provider
-final secureStorageProvider = Provider<FlutterSecureStorage>((ref) {
-  return const FlutterSecureStorage();
-});
-
-// AuthNotifier Provider
-final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  final authClient = ref.watch(authClientProvider);
-  final storage = ref.watch(secureStorageProvider);
-  return AuthNotifier(authClient, storage);
-});
+@riverpod
+FlutterSecureStorage secureStorage(Ref ref) => const FlutterSecureStorage();

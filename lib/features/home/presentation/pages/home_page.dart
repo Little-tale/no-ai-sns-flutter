@@ -35,17 +35,17 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     final position = _scrollController.position;
     if (position.pixels >= position.maxScrollExtent - 200) {
-      ref.read(homeNotifierProvider.notifier).loadMoreFeed();
+      ref.read(homeProvider.notifier).loadMoreFeed();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(homeNotifierProvider);
+    final state = ref.watch(homeProvider);
 
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () => ref.read(homeNotifierProvider.notifier).refreshFeed(),
+        onRefresh: () => ref.read(homeProvider.notifier).refreshFeed(),
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [

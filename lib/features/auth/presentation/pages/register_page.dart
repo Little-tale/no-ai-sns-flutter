@@ -37,7 +37,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final password = _passwordController.text;
     final nickname = _nicknameController.text.trim();
 
-    final notifier = ref.read(authNotifierProvider.notifier);
+    final notifier = ref.read(authProvider.notifier);
     final errorMessage = await notifier.register(email, password, nickname);
 
     if (!mounted) return;
@@ -86,8 +86,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authNotifierProvider);
-    final notifier = ref.read(authNotifierProvider.notifier);
+    final authState = ref.watch(authProvider);
+    final notifier = ref.read(authProvider.notifier);
 
     return Scaffold(
       body: SafeArea(
