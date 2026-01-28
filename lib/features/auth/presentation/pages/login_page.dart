@@ -5,6 +5,7 @@ import 'package:no_ai_sns/core/network/auth/auth_client.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/design_system/design_system.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
+import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
@@ -77,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       // 메인 화면 이동
-      context.go('/');
+      context.go(HomePage.routeName);
     } on DioException catch (e) {
       if (!mounted) return;
 
