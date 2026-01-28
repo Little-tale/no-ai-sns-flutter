@@ -2,16 +2,22 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:no_ai_sns/core/data/DTO/auth/dto_register_request.gen.dart';
 import 'package:no_ai_sns/core/network/auth/auth_client.dart';
 import 'package:no_ai_sns/core/providers/auth_client_provider.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_state.gen.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(this._authClient) : super(const AuthState());
+  AuthNotifier(this._authClient, this._storage) : super(const AuthState());
 
   final AuthClient _authClient;
+  final FlutterSecureStorage _storage;
   Timer? _nicknameDebounce;
+
+  // 토큰 저장 키
+  static const String _accessTokenKey = 'access_token';
+  static const String _refreshTokenKey = 'refresh_token';
 
   @override
   void dispose() {
@@ -115,9 +121,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         'password': password,
       });
       
-      // TODO: 토큰 저장
-      print('Access Token: ${response.accessToken}');
-      print('Refresh Token: ${response.refreshToken}');
+      // accessToken, refreshToken 로컬 저장
+      await _storage.write(key: _accessTokenKey, value: response.accessToken);
+      await _storage.write(key: _refreshTokenKey, value: response.refreshToken);
       
       state = state.copyWith(isLoading: false);
       return null; // 성공
@@ -197,12 +203,34 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  // 토큰 가져오기
+  Future<String?> getAccessToken() async {
+    return await _storage.read(key: _accessTokenKey);
+  }
+
+  Future<String?> getRefreshToken() async {
+    return await _storage.read(key: _refreshTokenKey);
+  }
+
+  // 로그아웃 (토큰 삭제)
+  Future<void> logout() async {
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
+    state = const AuthState();
+  }
+
   // 상태 초기화
   void reset() => state = const AuthState();
 }
 
+// FlutterSecureStorage Provider
+final secureStorageProvider = Provider<FlutterSecureStorage>((ref) {
+  return const FlutterSecureStorage();
+});
+
 // AuthNotifier Provider
 final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authClient = ref.watch(authClientProvider);
-  return AuthNotifier(authClient);
+  final storage = ref.watch(secureStorageProvider);
+  return AuthNotifier(authClient, storage);
 });

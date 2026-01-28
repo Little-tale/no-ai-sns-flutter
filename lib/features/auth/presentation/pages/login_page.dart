@@ -37,7 +37,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (!mounted) return;
 
     if (errorMessage == null) {
-      // 로그인 성공
+      final accessToken = await notifier.getAccessToken();
+      final refreshToken = await notifier.getRefreshToken();
+      
+      debugPrint('=== 로그인 성공 후 저장된 토큰 확인 ===');
+      debugPrint('accessToken : $accessToken');
+      debugPrint('refreshToken : $refreshToken');
+      debugPrint('======================================');
+      
+      if (!mounted) return;
+      
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('로그인 성공'),
