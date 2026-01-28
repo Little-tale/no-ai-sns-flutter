@@ -1,9 +1,10 @@
 import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
 import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
-import '../features/home/presentation/pages/home/home_page.dart';
+import '../features/home/presentation/pages/home_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/search/presentation/pages/search_page.dart';
 import '../features/shell/presentation/pages/main_shell_page.dart';
@@ -21,6 +22,10 @@ class AppRouter {
       GoRoute(
         path: LoginPage.routeName,
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: RegisterPage.routeName,
+        builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
         path: OnboardPage.routeName,
@@ -67,10 +72,6 @@ class AppRouter {
         path: UploadPage.routeName,
         builder: (context, state) => const UploadPage(),
       ),
-      // GoRoute(
-      //   path: BlocExamPage.routeName,
-      //   builder: (context, state) => const BlocExamPage(),
-      // ),
       GoRoute(
         path: NotificationPage.routeName,
         builder: (context, state) => const NotificationPage(),
