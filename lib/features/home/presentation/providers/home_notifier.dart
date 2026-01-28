@@ -14,10 +14,10 @@ class HomeNotifier extends _$HomeNotifier {
   @override
   HomeState build() {
     _repository = ref.watch(feedRepositoryProvider);
-    
+
     // build() 완료 후 초기 피드를 불러와야 state 접근 가능
     Future.microtask(() => loadInitialFeed());
-    
+
     return const HomeState();
   }
 
@@ -25,7 +25,7 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> loadInitialFeed() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
-    final result = await _repository.getTopRatedMovies(limit: _limit);
+    final result = await _repository.getFeeds(limit: _limit);
 
     switch (result) {
       case Success(value: final items):
@@ -48,7 +48,7 @@ class HomeNotifier extends _$HomeNotifier {
 
     state = state.copyWith(isLoadingMore: true, errorMessage: null);
 
-    final result = await _repository.getTopRatedMovies(
+    final result = await _repository.getFeeds(
       limit: _limit,
       cursor: state.cursor,
     );
