@@ -52,6 +52,8 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   smooth_page_indicator: ^2.0.1
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
 
   riverpod: ^3.0.3 # 상태관리
   flutter_riverpod: ^3.0.3 # 상태관리

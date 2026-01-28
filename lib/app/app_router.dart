@@ -4,7 +4,11 @@ import 'package:no_ai_sns/features/notification/presentation/pages/notification_
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
+<<<<<<< HEAD
 import '../features/home/presentation/pages/home/home_page.dart';
+=======
+import '../features/home/presentation/pages/home_page.dart';
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/search/presentation/pages/search_page.dart';
 import '../features/shell/presentation/pages/main_shell_page.dart';
@@ -72,10 +76,13 @@ class AppRouter {
         path: UploadPage.routeName,
         builder: (context, state) => const UploadPage(),
       ),
+<<<<<<< HEAD
       // GoRoute(
       //   path: BlocExamPage.routeName,
       //   builder: (context, state) => const BlocExamPage(),
       // ),
+=======
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
       GoRoute(
         path: NotificationPage.routeName,
         builder: (context, state) => const NotificationPage(),

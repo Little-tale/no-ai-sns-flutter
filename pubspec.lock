@@ -378,10 +378,17 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_riverpod
+<<<<<<< HEAD
       sha256: "9e2d6907f12cc7d23a846847615941bddee8709bf2bfd274acdf5e80bcf22fde"
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+=======
+      sha256: "9532ee6db4a943a1ed8383072a2e3eeda041db5657cdf6d2acecf3c21ecbe7e1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -608,6 +615,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+<<<<<<< HEAD
   mockito:
     dependency: transitive
     description:
@@ -624,6 +632,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+=======
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
   octo_image:
     dependency: transitive
     description:
@@ -743,7 +753,11 @@ packages:
       sha256: de9c9eb2c33f8e933a42932fe1dc504800ca45ebc3d673e6ed7f39754ee4053e
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "4.2.0"
+=======
+    version: "6.0.0"
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
   pub_semver:
     dependency: transitive
     description:
@@ -775,6 +789,7 @@ packages:
       sha256: bf8c5fc06d92de0cc79ace127a620af6dcbabaf7426da91e308a5bc3a0266c3e
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "10.0.0"
   riverpod:
     dependency: "direct main"
@@ -792,10 +807,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0-dev.7"
+=======
+    version: "10.2.1"
+  riverpod:
+    dependency: transitive
+    description:
+      name: riverpod
+      sha256: "59062512288d3056b2321804332a13ffdd1bf16df70dcc8e506e411280a72959"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
   riverpod_annotation:
     dependency: "direct main"
     description:
       name: riverpod_annotation
+<<<<<<< HEAD
       sha256: "7230014155777fc31ba3351bc2cb5a3b5717b11bfafe52b1553cb47d385f8897"
       url: "https://pub.dev"
     source: hosted
@@ -808,6 +835,12 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+=======
+      sha256: e14b0bf45b71326654e2705d462f21b958f987087be850afd60578fcd502d1b8
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
+>>>>>>> cecb1cf ([Refactor] dio 제거 후 riverpod으로 변경, 회원가입 및 로그인 화면 리팩토링)
   rxdart:
     dependency: transitive
     description:

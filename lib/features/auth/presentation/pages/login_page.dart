@@ -1,44 +1,24 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:no_ai_sns/core/network/auth/auth_client.dart';
-import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/design_system/design_system.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   static const routeName = '/login';
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
-
-  late final AuthClient _authClient;
-
-  @override
-  void initState() {
-    super.initState();
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: baseURL,
-        contentType: 'application/json',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ),
-    );
-    _authClient = AuthClient(dio, baseUrl: baseURL);
-  }
 
   @override
   void dispose() {
@@ -51,24 +31,13 @@ class _LoginPageState extends State<LoginPage> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
-    if (email.isEmpty || password.isEmpty) {
-      _showErrorDialog('이메일과 비밀번호를 입력해주세요.');
-      return;
-    }
+    final notifier = ref.read(authNotifierProvider.notifier);
+    final errorMessage = await notifier.login(email, password);
 
-    setState(() {
-      _isLoading = true;
-    });
+    if (!mounted) return;
 
-    try {
-      final response = await _authClient.login(email, password);
-
-      if (!mounted) return;
-
-      // 토큰 저장
-      debugPrint('accessToken : ${response.accessToken}');
-      debugPrint('refreshToken : ${response.refreshToken}');
-
+    if (errorMessage == null) {
+      // 로그인 성공
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('로그인 성공'),
@@ -76,56 +45,31 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.green,
         ),
       );
-
-      // 메인 화면 이동
       context.go(HomePage.routeName);
-    } on DioException catch (e) {
-      if (!mounted) return;
-
-      String errorMessage = '로그인에 실패했습니다.';
-
-      if (e.response != null) {
-        final statusCode = e.response?.statusCode;
-        final data = e.response?.data;
-
-        if (statusCode == 401 || statusCode == 422) {
-          errorMessage = '이메일 또는 비밀번호가 올바르지 않습니다.';
-        } else if (data is Map<String, dynamic> && data.containsKey('message')) {
-          errorMessage = data['message'];
-        }
-      }
-
+    } else {
+      // 로그인 실패
       _showErrorDialog(errorMessage);
-    } catch (e) {
-      if (!mounted) return;
-      _showErrorDialog('예상 못한 오류가 발생했습니다.');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('오류'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('확인'),
-          ),
-        ],
-      ),
-    );
-  }
+  void _showErrorDialog(String message) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('오류'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('확인'),
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+
     return Scaffold(
 <<<<<<< HEAD
       body: Center(
@@ -164,16 +108,16 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(AppSpacing.md),
           child: VStack([
             height24,
-            Text("Email"),
+            const Text("Email"),
             height8,
             AppTextField(
               labelText: "Enter your email",
               keyboardType: TextInputType.emailAddress,
               controller: _emailController,
-              enabled: !_isLoading,
+              enabled: !authState.isLoading,
             ),
             height16,
-            Text("Password"),
+            const Text("Password"),
             height8,
             AppTextField(
               labelText: "Enter your password",
@@ -181,27 +125,31 @@ class _LoginPageState extends State<LoginPage> {
               isPasswordField: true,
               keyboardType: TextInputType.visiblePassword,
               controller: _passwordController,
-              enabled: !_isLoading,
+              enabled: !authState.isLoading,
             ),
             height32,
             AppButton(
               text: "Login",
               width: double.infinity,
-              isLoading: _isLoading,
-              onPressed: _isLoading ? null : _handleLogin,
+              isLoading: authState.isLoading,
+              onPressed: authState.isLoading ? null : _handleLogin,
             ),
             height16,
             Center(
               child: HStack([
-                Text("Don't have an account?"),
+                const Text("Don't have an account?"),
                 width8,
                 GestureDetector(
-                  onTap: _isLoading ? null : () => context.go(RegisterPage.routeName),
+                  onTap: authState.isLoading 
+                      ? null 
+                      : () => context.go(RegisterPage.routeName),
                   child: Text(
                     "Sign Up",
                     style: TextStyle(
-                      color: _isLoading ? AppColors.dividerLight : AppColors.brand,
-                      fontWeight: FontWeight.bold
+                      color: authState.isLoading 
+                          ? AppColors.dividerLight 
+                          : AppColors.brand,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
