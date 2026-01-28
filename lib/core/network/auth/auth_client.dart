@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:no_ai_sns/core/data/DTO/auth/dto_check_nickname_response.gen.dart';
+import 'package:no_ai_sns/core/data/DTO/auth/dto_login_response.gen.dart';
 import 'package:no_ai_sns/core/data/DTO/auth/dto_register_request.gen.dart';
 import 'package:no_ai_sns/core/data/DTO/auth/dto_register_response.gen.dart';
 import 'package:retrofit/retrofit.dart';
@@ -13,6 +14,13 @@ abstract class AuthClient {
   @POST('/auth/register')
   Future<RegisterResponseDTO> register(
     @Body() RegisterRequestDTO request,
+  );
+
+  @POST('/auth/login')
+  @FormUrlEncoded()
+  Future<LoginResponseDTO> login(
+    @Field('username') String username,
+    @Field('password') String password,
   );
 
   @GET('/users/check-nickname')

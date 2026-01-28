@@ -47,6 +47,38 @@ class _AuthClient implements AuthClient {
   }
 
   @override
+  Future<LoginResponseDTO> login(String username, String password) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'username': username, 'password': password};
+    final _options = _setStreamType<LoginResponseDTO>(
+      Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'application/x-www-form-urlencoded',
+          )
+          .compose(
+            _dio.options,
+            '/auth/login',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LoginResponseDTO _value;
+    try {
+      _value = LoginResponseDTO.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options, response: _result);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<CheckNicknameResponseDTO> checkNickname(String nickname) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'nickname': nickname};
