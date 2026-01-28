@@ -68,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
       debugPrint('accessToken : ${response.accessToken}');
       debugPrint('refreshToken : ${response.refreshToken}');
 
-      // 로그인 성공 토스트 표시
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('로그인 성공'),
