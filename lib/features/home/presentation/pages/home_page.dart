@@ -64,6 +64,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                 itemCount: state.items.length,
                 itemBuilder: (context, index) => FeedItemWidget(
                   entity: state.items[index],
+                  commentEvent: () {
+                    // TODO: 댓글 기능 구현
+                  },
                 ).pOnly(bottom: 16).pOnly(top: 8),
               ),
             if (state.isLoadingMore)

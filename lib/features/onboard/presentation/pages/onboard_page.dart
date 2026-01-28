@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/design_system/design_system.dart';
-import 'package:no_ai_sns/features/home/presentation/pages/home/home_page.dart';
+import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:velocity_x/velocity_x.dart';
 

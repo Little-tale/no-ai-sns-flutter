@@ -29,7 +29,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return null;
   }
 
-  // 비밀번호 검증: 8~72자, 영문과 숫자
+  // 비밀번호 검증 : 8~72자, 영문과 숫자
   String? validatePassword(String value) {
     if (value.isEmpty) return '비밀번호를 입력해주세요.';
     if (value.length < 8 || value.length > 72) return '비밀번호는 8~72자 사이여야 합니다.';
@@ -44,7 +44,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     return null;
   }
 
-  // 닉네임 검증: 2~20자, 한글/영문/숫자/밑줄
+  // 닉네임 검증 : 2~20자, 한글/영문/숫자/밑줄
   String? validateNickname(String value) {
     if (value.isEmpty) return '닉네임을 입력해주세요.';
     if (value.length < 2 || value.length > 20) return '닉네임은 2~20자 사이여야 합니다.';
@@ -110,7 +110,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final response = await _authClient.login(email, password);
+      final response = await _authClient.login({
+        'username': email,
+        'password': password,
+      });
       
       // TODO: 토큰 저장
       print('Access Token: ${response.accessToken}');

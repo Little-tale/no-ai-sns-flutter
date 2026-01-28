@@ -19,8 +19,7 @@ abstract class AuthClient {
   @POST('/auth/login')
   @FormUrlEncoded()
   Future<LoginResponseDTO> login(
-    @Field('username') String username,
-    @Field('password') String password,
+    @Body() Map<String, String> credentials,
   );
 
   @GET('/users/check-nickname')

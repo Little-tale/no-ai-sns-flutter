@@ -71,38 +71,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final authState = ref.watch(authNotifierProvider);
 
     return Scaffold(
-<<<<<<< HEAD
-      body: Center(
-<<<<<<< HEAD
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                context.go(OnboardPage.routeName);
-              },
-              child: const Text('Enter App'),
-            ),
-            const SizedBox(height: 12),
-            // OutlinedButton(
-            //   onPressed: () {
-            //     context.go(BlocExamPage.routeName);
-            //   },
-            //   child: const Text('Open Bloc Calculator'),
-            // ),
-          ],
-        ),
-=======
-        child: VStack([
-          ElevatedButton(
-            onPressed: () {
-              context.go(OnboardPage.routeName);
-            },
-            child: const Text('온보딩 화면 이동'),
-          ),
-        ], alignment: MainAxisAlignment.center),
->>>>>>> 48818a8 ([Ui] 위젯 간격 헬퍼 함수 추가, 로그인 화면에 VStack 추가)
-=======
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
@@ -157,7 +125,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
           ]),
         ),
->>>>>>> 2c1833f ([Project] gitignore 수정 후 추적하지 않던 파일 추가)
       ),
     );
   }
