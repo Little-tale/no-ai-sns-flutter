@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
-import '../../../BlocExam/presentation/pages/bloc_exam_page.dart';
-
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -24,12 +22,12 @@ class LoginPage extends StatelessWidget {
               child: const Text('Enter App'),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () {
-                context.go(BlocExamPage.routeName);
-              },
-              child: const Text('Open Bloc Calculator'),
-            ),
+            // OutlinedButton(
+            //   onPressed: () {
+            //     context.go(BlocExamPage.routeName);
+            //   },
+            //   child: const Text('Open Bloc Calculator'),
+            // ),
           ],
         ),
       ),
