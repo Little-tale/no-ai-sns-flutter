@@ -4,7 +4,7 @@ import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_enti
 
 abstract class FeedRepository {
   /// FeedList
-  Future<Result<List<FeedItemEntity>>> getTopRatedMovies({
+  Future<Result<List<FeedItemEntity>>> getFeeds({
     required int limit,
     String? cursor,
   });

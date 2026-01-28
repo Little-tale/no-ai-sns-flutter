@@ -13,7 +13,7 @@ final class FeedRepositoryImpl implements FeedRepository {
   final FeedPostsClient _client;
 
   @override
-  Future<Result<List<FeedItemEntity>>> getTopRatedMovies({
+  Future<Result<List<FeedItemEntity>>> getFeeds({
     required int limit,
     String? cursor,
   }) async {

@@ -15,7 +15,7 @@ abstract class FeedPostsClient {
     @Query('cursor') String? cursor,
   });
 
-  @GET('/posts/{post_id}/comment')
+  @GET('/posts/{post_id}/comments')
   Future<List<FeedCommentItemDTO>> getComments({
     @Path('post_id') required int postId,
     @Query('limit') required int limit,

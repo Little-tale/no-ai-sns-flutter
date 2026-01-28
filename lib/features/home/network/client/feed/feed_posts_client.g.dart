@@ -73,7 +73,7 @@ class _FeedPostsClient implements FeedPostsClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/posts/${postId}/comment',
+            '/posts/${postId}/comments',
             queryParameters: queryParameters,
             data: _data,
           )
