@@ -6,9 +6,15 @@ import 'package:no_ai_sns/features/home/presentation/sub_widgets/feed_item/w_fee
 import 'package:velocity_x/velocity_x.dart';
 
 class FeedItemWidget extends StatelessWidget {
-  const FeedItemWidget({super.key, required this.entity});
+  const FeedItemWidget({
+    super.key,
+    required this.entity,
+    required this.commentEvent,
+  });
 
   final FeedItemEntity entity;
+
+  final VoidCallback commentEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +35,7 @@ class FeedItemWidget extends StatelessWidget {
           commentCountText: entity.commentCountText,
           creatorName: entity.creatorName,
           comment: entity.contentText,
+          commentEvent: commentEvent,
         ).pSymmetric(h: 16),
       ],
     );

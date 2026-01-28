@@ -3,8 +3,7 @@ import 'package:no_ai_sns/features/notification/presentation/pages/notification_
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
-import '../features/BlocExam/presentation/pages/bloc_exam_page.dart';
-import '../features/home/presentation/pages/home_page.dart';
+import '../features/home/presentation/pages/home/home_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/search/presentation/pages/search_page.dart';
 import '../features/shell/presentation/pages/main_shell_page.dart';
@@ -68,10 +67,10 @@ class AppRouter {
         path: UploadPage.routeName,
         builder: (context, state) => const UploadPage(),
       ),
-      GoRoute(
-        path: BlocExamPage.routeName,
-        builder: (context, state) => const BlocExamPage(),
-      ),
+      // GoRoute(
+      //   path: BlocExamPage.routeName,
+      //   builder: (context, state) => const BlocExamPage(),
+      // ),
       GoRoute(
         path: NotificationPage.routeName,
         builder: (context, state) => const NotificationPage(),
