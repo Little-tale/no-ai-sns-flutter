@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- bool get isLoading; bool get isCheckingNickname; bool? get isNicknameAvailable; String? get emailError; String? get passwordError; String? get nicknameError; String? get errorMessage;
+ bool get isLoading; bool get isCheckingNickname; bool get showLoginPopup; bool? get isNicknameAvailable; String? get emailError; String? get passwordError; String? get nicknameError; String? get errorMessage;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isCheckingNickname, isCheckingNickname) || other.isCheckingNickname == isCheckingNickname)&&(identical(other.isNicknameAvailable, isNicknameAvailable) || other.isNicknameAvailable == isNicknameAvailable)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.nicknameError, nicknameError) || other.nicknameError == nicknameError)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isCheckingNickname, isCheckingNickname) || other.isCheckingNickname == isCheckingNickname)&&(identical(other.showLoginPopup, showLoginPopup) || other.showLoginPopup == showLoginPopup)&&(identical(other.isNicknameAvailable, isNicknameAvailable) || other.isNicknameAvailable == isNicknameAvailable)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.nicknameError, nicknameError) || other.nicknameError == nicknameError)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,isCheckingNickname,isNicknameAvailable,emailError,passwordError,nicknameError,errorMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,isCheckingNickname,showLoginPopup,isNicknameAvailable,emailError,passwordError,nicknameError,errorMessage);
 
 @override
 String toString() {
-  return 'AuthState(isLoading: $isLoading, isCheckingNickname: $isCheckingNickname, isNicknameAvailable: $isNicknameAvailable, emailError: $emailError, passwordError: $passwordError, nicknameError: $nicknameError, errorMessage: $errorMessage)';
+  return 'AuthState(isLoading: $isLoading, isCheckingNickname: $isCheckingNickname, showLoginPopup: $showLoginPopup, isNicknameAvailable: $isNicknameAvailable, emailError: $emailError, passwordError: $passwordError, nicknameError: $nicknameError, errorMessage: $errorMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- bool isLoading, bool isCheckingNickname, bool? isNicknameAvailable, String? emailError, String? passwordError, String? nicknameError, String? errorMessage
+ bool isLoading, bool isCheckingNickname, bool showLoginPopup, bool? isNicknameAvailable, String? emailError, String? passwordError, String? nicknameError, String? errorMessage
 });
 
 
@@ -62,10 +62,11 @@ class _$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isCheckingNickname = null,Object? isNicknameAvailable = freezed,Object? emailError = freezed,Object? passwordError = freezed,Object? nicknameError = freezed,Object? errorMessage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isCheckingNickname = null,Object? showLoginPopup = null,Object? isNicknameAvailable = freezed,Object? emailError = freezed,Object? passwordError = freezed,Object? nicknameError = freezed,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isCheckingNickname: null == isCheckingNickname ? _self.isCheckingNickname : isCheckingNickname // ignore: cast_nullable_to_non_nullable
+as bool,showLoginPopup: null == showLoginPopup ? _self.showLoginPopup : showLoginPopup // ignore: cast_nullable_to_non_nullable
 as bool,isNicknameAvailable: freezed == isNicknameAvailable ? _self.isNicknameAvailable : isNicknameAvailable // ignore: cast_nullable_to_non_nullable
 as bool?,emailError: freezed == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
 as String?,passwordError: freezed == passwordError ? _self.passwordError : passwordError // ignore: cast_nullable_to_non_nullable
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isCheckingNickname,  bool? isNicknameAvailable,  String? emailError,  String? passwordError,  String? nicknameError,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isCheckingNickname,  bool showLoginPopup,  bool? isNicknameAvailable,  String? emailError,  String? passwordError,  String? nicknameError,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.isLoading,_that.isCheckingNickname,_that.isNicknameAvailable,_that.emailError,_that.passwordError,_that.nicknameError,_that.errorMessage);case _:
+return $default(_that.isLoading,_that.isCheckingNickname,_that.showLoginPopup,_that.isNicknameAvailable,_that.emailError,_that.passwordError,_that.nicknameError,_that.errorMessage);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.isLoading,_that.isCheckingNickname,_that.isNicknameAvailab
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isCheckingNickname,  bool? isNicknameAvailable,  String? emailError,  String? passwordError,  String? nicknameError,  String? errorMessage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isCheckingNickname,  bool showLoginPopup,  bool? isNicknameAvailable,  String? emailError,  String? passwordError,  String? nicknameError,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _AuthState():
-return $default(_that.isLoading,_that.isCheckingNickname,_that.isNicknameAvailable,_that.emailError,_that.passwordError,_that.nicknameError,_that.errorMessage);}
+return $default(_that.isLoading,_that.isCheckingNickname,_that.showLoginPopup,_that.isNicknameAvailable,_that.emailError,_that.passwordError,_that.nicknameError,_that.errorMessage);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +192,10 @@ return $default(_that.isLoading,_that.isCheckingNickname,_that.isNicknameAvailab
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isCheckingNickname,  bool? isNicknameAvailable,  String? emailError,  String? passwordError,  String? nicknameError,  String? errorMessage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isCheckingNickname,  bool showLoginPopup,  bool? isNicknameAvailable,  String? emailError,  String? passwordError,  String? nicknameError,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthState() when $default != null:
-return $default(_that.isLoading,_that.isCheckingNickname,_that.isNicknameAvailable,_that.emailError,_that.passwordError,_that.nicknameError,_that.errorMessage);case _:
+return $default(_that.isLoading,_that.isCheckingNickname,_that.showLoginPopup,_that.isNicknameAvailable,_that.emailError,_that.passwordError,_that.nicknameError,_that.errorMessage);case _:
   return null;
 
 }
@@ -206,11 +207,12 @@ return $default(_that.isLoading,_that.isCheckingNickname,_that.isNicknameAvailab
 
 
 class _AuthState implements AuthState {
-  const _AuthState({this.isLoading = false, this.isCheckingNickname = false, this.isNicknameAvailable, this.emailError, this.passwordError, this.nicknameError, this.errorMessage});
+  const _AuthState({this.isLoading = false, this.isCheckingNickname = false, this.showLoginPopup = false, this.isNicknameAvailable, this.emailError, this.passwordError, this.nicknameError, this.errorMessage});
   
 
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool isCheckingNickname;
+@override@JsonKey() final  bool showLoginPopup;
 @override final  bool? isNicknameAvailable;
 @override final  String? emailError;
 @override final  String? passwordError;
@@ -227,16 +229,16 @@ _$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isCheckingNickname, isCheckingNickname) || other.isCheckingNickname == isCheckingNickname)&&(identical(other.isNicknameAvailable, isNicknameAvailable) || other.isNicknameAvailable == isNicknameAvailable)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.nicknameError, nicknameError) || other.nicknameError == nicknameError)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isCheckingNickname, isCheckingNickname) || other.isCheckingNickname == isCheckingNickname)&&(identical(other.showLoginPopup, showLoginPopup) || other.showLoginPopup == showLoginPopup)&&(identical(other.isNicknameAvailable, isNicknameAvailable) || other.isNicknameAvailable == isNicknameAvailable)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.passwordError, passwordError) || other.passwordError == passwordError)&&(identical(other.nicknameError, nicknameError) || other.nicknameError == nicknameError)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isLoading,isCheckingNickname,isNicknameAvailable,emailError,passwordError,nicknameError,errorMessage);
+int get hashCode => Object.hash(runtimeType,isLoading,isCheckingNickname,showLoginPopup,isNicknameAvailable,emailError,passwordError,nicknameError,errorMessage);
 
 @override
 String toString() {
-  return 'AuthState(isLoading: $isLoading, isCheckingNickname: $isCheckingNickname, isNicknameAvailable: $isNicknameAvailable, emailError: $emailError, passwordError: $passwordError, nicknameError: $nicknameError, errorMessage: $errorMessage)';
+  return 'AuthState(isLoading: $isLoading, isCheckingNickname: $isCheckingNickname, showLoginPopup: $showLoginPopup, isNicknameAvailable: $isNicknameAvailable, emailError: $emailError, passwordError: $passwordError, nicknameError: $nicknameError, errorMessage: $errorMessage)';
 }
 
 
@@ -247,7 +249,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- bool isLoading, bool isCheckingNickname, bool? isNicknameAvailable, String? emailError, String? passwordError, String? nicknameError, String? errorMessage
+ bool isLoading, bool isCheckingNickname, bool showLoginPopup, bool? isNicknameAvailable, String? emailError, String? passwordError, String? nicknameError, String? errorMessage
 });
 
 
@@ -264,10 +266,11 @@ class __$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isCheckingNickname = null,Object? isNicknameAvailable = freezed,Object? emailError = freezed,Object? passwordError = freezed,Object? nicknameError = freezed,Object? errorMessage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isCheckingNickname = null,Object? showLoginPopup = null,Object? isNicknameAvailable = freezed,Object? emailError = freezed,Object? passwordError = freezed,Object? nicknameError = freezed,Object? errorMessage = freezed,}) {
   return _then(_AuthState(
 isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isCheckingNickname: null == isCheckingNickname ? _self.isCheckingNickname : isCheckingNickname // ignore: cast_nullable_to_non_nullable
+as bool,showLoginPopup: null == showLoginPopup ? _self.showLoginPopup : showLoginPopup // ignore: cast_nullable_to_non_nullable
 as bool,isNicknameAvailable: freezed == isNicknameAvailable ? _self.isNicknameAvailable : isNicknameAvailable // ignore: cast_nullable_to_non_nullable
 as bool?,emailError: freezed == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
 as String?,passwordError: freezed == passwordError ? _self.passwordError : passwordError // ignore: cast_nullable_to_non_nullable

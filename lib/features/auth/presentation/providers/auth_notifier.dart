@@ -229,6 +229,14 @@ class AuthNotifier extends _$AuthNotifier {
 
   // 상태 초기화
   void reset() => state = const AuthState();
+
+  void requireLoginPopup() {
+    state = state.copyWith(showLoginPopup: true);
+  }
+
+  void clearLoginPopup() {
+    state = state.copyWith(showLoginPopup: false);
+  }
 }
 
 // FlutterSecureStorage Provider

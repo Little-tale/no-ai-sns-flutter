@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:no_ai_sns/core/utils/api_exception.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_comment_item_request_dto/dto_comment_item_request.gen.dart';
 import 'package:no_ai_sns/features/home/data/mapper/comment_mapper.dart';
@@ -23,7 +24,18 @@ final class FeedRepositoryImpl implements FeedRepository {
       final mapping = FeedMapper.toMapFeedListDTO(dto);
       return Result.Success(mapping);
     } on DioException catch (error) {
-      return Result.Failure(Exception(error.message));
+      final status = error.response?.statusCode;
+      if (status == 401) {
+        return Result.Failure(ApiException(ApiErrorType.unauthorized));
+      }
+      final data = error.response?.data;
+      final message = data is Map<String, dynamic> ? data['detail'] : null;
+      return Result.Failure(
+        ApiException(
+          ApiErrorType.message,
+          message: message ?? error.message,
+        ),
+      );
     } catch (error) {
       return Result.Failure(Exception(error.toString()));
     }

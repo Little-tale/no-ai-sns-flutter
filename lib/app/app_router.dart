@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
 import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
@@ -12,7 +13,11 @@ import '../features/splash/presentation/pages/splash_page.dart';
 import '../features/upload/presentation/pages/upload_page.dart';
 
 class AppRouter {
+  static final GlobalKey<NavigatorState> rootNavigatorKey =
+      GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: SplashPage.routeName,
     routes: [
       GoRoute(

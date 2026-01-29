@@ -1,35 +1,111 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:no_ai_sns/core/data/DTO/refresh/dto_refrsh_request.gen.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
+import 'package:no_ai_sns/core/network/refresh/refresh_client.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
 
 // Dio 인스턴스 Provider
 final dioProvider = Provider<Dio>((ref) {
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: baseURL,
-      contentType: 'application/json',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      connectTimeout: const Duration(seconds: 30),
-      receiveTimeout: const Duration(seconds: 30),
-    ),
+  final baseOptions = BaseOptions(
+    baseUrl: baseURL,
+    contentType: 'application/json',
+    headers: const {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    connectTimeout: const Duration(seconds: 30),
+    receiveTimeout: const Duration(seconds: 30),
   );
+
+  final dio = Dio(baseOptions);
   const storage = FlutterSecureStorage();
+  final refreshDio = Dio(baseOptions);
+  final refreshClient = RefreshClient(refreshDio);
+
+  Future<String?> refreshAccessToken() async {
+    final refreshToken = await storage.read(key: 'refresh_token');
+    if (refreshToken == null || refreshToken.isEmpty) {
+      return null;
+    }
+    final dto = await refreshClient.refrsh(
+      RefrshRequestDTO(refreshToken: refreshToken),
+    );
+    final newAccessToken = dto.accessToken;
+    final newRefreshToken = dto.refreshToken;
+    if (newAccessToken.isNotEmpty) {
+      await storage.write(key: 'access_token', value: newAccessToken);
+    }
+    if (newRefreshToken.isNotEmpty) {
+      await storage.write(key: 'refresh_token', value: newRefreshToken);
+    }
+    return newAccessToken;
+  }
+
+  Future<String?> refreshTokenWithLock() async {
+    _refreshCompleter ??= Completer<String?>();
+    if (_refreshCompleter!.isCompleted) {
+      _refreshCompleter = Completer<String?>();
+    }
+    if (_refreshInProgress) {
+      return _refreshCompleter!.future;
+    }
+    _refreshInProgress = true;
+    try {
+      final token = await refreshAccessToken();
+      _refreshCompleter?.complete(token);
+      return token;
+    } finally {
+      _refreshInProgress = false;
+    }
+  }
+
+  Future<void> tokenDelete() async {
+    await storage.delete(key: 'access_token');
+    await storage.delete(key: 'refresh_token');
+  }
+
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
         final token = await storage.read(key: 'access_token');
-        debugPrint(token);
         if (token != null && token.isNotEmpty) {
           options.headers['Authorization'] = 'Bearer $token';
         }
         return handler.next(options);
       },
+      onError: (error, handler) async {
+        final response = error.response;
+        final requestOptions = error.requestOptions;
+        final statusCode = response?.statusCode ?? 0;
+
+        if (statusCode == 401 && requestOptions.extra['retry'] != true) {
+          requestOptions.extra['retry'] = true;
+          try {
+            final newToken = await refreshTokenWithLock();
+            if (newToken == null || newToken.isEmpty) {
+              await tokenDelete();
+              ref.read(authProvider.notifier).requireLoginPopup();
+              return handler.next(error);
+            }
+            requestOptions.headers['Authorization'] = 'Bearer $newToken';
+            final cloned = await dio.fetch(requestOptions);
+            return handler.resolve(cloned);
+          } catch (_) {
+            await tokenDelete();
+            ref.read(authProvider.notifier).requireLoginPopup();
+            return handler.next(error);
+          }
+        }
+        return handler.next(error);
+      },
     ),
   );
   return dio;
 });
+
+Completer<String?>? _refreshCompleter;
+bool _refreshInProgress = false;

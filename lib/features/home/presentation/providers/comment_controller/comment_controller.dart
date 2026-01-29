@@ -85,6 +85,9 @@ class CommentController extends _$CommentController {
   }
 
   void commentLikeTapped(int index) async {
+    if (!await _checkLogin()) {
+      return;
+    }
     final item = state.items[index];
     final id = item.id;
     final desiredLiked = !item.commentLikeState;
@@ -134,7 +137,7 @@ class CommentController extends _$CommentController {
     final isLogin = await auth.getAccessToken() != null;
 
     if (!isLogin) {
-      state = state.copyWith(showLoginPopup: true);
+      ref.read(authProvider.notifier).requireLoginPopup();
     }
     return isLogin;
   }
