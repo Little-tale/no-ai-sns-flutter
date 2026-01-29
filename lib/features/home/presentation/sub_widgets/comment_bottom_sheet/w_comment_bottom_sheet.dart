@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/core/constants/app_size.dart';
+import 'package:no_ai_sns/core/presentation/w_login_required.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/comment_controller/comment_controller.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_item.dart';
@@ -29,14 +32,36 @@ class _CommentBottomSheetWidgetState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(commentControllerProvider(postId: widget.postID).notifier)
-          .load();
+      final provider = commentControllerProvider(postId: widget.postID);
+      ref.read(provider.notifier).load();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = commentControllerProvider(postId: widget.postID);
+
+    ref.listen(provider, (prev, next) {
+      final msg = next.popupErrorMessage;
+      if (msg == null) return;
+      showModalBottomSheet(
+        context: context,
+        showDragHandle: true,
+        builder: (context) {
+          return LoginRequiredWidget(
+            tappedLogin: () {
+              GoRouter.of(context).pop();
+            },
+            tappedSignUp: () {
+              GoRouter.of(context).pop();
+            },
+            tappedMaybeLater: () {
+              GoRouter.of(context).pop();
+            },
+          );
+        },
+      );
+    });
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       child: Container(
@@ -52,31 +77,33 @@ class _CommentBottomSheetWidgetState
         // _bottomSheetTop(),
         // List
         _commentList(controller).expand(),
-
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            _profileWidget(context),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.sm,
-                  vertical: AppSpacing.xs,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: context.theme.primaryColor,
-                    width: 0.4,
-                  ),
-                ),
-                child: _commentWidget(context),
-              ),
-            ),
-          ],
-        ).pSymmetric(h: AppSpacing.md, v: AppSpacing.md),
+        AnimatedPadding(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+          padding: EdgeInsets.only(bottom: context.viewInsets.bottom),
+          child: HStack(
+            crossAlignment: CrossAxisAlignment.end,
+            spacing: AppSpacing.sm,
+            [_profileWidget(context), _commentTextFieldSection(context)],
+          ).pSymmetric(h: AppSpacing.md, v: AppSpacing.md),
+        ),
       ],
+    );
+  }
+
+  Widget _commentTextFieldSection(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.sm,
+          vertical: AppSpacing.xs,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: context.theme.primaryColor, width: 0.4),
+        ),
+        child: _commentWidget(context),
+      ),
     );
   }
 
@@ -103,60 +130,68 @@ class _CommentBottomSheetWidgetState
         child: IconButton(
           icon: const Icon(Icons.send, size: 20, color: Colors.white),
           onPressed: () {
+            // FIXME:
             FocusScope.of(context).unfocus();
+            final provider = commentControllerProvider(postId: widget.postID);
+            ref.read(provider.notifier).tappedSendButton();
           },
         ),
       ),
     ]);
   }
 
-  Widget _bottomSheetTop() {
-    return VStack(crossAlignment: CrossAxisAlignment.center, [
-      const SizedBox(height: 8),
-      Container(
-        width: 40,
-        height: 4,
-        decoration: BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.circular(2),
-        ),
-      ),
-      const SizedBox(height: 8),
-      'Comment'.text.semiBold.size(16).make(),
-      const SizedBox(height: 8),
-    ]);
-  }
-
   Widget _commentList(ScrollController controller) {
-    final state = ref.watch(commentControllerProvider(postId: widget.postID));
-    if (state.isLoading) {
+    final provider = commentControllerProvider(postId: widget.postID);
+
+    final items = ref.watch(provider.select((s) => s.items));
+    final isLoading = ref.watch(provider.select((s) => s.isLoading));
+    final errorMessage = ref.watch(provider.select((s) => s.errorMessage));
+
+    if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (state.errorMessage != null) {
-      return Center(child: state.errorMessage!.text.semiBold.size(16).make());
+    if (errorMessage != null) {
+      return Center(child: errorMessage.text.semiBold.size(16).make());
     }
-    if (state.items.isEmpty) {
+    if (items.isEmpty) {
       return Center(child: 'No comments yet'.text.semiBold.size(24).make());
     }
     return ListView.builder(
       controller: controller,
-      itemCount: state.items.length,
+      itemCount: items.length,
       itemBuilder: (context, index) {
-        return CommentItemWidget(item: state.items[index]);
+        return CommentItemWidget(item: items[index]);
       },
     );
   }
 
   Widget _profileWidget(BuildContext context) {
     return CircleAvatar(
-      radius: 30,
-      backgroundColor: context.colors.onPrimary,
+      radius: 28,
+      backgroundColor: context.colors.primaryContainer,
       backgroundImage: widget.userProfileUrl != null
           ? CachedNetworkImageProvider(widget.userProfileUrl!)
           : null,
       child: widget.userProfileUrl == null
-          ? const Icon(Icons.person, size: 30)
+          ? const Icon(Icons.person, size: 28)
           : null,
     );
   }
+
+  // Widget _bottomSheetTop() {
+  //   return VStack(crossAlignment: CrossAxisAlignment.center, [
+  //     const SizedBox(height: 8),
+  //     Container(
+  //       width: 40,
+  //       height: 4,
+  //       decoration: BoxDecoration(
+  //         color: Colors.black12,
+  //         borderRadius: BorderRadius.circular(2),
+  //       ),
+  //     ),
+  //     const SizedBox(height: 8),
+  //     'Comment'.text.semiBold.size(16).make(),
+  //     const SizedBox(height: 8),
+  //   ]);
+  // }
 }

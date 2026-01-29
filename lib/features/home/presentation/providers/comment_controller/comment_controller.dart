@@ -1,4 +1,5 @@
 import 'package:no_ai_sns/core/utils/result.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/feed_repository/feed_repository_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/state/comment_state.gen.dart';
@@ -25,6 +26,11 @@ class CommentController extends _$CommentController {
     switch (result) {
       case Success<List<CommentItemEntity>>(value: final value):
         state = state.copyWith(isLoading: false, items: value);
+        // MARK: Test Code
+        state = state.copyWith(
+          isLoading: false,
+          items: List.generate(10, (_) => CommentItemEntity.dummy()),
+        );
       case Failure<List<CommentItemEntity>>():
         state = state.copyWith(
           isLoading: false,
@@ -45,5 +51,13 @@ class CommentController extends _$CommentController {
       cursor: cursor,
       limit: limit,
     );
+  }
+
+  // 전송 버튼 클릭시
+  void tappedSendButton() async {
+    final auth = ref.read(authProvider.notifier);
+    final isLogin = await auth.getAccessToken() != null;
+    if (isLogin) {}
+    state = state.copyWith(popupErrorMessage: 'Need To Login');
   }
 }

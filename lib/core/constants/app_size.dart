@@ -42,4 +42,9 @@ extension ContextInsetsX on BuildContext {
     final mq = MediaQueryData.fromView(View.of(this));
     return mq.viewPadding.top;
   }
+
+  EdgeInsets get viewInsets {
+    final mq = MediaQuery.of(this).viewInsets;
+    return mq;
+  }
 }

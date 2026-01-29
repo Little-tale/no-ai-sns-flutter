@@ -13,7 +13,8 @@ import '../features/upload/presentation/pages/upload_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: SplashPage.routeName,
+    // FIXME: Git 전 원상복구
+    initialLocation: HomePage.routeName, //  SplashPage.routeName,
     routes: [
       GoRoute(
         path: SplashPage.routeName,
