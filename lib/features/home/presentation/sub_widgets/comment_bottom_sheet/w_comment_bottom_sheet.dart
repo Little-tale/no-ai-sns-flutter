@@ -51,7 +51,6 @@ class _CommentBottomSheetWidgetState
   @override
   Widget build(BuildContext context) {
     final provider = commentControllerProvider(postId: widget.postID);
-    _showLoginBottonSheet(provider);
     _listenCommentText(provider);
 
     return ClipRRect(
@@ -185,32 +184,6 @@ class _CommentBottomSheetWidgetState
           ? const Icon(Icons.person, size: 28)
           : null,
     );
-  }
-
-  void _showLoginBottonSheet(CommentControllerProvider provider) {
-    ref.listen(provider, (prev, next) {
-      if (!next.showLoginPopup) return;
-
-      showModalBottomSheet(
-        context: context,
-        showDragHandle: true,
-
-        builder: (context) {
-          return LoginRequiredWidget(
-            tappedLogin: () {
-              GoRouter.of(context).go(LoginPage.routeName);
-            },
-            tappedSignUp: () {
-              GoRouter.of(context).go(RegisterPage.routeName);
-            },
-            tappedMaybeLater: () {
-              GoRouter.of(context).pop();
-            },
-          );
-        },
-      );
-      ref.read(provider.notifier).clearLoginPopupState();
-    });
   }
 
   void _listenCommentText(CommentControllerProvider provider) {

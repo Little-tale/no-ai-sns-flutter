@@ -7,6 +7,7 @@ sealed class AuthState with _$AuthState {
   const factory AuthState({
     @Default(false) bool isLoading,
     @Default(false) bool isCheckingNickname,
+    @Default(false) bool showLoginPopup,
     bool? isNicknameAvailable,
     String? emailError,
     String? passwordError,
