@@ -1,7 +1,10 @@
+import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
+import 'package:no_ai_sns/core/utils/throttle.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/feed_repository/feed_repository_provider.dart';
+import 'package:no_ai_sns/features/home/presentation/providers/home_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/state/comment_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -9,8 +12,15 @@ part 'comment_controller.g.dart';
 
 @riverpod
 class CommentController extends _$CommentController {
+  final Map<int, Throttler> _likeThrottlers = {};
+
   @override
   CommentState build({required int postId, String? userProfileURlString}) {
+    ref.onDispose(() {
+      for (final throttler in _likeThrottlers.values) {
+        throttler.cancel();
+      }
+    });
     return CommentState(postId: postId, isLoading: true);
   }
 
@@ -26,17 +36,107 @@ class CommentController extends _$CommentController {
     switch (result) {
       case Success<List<CommentItemEntity>>(value: final value):
         state = state.copyWith(isLoading: false, items: value);
-        // MARK: Test Code
-        state = state.copyWith(
-          isLoading: false,
-          items: List.generate(10, (_) => CommentItemEntity.dummy()),
-        );
+
       case Failure<List<CommentItemEntity>>():
         state = state.copyWith(
           isLoading: false,
           errorMessage: 'Failed to load comments',
         );
     }
+  }
+
+  void changeCommentText(String text) {
+    state = state.copyWith(commentText: text);
+  }
+
+  // 전송 버튼 클릭시
+  void tappedSendButton() async {
+    final commentText = state.commentText;
+    if (commentText.isEmpty) return;
+
+    // Lgoin Check
+    if (await _checkLogin()) {
+      final result = await _postCommentAPI(
+        postId: state.postId,
+        content: commentText,
+        parentId: null, // 최상위
+      );
+
+      switch (result) {
+        case Success<CommentItemEntity>(value: final value):
+          var copy = [value] + state.items;
+          state = state.copyWith(
+            isLoading: false,
+            items: copy,
+            commentText: '',
+          );
+          ref.read(homeProvider.notifier).incrementCommentCount(state.postId);
+        case Failure<CommentItemEntity>():
+          state = state.copyWith(
+            isLoading: false,
+            errorMessage: 'Failed to load comments',
+          );
+      }
+    }
+  }
+
+  void clearLoginPopupState() async {
+    state = state.copyWith(showLoginPopup: false);
+  }
+
+  void commentLikeTapped(int index) async {
+    final item = state.items[index];
+    final id = item.id;
+    final desiredLiked = !item.commentLikeState;
+
+    _updateItemAt(index, _applyLikeState(item, desiredLiked));
+
+    _throttlerFor(id).call(() async {
+      final result = await _changeLikeStateAPI(
+        postId: state.postId,
+        commentId: id,
+        isLiked: desiredLiked,
+      );
+
+      final currentIndex = _indexById(id);
+      if (currentIndex == -1) {
+        return;
+      }
+      final currentItem = state.items[currentIndex];
+
+      switch (result) {
+        case Success<String>(value: final status):
+          final serverLiked = _likeStateFromStatus(status);
+          if (serverLiked == null) {
+            return;
+          }
+          if (serverLiked != currentItem.commentLikeState) {
+            _updateItemAt(
+              currentIndex,
+              _applyLikeState(currentItem, serverLiked),
+            );
+          }
+        case Failure<String>():
+          if (currentItem.commentLikeState == desiredLiked) {
+            _updateItemAt(
+              currentIndex,
+              _applyLikeState(currentItem, !desiredLiked),
+            );
+          }
+      }
+    });
+  }
+
+  // MARK: Private
+
+  Future<bool> _checkLogin() async {
+    final auth = ref.read(authProvider.notifier);
+    final isLogin = await auth.getAccessToken() != null;
+
+    if (!isLogin) {
+      state = state.copyWith(showLoginPopup: true);
+    }
+    return isLogin;
   }
 
   // API
@@ -53,15 +153,76 @@ class CommentController extends _$CommentController {
     );
   }
 
-  // 전송 버튼 클릭시
-  void tappedSendButton() async {
-    final auth = ref.read(authProvider.notifier);
-    final isLogin = await auth.getAccessToken() != null;
-    if (isLogin) {}
-    state = state.copyWith(showLoginPopup: true);
+  Future<Result<CommentItemEntity>> _postCommentAPI({
+    required int postId,
+    required String content,
+    int? parentId,
+  }) async {
+    final repo = ref.read(feedRepositoryProvider);
+    final result = await repo.postCommentItem(
+      postId: postId,
+      content: content,
+      parentId: parentId,
+    );
+    return result;
   }
 
-  void clearLoginPopupState() async {
-    state = state.copyWith(showLoginPopup: false);
+  Future<Result<String>> _changeLikeStateAPI({
+    required int postId,
+    required int commentId,
+    required bool isLiked,
+  }) async {
+    final repo = ref.read(feedRepositoryProvider);
+    return await repo.postLikeState(
+      postId: postId,
+      commentId: commentId,
+      isLiked: isLiked,
+    );
+  }
+
+  Throttler _throttlerFor(int commentId) {
+    return _likeThrottlers.putIfAbsent(
+      commentId,
+      () => Throttler(delay: const Duration(milliseconds: 600)),
+    );
+  }
+
+  int _indexById(int id) {
+    return state.items.indexWhere((item) => item.id == id);
+  }
+
+  void _updateItemAt(int index, CommentItemEntity item) {
+    // 불변성 깨짐 주의
+    final updatedItems = [...state.items];
+    updatedItems[index] = item;
+    state = state.copyWith(items: updatedItems);
+  }
+
+  CommentItemEntity _applyLikeState(CommentItemEntity item, bool liked) {
+    if (item.commentLikeState == liked) {
+      return item;
+    }
+    final count = parseCompactNumberToInt(item.likeCount);
+    if (count == null) {
+      return item.copyWith(commentLikeState: liked);
+    }
+    final nextCount = liked ? count + 1 : (count - 1).clamp(0, 1 << 30);
+    return item.copyWith(
+      commentLikeState: liked,
+      likeCount: nextCount.toCompact(),
+    );
+  }
+
+  bool? _likeStateFromStatus(String status) {
+    switch (status) {
+      case 'liked':
+      case 'already_liked':
+        return true;
+      case 'unliked':
+      case 'not_liked':
+        return false;
+      default:
+        return null;
+    }
   }
 }

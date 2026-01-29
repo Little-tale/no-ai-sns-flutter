@@ -14,5 +14,6 @@ sealed class CommentState with _$CommentState {
     String? errorMessage,
     String? userProfileUrlString,
     @Default(false) bool showLoginPopup,
+    @Default("") String commentText,
   }) = _CommentState;
 }

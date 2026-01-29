@@ -30,9 +30,12 @@ class CommentBottomSheetWidget extends ConsumerStatefulWidget {
 
 class _CommentBottomSheetWidgetState
     extends ConsumerState<CommentBottomSheetWidget> {
+  late final TextEditingController _commentController;
+
   @override
   void initState() {
     super.initState();
+    _commentController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = commentControllerProvider(postId: widget.postID);
       ref.read(provider.notifier).load();
@@ -40,25 +43,36 @@ class _CommentBottomSheetWidgetState
   }
 
   @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final provider = commentControllerProvider(postId: widget.postID);
     _showLoginBottonSheet(provider);
+    _listenCommentText(provider);
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       child: Container(
         color: context.theme.scaffoldBackgroundColor,
-        child: _body(widget.controller, context),
+        child: _body(widget.controller, context, provider),
       ),
     );
   }
 
-  Widget _body(ScrollController controller, BuildContext context) {
+  Widget _body(
+    ScrollController controller,
+    BuildContext context,
+    CommentControllerProvider provider,
+  ) {
     return Column(
       children: [
         // _bottomSheetTop(),
         // List
-        _commentList(controller).expand(),
+        _commentList(controller, provider).expand(),
         AnimatedPadding(
           duration: const Duration(milliseconds: 100),
           curve: Curves.easeOut,
@@ -93,9 +107,14 @@ class _CommentBottomSheetWidgetState
     return HStack([
       Expanded(
         child: TextFormField(
+          controller: _commentController,
           maxLines: 3,
           minLines: 1,
-          onChanged: (value) {},
+          onChanged: (value) {
+            ref
+                .read(commentControllerProvider(postId: widget.postID).notifier)
+                .changeCommentText(value);
+          },
           decoration: const InputDecoration(
             hintText: 'Write a comment...',
             border: InputBorder.none,
@@ -122,7 +141,10 @@ class _CommentBottomSheetWidgetState
     ]);
   }
 
-  Widget _commentList(ScrollController controller) {
+  Widget _commentList(
+    ScrollController controller,
+    CommentControllerProvider provider,
+  ) {
     final provider = commentControllerProvider(postId: widget.postID);
 
     final items = ref.watch(provider.select((s) => s.items));
@@ -142,7 +164,12 @@ class _CommentBottomSheetWidgetState
       controller: controller,
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return CommentItemWidget(item: items[index]);
+        return CommentItemWidget(
+          item: items[index],
+          onLikeTap: () {
+            ref.read(provider.notifier).commentLikeTapped(index);
+          },
+        );
       },
     );
   }
@@ -183,6 +210,19 @@ class _CommentBottomSheetWidgetState
         },
       );
       ref.read(provider.notifier).clearLoginPopupState();
+    });
+  }
+
+  void _listenCommentText(CommentControllerProvider provider) {
+    ref.listen<String>(provider.select((s) => s.commentText), (prev, next) {
+      if (_commentController.text == next) {
+        return;
+      }
+      _commentController
+        ..text = next
+        ..selection = TextSelection.fromPosition(
+          TextPosition(offset: next.length),
+        );
     });
   }
 

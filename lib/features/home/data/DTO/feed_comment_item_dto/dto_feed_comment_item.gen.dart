@@ -9,10 +9,11 @@ part 'dto_feed_comment_item.gen.g.dart';
 @freezed
 sealed class FeedCommentItemDTO with _$FeedCommentItemDTO {
   factory FeedCommentItemDTO({
+    required int id,
     @JsonKey(name: 'post_id') required int postID,
     @JsonKey(name: 'user_id') required int userID,
     required AuthorDTO author,
-    @JsonKey(name: 'parent_id') required int parentID,
+    @JsonKey(name: 'parent_id') int? parentID,
     required String body,
     @JsonKey(name: 'created_at') required String createdAt,
     @JsonKey(name: 'like_count') required int likeCount,

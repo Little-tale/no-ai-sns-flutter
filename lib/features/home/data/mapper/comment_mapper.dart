@@ -15,7 +15,7 @@ final class CommentMapper {
     final imgUrl = dto.author.profileImagePath;
 
     return CommentItemEntity(
-      id: dto.postID,
+      id: dto.id,
       content: dto.body,
       createdAt: dto.createdAt.toTimeAgoOrDate(),
       authorName: dto.author.nickname,

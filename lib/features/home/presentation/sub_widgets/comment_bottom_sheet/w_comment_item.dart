@@ -5,9 +5,15 @@ import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._it
 import 'package:velocity_x/velocity_x.dart';
 
 class CommentItemWidget extends StatelessWidget {
-  const CommentItemWidget({super.key, required this.item});
+  const CommentItemWidget({
+    super.key,
+    required this.item,
+    required this.onLikeTap,
+  });
 
   final CommentItemEntity item;
+
+  final VoidCallback onLikeTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class CommentItemWidget extends StatelessWidget {
 
   VStack _likeSection(BuildContext context) {
     return VStack(crossAlignment: CrossAxisAlignment.center, [
-      _likeState(context).pOnly(top: AppSpacing.md),
+      _likeState(context).onTap(onLikeTap).pOnly(top: AppSpacing.md),
       item.likeCount.text.make(),
     ]);
   }

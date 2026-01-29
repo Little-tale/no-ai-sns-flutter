@@ -14,4 +14,16 @@ abstract class FeedRepository {
     required int limit,
     String? cursor,
   });
+
+  Future<Result<CommentItemEntity>> postCommentItem({
+    required int postId,
+    required String content,
+    int? parentId,
+  });
+
+  Future<Result<String>> postLikeState({
+    required int postId,
+    required int commentId,
+    required bool isLiked,
+  });
 }
