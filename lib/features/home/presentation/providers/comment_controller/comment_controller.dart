@@ -58,6 +58,10 @@ class CommentController extends _$CommentController {
     final auth = ref.read(authProvider.notifier);
     final isLogin = await auth.getAccessToken() != null;
     if (isLogin) {}
-    state = state.copyWith(popupErrorMessage: 'Need To Login');
+    state = state.copyWith(showLoginPopup: true);
+  }
+
+  void clearLoginPopupState() async {
+    state = state.copyWith(showLoginPopup: false);
   }
 }

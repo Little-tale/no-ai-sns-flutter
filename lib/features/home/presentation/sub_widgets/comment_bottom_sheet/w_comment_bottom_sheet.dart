@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/core/constants/app_size.dart';
 import 'package:no_ai_sns/core/presentation/w_login_required.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
+import 'package:no_ai_sns/features/auth/presentation/pages/login_page.dart';
+import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/comment_controller/comment_controller.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_item.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -40,28 +42,8 @@ class _CommentBottomSheetWidgetState
   @override
   Widget build(BuildContext context) {
     final provider = commentControllerProvider(postId: widget.postID);
+    _showLoginBottonSheet(provider);
 
-    ref.listen(provider, (prev, next) {
-      final msg = next.popupErrorMessage;
-      if (msg == null) return;
-      showModalBottomSheet(
-        context: context,
-        showDragHandle: true,
-        builder: (context) {
-          return LoginRequiredWidget(
-            tappedLogin: () {
-              GoRouter.of(context).pop();
-            },
-            tappedSignUp: () {
-              GoRouter.of(context).pop();
-            },
-            tappedMaybeLater: () {
-              GoRouter.of(context).pop();
-            },
-          );
-        },
-      );
-    });
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       child: Container(
@@ -176,6 +158,32 @@ class _CommentBottomSheetWidgetState
           ? const Icon(Icons.person, size: 28)
           : null,
     );
+  }
+
+  void _showLoginBottonSheet(CommentControllerProvider provider) {
+    ref.listen(provider, (prev, next) {
+      if (!next.showLoginPopup) return;
+
+      showModalBottomSheet(
+        context: context,
+        showDragHandle: true,
+
+        builder: (context) {
+          return LoginRequiredWidget(
+            tappedLogin: () {
+              GoRouter.of(context).go(LoginPage.routeName);
+            },
+            tappedSignUp: () {
+              GoRouter.of(context).go(RegisterPage.routeName);
+            },
+            tappedMaybeLater: () {
+              GoRouter.of(context).pop();
+            },
+          );
+        },
+      );
+      ref.read(provider.notifier).clearLoginPopupState();
+    });
   }
 
   // Widget _bottomSheetTop() {

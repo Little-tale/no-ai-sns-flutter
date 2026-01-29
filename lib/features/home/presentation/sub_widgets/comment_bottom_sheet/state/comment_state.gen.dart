@@ -13,6 +13,6 @@ sealed class CommentState with _$CommentState {
     @Default(20) int limit,
     String? errorMessage,
     String? userProfileUrlString,
-    String? popupErrorMessage,
+    @Default(false) bool showLoginPopup,
   }) = _CommentState;
 }
