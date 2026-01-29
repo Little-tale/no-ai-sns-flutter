@@ -12,9 +12,11 @@ class Throttler {
   Throttler({this.delay = const Duration(milliseconds: 1000)});
 
   /// Call this intance as a function
-  void call(Function fn) {
+  void call(Function fn, {bool withLast = true}) {
     if (_interval != null) {
-      _nextFn = fn;
+      if (withLast) {
+        _nextFn = fn;
+      }
       return;
     }
 
