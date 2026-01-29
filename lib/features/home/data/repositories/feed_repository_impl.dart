@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
+import 'package:no_ai_sns/features/home/data/DTO/feed_comment_item_request_dto/dto_comment_item_request.gen.dart';
 import 'package:no_ai_sns/features/home/data/mapper/comment_mapper.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/network/client/feed/feed_posts_client.dart';
@@ -42,6 +43,55 @@ final class FeedRepositoryImpl implements FeedRepository {
       );
       final mapping = CommentMapper.toMapCommentListDTO(dto);
       return Result.Success(mapping);
+    } on DioException catch (error) {
+      return Result.Failure(Exception(error.message));
+    } catch (error) {
+      return Result.Failure(Exception(error.toString()));
+    }
+  }
+
+  // POST - Comment
+  @override
+  Future<Result<CommentItemEntity>> postCommentItem({
+    required int postId,
+    required String content,
+    int? parentId,
+  }) async {
+    try {
+      final dto = await _client.postComment(
+        postId: postId,
+        body: CommentItemRequestDTO(content: content, parentId: parentId),
+      );
+      final mapping = CommentMapper.toMapCommentDTO(dto);
+      return Result.Success(mapping);
+    } on DioException catch (error) {
+      return Result.Failure(Exception(error.message));
+    } catch (error) {
+      return Result.Failure(Exception(error.toString()));
+    }
+  }
+
+  // Comment Like API
+  @override
+  Future<Result<String>> postLikeState({
+    required int postId,
+    required int commentId,
+    required bool isLiked,
+  }) async {
+    try {
+      if (isLiked) {
+        final dto = await _client.postCommentLike(
+          postId: postId,
+          commentId: commentId,
+        );
+        return Result.Success(dto);
+      } else {
+        final dto = await _client.deleteCommentLike(
+          postId: postId,
+          commentId: commentId,
+        );
+        return Result.Success(dto);
+      }
     } on DioException catch (error) {
       return Result.Failure(Exception(error.message));
     } catch (error) {

@@ -55,6 +55,7 @@ dependencies:
   riverpod: ^3.0.3 # 상태관리
   flutter_riverpod: ^3.0.3 # 상태관리
   riverpod_annotation: ^3.0.3
+  flutter_hooks: ^0.21.3+1
   hooks_riverpod: ^3.0.3 # 상태관리
   flutter_secure_storage: ^10.0.0
 

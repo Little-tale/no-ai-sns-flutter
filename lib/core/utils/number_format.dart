@@ -33,6 +33,26 @@ String _formatWithSuffix(
   return '$sign$trimmed$suffix';
 }
 
+int? parseCompactNumberToInt(String text) {
+  final trimmed = text.trim().toLowerCase();
+  final match = RegExp(r'^(\d+(?:\.\d+)?)([kmb])?$').firstMatch(trimmed);
+  if (match == null) {
+    return null;
+  }
+  final value = double.tryParse(match.group(1) ?? '');
+  if (value == null) {
+    return null;
+  }
+  final suffix = match.group(2);
+  final multiplier = switch (suffix) {
+    'k' => 1000,
+    'm' => 1000000,
+    'b' => 1000000000,
+    _ => 1,
+  };
+  return (value * multiplier).round();
+}
+
 extension CompactNumberFormat on num {
   String toCompact({int precision = 1}) {
     return formatCompactNumber(this, precision: precision);

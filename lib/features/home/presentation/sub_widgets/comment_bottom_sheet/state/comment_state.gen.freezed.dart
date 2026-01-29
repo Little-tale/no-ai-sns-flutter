@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CommentState {
 
- int get postId; bool get isLoading; List<CommentItemEntity> get items; String? get cursor; int get limit; String? get errorMessage; String? get userProfileUrlString;
+ int get postId; bool get isLoading; List<CommentItemEntity> get items; String? get cursor; int get limit; String? get errorMessage; String? get userProfileUrlString; bool get showLoginPopup; String get commentText;
 /// Create a copy of CommentState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CommentStateCopyWith<CommentState> get copyWith => _$CommentStateCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentState&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.userProfileUrlString, userProfileUrlString) || other.userProfileUrlString == userProfileUrlString));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentState&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.userProfileUrlString, userProfileUrlString) || other.userProfileUrlString == userProfileUrlString)&&(identical(other.showLoginPopup, showLoginPopup) || other.showLoginPopup == showLoginPopup)&&(identical(other.commentText, commentText) || other.commentText == commentText));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,postId,isLoading,const DeepCollectionEquality().hash(items),cursor,limit,errorMessage,userProfileUrlString);
+int get hashCode => Object.hash(runtimeType,postId,isLoading,const DeepCollectionEquality().hash(items),cursor,limit,errorMessage,userProfileUrlString,showLoginPopup,commentText);
 
 @override
 String toString() {
-  return 'CommentState(postId: $postId, isLoading: $isLoading, items: $items, cursor: $cursor, limit: $limit, errorMessage: $errorMessage, userProfileUrlString: $userProfileUrlString)';
+  return 'CommentState(postId: $postId, isLoading: $isLoading, items: $items, cursor: $cursor, limit: $limit, errorMessage: $errorMessage, userProfileUrlString: $userProfileUrlString, showLoginPopup: $showLoginPopup, commentText: $commentText)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CommentStateCopyWith<$Res>  {
   factory $CommentStateCopyWith(CommentState value, $Res Function(CommentState) _then) = _$CommentStateCopyWithImpl;
 @useResult
 $Res call({
- int postId, bool isLoading, List<CommentItemEntity> items, String? cursor, int limit, String? errorMessage, String? userProfileUrlString
+ int postId, bool isLoading, List<CommentItemEntity> items, String? cursor, int limit, String? errorMessage, String? userProfileUrlString, bool showLoginPopup, String commentText
 });
 
 
@@ -62,7 +62,7 @@ class _$CommentStateCopyWithImpl<$Res>
 
 /// Create a copy of CommentState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? postId = null,Object? isLoading = null,Object? items = null,Object? cursor = freezed,Object? limit = null,Object? errorMessage = freezed,Object? userProfileUrlString = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? postId = null,Object? isLoading = null,Object? items = null,Object? cursor = freezed,Object? limit = null,Object? errorMessage = freezed,Object? userProfileUrlString = freezed,Object? showLoginPopup = null,Object? commentText = null,}) {
   return _then(_self.copyWith(
 postId: null == postId ? _self.postId : postId // ignore: cast_nullable_to_non_nullable
 as int,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,9 @@ as List<CommentItemEntity>,cursor: freezed == cursor ? _self.cursor : cursor // 
 as String?,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
 as int,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,userProfileUrlString: freezed == userProfileUrlString ? _self.userProfileUrlString : userProfileUrlString // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,showLoginPopup: null == showLoginPopup ? _self.showLoginPopup : showLoginPopup // ignore: cast_nullable_to_non_nullable
+as bool,commentText: null == commentText ? _self.commentText : commentText // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -153,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int postId,  bool isLoading,  List<CommentItemEntity> items,  String? cursor,  int limit,  String? errorMessage,  String? userProfileUrlString)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int postId,  bool isLoading,  List<CommentItemEntity> items,  String? cursor,  int limit,  String? errorMessage,  String? userProfileUrlString,  bool showLoginPopup,  String commentText)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommentState() when $default != null:
-return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limit,_that.errorMessage,_that.userProfileUrlString);case _:
+return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limit,_that.errorMessage,_that.userProfileUrlString,_that.showLoginPopup,_that.commentText);case _:
   return orElse();
 
 }
@@ -174,10 +176,10 @@ return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limi
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int postId,  bool isLoading,  List<CommentItemEntity> items,  String? cursor,  int limit,  String? errorMessage,  String? userProfileUrlString)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int postId,  bool isLoading,  List<CommentItemEntity> items,  String? cursor,  int limit,  String? errorMessage,  String? userProfileUrlString,  bool showLoginPopup,  String commentText)  $default,) {final _that = this;
 switch (_that) {
 case _CommentState():
-return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limit,_that.errorMessage,_that.userProfileUrlString);}
+return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limit,_that.errorMessage,_that.userProfileUrlString,_that.showLoginPopup,_that.commentText);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +193,10 @@ return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limi
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int postId,  bool isLoading,  List<CommentItemEntity> items,  String? cursor,  int limit,  String? errorMessage,  String? userProfileUrlString)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int postId,  bool isLoading,  List<CommentItemEntity> items,  String? cursor,  int limit,  String? errorMessage,  String? userProfileUrlString,  bool showLoginPopup,  String commentText)?  $default,) {final _that = this;
 switch (_that) {
 case _CommentState() when $default != null:
-return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limit,_that.errorMessage,_that.userProfileUrlString);case _:
+return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limit,_that.errorMessage,_that.userProfileUrlString,_that.showLoginPopup,_that.commentText);case _:
   return null;
 
 }
@@ -206,7 +208,7 @@ return $default(_that.postId,_that.isLoading,_that.items,_that.cursor,_that.limi
 
 
 class _CommentState implements CommentState {
-   _CommentState({required this.postId, this.isLoading = false, final  List<CommentItemEntity> items = const [], this.cursor, this.limit = 20, this.errorMessage, this.userProfileUrlString}): _items = items;
+   _CommentState({required this.postId, this.isLoading = false, final  List<CommentItemEntity> items = const [], this.cursor, this.limit = 20, this.errorMessage, this.userProfileUrlString, this.showLoginPopup = false, this.commentText = ""}): _items = items;
   
 
 @override final  int postId;
@@ -222,6 +224,8 @@ class _CommentState implements CommentState {
 @override@JsonKey() final  int limit;
 @override final  String? errorMessage;
 @override final  String? userProfileUrlString;
+@override@JsonKey() final  bool showLoginPopup;
+@override@JsonKey() final  String commentText;
 
 /// Create a copy of CommentState
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +237,16 @@ _$CommentStateCopyWith<_CommentState> get copyWith => __$CommentStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommentState&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.userProfileUrlString, userProfileUrlString) || other.userProfileUrlString == userProfileUrlString));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommentState&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.userProfileUrlString, userProfileUrlString) || other.userProfileUrlString == userProfileUrlString)&&(identical(other.showLoginPopup, showLoginPopup) || other.showLoginPopup == showLoginPopup)&&(identical(other.commentText, commentText) || other.commentText == commentText));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,postId,isLoading,const DeepCollectionEquality().hash(_items),cursor,limit,errorMessage,userProfileUrlString);
+int get hashCode => Object.hash(runtimeType,postId,isLoading,const DeepCollectionEquality().hash(_items),cursor,limit,errorMessage,userProfileUrlString,showLoginPopup,commentText);
 
 @override
 String toString() {
-  return 'CommentState(postId: $postId, isLoading: $isLoading, items: $items, cursor: $cursor, limit: $limit, errorMessage: $errorMessage, userProfileUrlString: $userProfileUrlString)';
+  return 'CommentState(postId: $postId, isLoading: $isLoading, items: $items, cursor: $cursor, limit: $limit, errorMessage: $errorMessage, userProfileUrlString: $userProfileUrlString, showLoginPopup: $showLoginPopup, commentText: $commentText)';
 }
 
 
@@ -253,7 +257,7 @@ abstract mixin class _$CommentStateCopyWith<$Res> implements $CommentStateCopyWi
   factory _$CommentStateCopyWith(_CommentState value, $Res Function(_CommentState) _then) = __$CommentStateCopyWithImpl;
 @override @useResult
 $Res call({
- int postId, bool isLoading, List<CommentItemEntity> items, String? cursor, int limit, String? errorMessage, String? userProfileUrlString
+ int postId, bool isLoading, List<CommentItemEntity> items, String? cursor, int limit, String? errorMessage, String? userProfileUrlString, bool showLoginPopup, String commentText
 });
 
 
@@ -270,7 +274,7 @@ class __$CommentStateCopyWithImpl<$Res>
 
 /// Create a copy of CommentState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? postId = null,Object? isLoading = null,Object? items = null,Object? cursor = freezed,Object? limit = null,Object? errorMessage = freezed,Object? userProfileUrlString = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? postId = null,Object? isLoading = null,Object? items = null,Object? cursor = freezed,Object? limit = null,Object? errorMessage = freezed,Object? userProfileUrlString = freezed,Object? showLoginPopup = null,Object? commentText = null,}) {
   return _then(_CommentState(
 postId: null == postId ? _self.postId : postId // ignore: cast_nullable_to_non_nullable
 as int,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -279,7 +283,9 @@ as List<CommentItemEntity>,cursor: freezed == cursor ? _self.cursor : cursor // 
 as String?,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
 as int,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,userProfileUrlString: freezed == userProfileUrlString ? _self.userProfileUrlString : userProfileUrlString // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,showLoginPopup: null == showLoginPopup ? _self.showLoginPopup : showLoginPopup // ignore: cast_nullable_to_non_nullable
+as bool,commentText: null == commentText ? _self.commentText : commentText // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

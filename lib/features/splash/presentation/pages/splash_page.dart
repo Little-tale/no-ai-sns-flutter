@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
 
 import '../../../auth/presentation/pages/login_page.dart';
 
@@ -22,6 +25,20 @@ class SplashPage extends StatelessWidget {
                 context.go(LoginPage.routeName);
               },
               child: const Text('Go to Login'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.go(HomePage.routeName);
+              },
+              child: const Text('Go to Home'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final temp = FlutterSecureStorage();
+                temp.delete(key: "access_token");
+                context.go(HomePage.routeName);
+              },
+              child: const Text('AccessToken Remove Go to Home'),
             ),
           ],
         ),

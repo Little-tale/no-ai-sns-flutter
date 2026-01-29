@@ -1,4 +1,5 @@
 import 'package:no_ai_sns/core/providers/feed_repository_provider.dart';
+import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/domain/repositories/feed_repository.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/home_state.gen.dart';
@@ -73,5 +74,21 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> refreshFeed() async {
     state = const HomeState();
     await loadInitialFeed();
+  }
+
+  void incrementCommentCount(int postId) {
+    final updatedItems = state.items.map((item) {
+      if (item.id != postId) {
+        return item;
+      }
+      final current = parseCompactNumberToInt(item.commentCountText);
+      if (current == null) {
+        return item;
+      }
+      final nextText = (current + 1).toCompact();
+      return item.copyWith(commentCountText: nextText);
+    }).toList();
+
+    state = state.copyWith(items: updatedItems);
   }
 }
