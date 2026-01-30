@@ -1,9 +1,8 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:no_ai_sns/core/providers/feed_repository_provider.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
-import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -101,7 +100,7 @@ class HomeNotifier extends _$HomeNotifier {
 
   // 상단 알림 버튼 클릭시
   Future<bool> tappedAlertButtonTapped() async {
-    final token = await FlutterSecureStorage().read(key: 'access_token');
+    final token = await ref.read(tokenStorageProvider.notifier).getAccessToken();
     if (token == null) {
       ref.read(loginPopupProvider.notifier).show();
       return false;
