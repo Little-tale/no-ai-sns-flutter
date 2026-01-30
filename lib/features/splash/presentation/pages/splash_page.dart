@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
 
 import '../../../auth/presentation/pages/login_page.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends ConsumerWidget {
   const SplashPage({super.key});
 
   static const routeName = '/splash';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -33,10 +33,9 @@ class SplashPage extends StatelessWidget {
               child: const Text('Go to Home'),
             ),
             ElevatedButton(
-              onPressed: () async {
-                final temp = FlutterSecureStorage();
-                temp.delete(key: "access_token");
-                temp.delete(key: "refresh_token");
+              onPressed: () {
+                final storage = ref.read(tokenStorageProvider.notifier);
+                storage.clearTokens();
                 context.go(HomePage.routeName);
               },
               child: const Text('AccessToken Remove Go to Home'),
