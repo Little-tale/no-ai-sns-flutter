@@ -39,10 +39,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (errorMessage == null) {
       final accessToken = await notifier.getAccessToken();
       final refreshToken = await notifier.getRefreshToken();
+      final userId = await notifier.getUserId();
       
-      debugPrint('=== 로그인 성공 후 저장된 토큰 확인 ===');
+      debugPrint('=== 로그인 성공 후 저장된 토큰, userId 확인 ===');
       debugPrint('accessToken : $accessToken');
       debugPrint('refreshToken : $refreshToken');
+      debugPrint('userId : $userId');
       debugPrint('======================================');
       
       if (!mounted) return;
