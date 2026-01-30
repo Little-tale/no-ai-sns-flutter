@@ -120,7 +120,7 @@ class CommentController extends _$CommentController {
     final id = item.id;
     final desiredLiked = !item.commentLikeState;
 
-    _updateItemAt(index, _applyLikeState(item, desiredLiked));
+    _updateItemById(id, _applyLikeState(item, desiredLiked));
 
     _throttlerFor(id).call(() async {
       final result = await _changeLikeStateAPI(
@@ -136,20 +136,12 @@ class CommentController extends _$CommentController {
       final currentItem = state.items[currentIndex];
 
       switch (result) {
-        case Success<bool>(value: final status):
-          final serverLiked = status;
-          if (serverLiked != currentItem.commentLikeState) {
-            _updateItemAt(
-              currentIndex,
-              _applyLikeState(currentItem, serverLiked),
-            );
-          }
+        // 성공시 반영을 할 필요가 없음.
+        case Success<bool>(value: final _):
+          return;
         case Failure<bool>():
           if (currentItem.commentLikeState == desiredLiked) {
-            _updateItemAt(
-              currentIndex,
-              _applyLikeState(currentItem, !desiredLiked),
-            );
+            _updateItemById(id, _applyLikeState(currentItem, !desiredLiked));
           }
       }
     });
@@ -224,6 +216,14 @@ class CommentController extends _$CommentController {
     final updatedItems = [...state.items];
     updatedItems[index] = item;
     state = state.copyWith(items: updatedItems);
+  }
+
+  void _updateItemById(int id, CommentItemEntity item) {
+    final index = _indexById(id);
+    if (index == -1) {
+      return;
+    }
+    _updateItemAt(index, item);
   }
 
   CommentItemEntity _applyLikeState(CommentItemEntity item, bool liked) {
