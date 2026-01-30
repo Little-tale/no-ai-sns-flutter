@@ -24,8 +24,19 @@ class CommentController extends _$CommentController {
     return CommentState(postId: postId, isLoading: true);
   }
 
-  Future<void> load({String? cursor, int? limit}) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+  Future<void> load({
+    String? cursor,
+    int? limit,
+    bool isLoadMore = false,
+  }) async {
+    if (isLoadMore) {
+      if (state.isLoadingMore) {
+        return;
+      }
+      state = state.copyWith(isLoadingMore: true, errorMessage: null);
+    } else {
+      state = state.copyWith(isLoading: true, errorMessage: null);
+    }
 
     final result = await _loadGetCommentAPI(
       postId: state.postId,
@@ -35,14 +46,30 @@ class CommentController extends _$CommentController {
 
     switch (result) {
       case Success<List<CommentItemEntity>>(value: final value):
-        state = state.copyWith(isLoading: false, items: value);
+        if (cursor != null || isLoadMore) {
+          state = state.copyWith(
+            items: [...state.items, ...value],
+            isLoadingMore: false,
+          );
+        } else {
+          state = state.copyWith(isLoading: false, items: value);
+        }
 
       case Failure<List<CommentItemEntity>>():
         state = state.copyWith(
           isLoading: false,
+          isLoadingMore: false,
           errorMessage: 'Failed to load comments',
         );
     }
+  }
+
+  void loadNext() async {
+    if (state.items.isEmpty || state.isLoading || state.isLoadingMore) {
+      return;
+    }
+    final cursor = state.items.last.id;
+    await load(cursor: cursor.toString(), isLoadMore: true);
   }
 
   void changeCommentText(String text) {

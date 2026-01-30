@@ -8,6 +8,7 @@ sealed class CommentState with _$CommentState {
   factory CommentState({
     required int postId,
     @Default(false) bool isLoading,
+    @Default(false) bool isLoadingMore,
     @Default([]) List<CommentItemEntity> items,
     String? cursor,
     @Default(20) int limit,

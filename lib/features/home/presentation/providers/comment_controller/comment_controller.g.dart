@@ -58,7 +58,7 @@ final class CommentControllerProvider
   }
 }
 
-String _$commentControllerHash() => r'191865a84ac2f16b10f1aad430ebe69df3eafa53';
+String _$commentControllerHash() => r'8987c287fb1a54cc3fffae6e423997e5a96ac55a';
 
 final class CommentControllerFamily extends $Family
     with
