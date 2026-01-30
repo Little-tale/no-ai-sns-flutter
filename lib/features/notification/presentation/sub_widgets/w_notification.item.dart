@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_ai_sns/core/constants/app_icons.dart';
 import 'package:no_ai_sns/design_system/tokens/colors.dart';
 import 'package:no_ai_sns/features/notification/domain/entities/alert_/alert_entity.gen.dart';
 import 'package:no_ai_sns/features/notification/domain/entities/alert_type/alert_type_entity.dart';
@@ -11,9 +12,9 @@ class NotificationItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(item.toString());
     return HStack(spacing: 12, [
-      // 상황별 에셋 필요
-      Icon(Icons.ac_unit_rounded, size: 24),
+      _getLeadingWidget(item.type, context),
 
       _titleBodyWidget(),
 
@@ -51,6 +52,23 @@ class NotificationItemWidget extends StatelessWidget {
         return context.backgroundColor;
       case AlertType.dm:
         return context.cardColor;
+      case AlertType.unknown:
+        return context.backgroundColor;
+    }
+  }
+
+  Widget _getLeadingWidget(AlertType item, BuildContext context) {
+    switch (item) {
+      case AlertType.dm:
+        return Icon(Icons.ac_unit_rounded, size: 24);
+      case AlertType.profileImage:
+        return Icon(Icons.ac_unit_rounded, size: 24);
+      case AlertType.postLike:
+        return Image.asset(AppIcons.likePerspective, width: 30, height: 30);
+      case AlertType.postComment:
+        return Image.asset(AppIcons.commentPerspective, width: 30, height: 30);
+      case AlertType.unknown:
+        return Icon(Icons.ac_unit_rounded, size: 24);
     }
   }
 }

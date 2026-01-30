@@ -67,7 +67,7 @@ class _AuthPopupListener extends ConsumerWidget {
                 AppRouter.router.go(RegisterPage.routeName);
               },
               tappedMaybeLater: () {
-                GoRouter.of(context).pop();
+                AppRouter.router.pop();
               },
             );
           },

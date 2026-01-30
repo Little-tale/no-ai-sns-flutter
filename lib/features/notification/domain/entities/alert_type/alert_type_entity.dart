@@ -1,7 +1,7 @@
-enum AlertType { dm, profileImage, postLike, postComment }
+enum AlertType { dm, profileImage, postLike, postComment, unknown }
 
 extension AlertTypeX on AlertType {
-  static AlertType? fromServer(String value) {
+  static AlertType fromServer(String value) {
     switch (value) {
       case 'dm':
         return AlertType.dm;
@@ -12,6 +12,6 @@ extension AlertTypeX on AlertType {
       case 'post_comment':
         return AlertType.postComment;
     }
-    return null;
+    return AlertType.unknown;
   }
 }

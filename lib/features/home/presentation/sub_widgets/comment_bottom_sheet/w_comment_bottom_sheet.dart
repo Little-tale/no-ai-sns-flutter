@@ -141,7 +141,6 @@ class _CommentBottomSheetWidgetState
         child: IconButton(
           icon: const Icon(Icons.send, size: 20, color: Colors.white),
           onPressed: () {
-            // FIXME:
             FocusScope.of(context).unfocus();
             final provider = commentControllerProvider(postId: widget.postID);
             ref.read(provider.notifier).tappedSendButton();
@@ -180,6 +179,7 @@ class _CommentBottomSheetWidgetState
           );
         }
         return CommentItemWidget(
+          key: ValueKey(items[index].id),
           item: items[index],
           onLikeTap: () {
             ref.read(provider.notifier).commentLikeTapped(index);

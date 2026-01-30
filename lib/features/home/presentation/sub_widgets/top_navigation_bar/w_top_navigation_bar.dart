@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
-import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class TopNavigationBarWidget extends StatelessWidget {
-  const TopNavigationBarWidget({super.key, required this.currentAlertCount});
+  const TopNavigationBarWidget({
+    super.key,
+    required this.currentAlertCount,
+    required this.tappedNotification,
+  });
 
   final int currentAlertCount;
+
+  final VoidCallback tappedNotification;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class TopNavigationBarWidget extends StatelessWidget {
               ),
             ),
         ],
-      ).onTap(() => context.push(NotificationPage.routeName)),
+      ).onTap(tappedNotification),
     ]);
   }
 }
