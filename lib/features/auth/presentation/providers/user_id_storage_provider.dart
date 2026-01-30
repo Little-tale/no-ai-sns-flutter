@@ -4,11 +4,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_id_storage_provider.g.dart';
 
-/// User ID 저장 키
+/// userId 저장 키
 const String _userIdKey = 'user_id';
 
-/// User ID 저장소 관리 Provider
-/// FlutterSecureStorage를 사용하여 User ID를 안전하게 저장/읽기/삭제합니다.
+/// userId 저장소 관리 Provider
+/// FlutterSecureStorage 써서 userId 저장, 읽기, 삭제
 @riverpod
 class UserIdStorage extends _$UserIdStorage {
   late final FlutterSecureStorage _storage;
@@ -18,16 +18,14 @@ class UserIdStorage extends _$UserIdStorage {
     _storage = ref.watch(secureStorageProvider);
   }
 
-  /// User ID 저장
   Future<void> saveUserId(int userId) async {
     try {
       await _storage.write(key: _userIdKey, value: userId.toString());
     } catch (e) {
-      throw Exception('User ID 저장 실패: $e');
+      throw Exception('userId 저장 실패: $e');
     }
   }
 
-  /// User ID 읽기
   Future<int?> getUserId() async {
     try {
       final userIdString = await _storage.read(key: _userIdKey);
@@ -38,12 +36,11 @@ class UserIdStorage extends _$UserIdStorage {
     }
   }
 
-  /// User ID 삭제
   Future<void> clearUserId() async {
     try {
       await _storage.delete(key: _userIdKey);
     } catch (e) {
-      throw Exception('User ID 삭제 실패: $e');
+      throw Exception('userId 삭제 실패 : $e');
     }
   }
 }
