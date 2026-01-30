@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/app/app_router.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
@@ -68,7 +67,7 @@ class HomePage extends HookConsumerWidget {
                 itemBuilder: (context, index) => FeedItemWidget(
                   entity: state.items[index],
                   commentEvent: () {
-                    _bottmSheetComment(context, state, index);
+                    _bottomSheetComment(context, state, index);
                   },
                   likeEvent: () {
                     ref.read(homeProvider.notifier).likeButtonTapped(index);
@@ -101,7 +100,7 @@ class HomePage extends HookConsumerWidget {
     );
   }
 
-  Future<dynamic> _bottmSheetComment(
+  Future<dynamic> _bottomSheetComment(
     BuildContext context,
     HomeState state,
     int index,
