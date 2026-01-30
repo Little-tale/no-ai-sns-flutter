@@ -1,65 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_ai_sns/features/home/presentation/providers/home_notifier.dart';
-import 'package:no_ai_sns/features/home/presentation/providers/home_state.gen.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
+import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_bottom_sheet.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/feed_item/w_feed_item.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/top_navigation_bar/w_top_navigation_bar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-final homeScrollControllerProvider = Provider.autoDispose<ScrollController>((
-  ref,
-) {
-  final controller = ScrollController();
-  ref.onDispose(controller.dispose);
-  return controller;
-});
-
-class HomePage extends ConsumerStatefulWidget {
+class HomePage extends HookConsumerWidget {
   const HomePage({super.key});
 
   static const routeName = '/home';
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends ConsumerState<HomePage> {
-  late final ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ref.read(homeScrollControllerProvider);
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    super.dispose();
-  }
-
-  void _onScroll() {
-    if (!_scrollController.hasClients) {
-      return;
-    }
-    final position = _scrollController.position;
-    if (position.pixels >= position.maxScrollExtent - 200) {
-      ref.read(homeProvider.notifier).loadMoreFeed();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeProvider);
-    ref.watch(homeScrollControllerProvider);
+    final scrollController = useScrollController();
+
+    useEffect(() {
+      void onScroll() {
+        if (!scrollController.hasClients) {
+          return;
+        }
+        final position = scrollController.position;
+        if (position.pixels >= position.maxScrollExtent - 200) {
+          ref.read(homeProvider.notifier).loadMoreFeed();
+        }
+      }
+
+      scrollController.addListener(onScroll);
+      return () => scrollController.removeListener(onScroll);
+    }, [scrollController, ref]);
 
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () => ref.read(homeProvider.notifier).refreshFeed(),
         child: CustomScrollView(
-          controller: _scrollController,
+          controller: scrollController,
           slivers: [
             SliverAppBar(
               floating: true,
@@ -78,6 +56,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                   entity: state.items[index],
                   commentEvent: () {
                     _bottmSheetComment(context, state, index);
+                  },
+                  likeEvent: () {
+                    ref.read(homeProvider.notifier).likeButtonTapped(index);
                   },
                 ).pOnly(bottom: 16).pOnly(top: 8),
               ),

@@ -36,6 +36,7 @@ class SplashPage extends StatelessWidget {
               onPressed: () async {
                 final temp = FlutterSecureStorage();
                 temp.delete(key: "access_token");
+                temp.delete(key: "refresh_token");
                 context.go(HomePage.routeName);
               },
               child: const Text('AccessToken Remove Go to Home'),

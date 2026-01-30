@@ -40,4 +40,10 @@ abstract class FeedPostsClient {
     @Path('post_id') required int postId,
     @Path('comment_id') required int commentId,
   });
+
+  @POST('/posts/{post_id}/like')
+  Future<String> postFeedLike({@Path('post_id') required int postId});
+
+  @DELETE('/posts/{post_id}/like')
+  Future<String> deleteFeedLike({@Path('post_id') required int postId});
 }

@@ -31,10 +31,7 @@ final class FeedRepositoryImpl implements FeedRepository {
       final data = error.response?.data;
       final message = data is Map<String, dynamic> ? data['detail'] : null;
       return Result.Failure(
-        ApiException(
-          ApiErrorType.message,
-          message: message ?? error.message,
-        ),
+        ApiException(ApiErrorType.message, message: message ?? error.message),
       );
     } catch (error) {
       return Result.Failure(Exception(error.toString()));
@@ -85,7 +82,7 @@ final class FeedRepositoryImpl implements FeedRepository {
 
   // Comment Like API
   @override
-  Future<Result<String>> postLikeState({
+  Future<Result<bool>> postCommentLikeState({
     required int postId,
     required int commentId,
     required bool isLiked,
@@ -96,13 +93,33 @@ final class FeedRepositoryImpl implements FeedRepository {
           postId: postId,
           commentId: commentId,
         );
-        return Result.Success(dto);
+        return Result.Success(CommentMapper.toLikeState(dto));
       } else {
         final dto = await _client.deleteCommentLike(
           postId: postId,
           commentId: commentId,
         );
-        return Result.Success(dto);
+        return Result.Success(CommentMapper.toLikeState(dto));
+      }
+    } on DioException catch (error) {
+      return Result.Failure(Exception(error.message));
+    } catch (error) {
+      return Result.Failure(Exception(error.toString()));
+    }
+  }
+
+  @override
+  Future<Result<bool>> postFeedLikeState({
+    required int postId,
+    required bool isLiked,
+  }) async {
+    try {
+      if (isLiked) {
+        final dto = await _client.postFeedLike(postId: postId);
+        return Result.Success(CommentMapper.toLikeState(dto));
+      } else {
+        final dto = await _client.deleteFeedLike(postId: postId);
+        return Result.Success(CommentMapper.toLikeState(dto));
       }
     } on DioException catch (error) {
       return Result.Failure(Exception(error.message));

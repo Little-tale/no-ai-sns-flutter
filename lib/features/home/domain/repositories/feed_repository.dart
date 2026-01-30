@@ -21,7 +21,12 @@ abstract class FeedRepository {
     int? parentId,
   });
 
-  Future<Result<String>> postLikeState({
+  Future<Result<bool>> postFeedLikeState({
+    required int postId,
+    required bool isLiked,
+  });
+
+  Future<Result<bool>> postCommentLikeState({
     required int postId,
     required int commentId,
     required bool isLiked,

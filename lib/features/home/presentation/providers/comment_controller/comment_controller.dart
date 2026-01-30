@@ -2,9 +2,10 @@ import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/core/utils/throttle.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/feed_repository/feed_repository_provider.dart';
-import 'package:no_ai_sns/features/home/presentation/providers/home_notifier.dart';
+import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/state/comment_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -135,18 +136,15 @@ class CommentController extends _$CommentController {
       final currentItem = state.items[currentIndex];
 
       switch (result) {
-        case Success<String>(value: final status):
-          final serverLiked = _likeStateFromStatus(status);
-          if (serverLiked == null) {
-            return;
-          }
+        case Success<bool>(value: final status):
+          final serverLiked = status;
           if (serverLiked != currentItem.commentLikeState) {
             _updateItemAt(
               currentIndex,
               _applyLikeState(currentItem, serverLiked),
             );
           }
-        case Failure<String>():
+        case Failure<bool>():
           if (currentItem.commentLikeState == desiredLiked) {
             _updateItemAt(
               currentIndex,
@@ -164,7 +162,7 @@ class CommentController extends _$CommentController {
     final isLogin = await auth.getAccessToken() != null;
 
     if (!isLogin) {
-      ref.read(authProvider.notifier).requireLoginPopup();
+      ref.read(loginPopupProvider.notifier).show();
     }
     return isLogin;
   }
@@ -197,13 +195,13 @@ class CommentController extends _$CommentController {
     return result;
   }
 
-  Future<Result<String>> _changeLikeStateAPI({
+  Future<Result<bool>> _changeLikeStateAPI({
     required int postId,
     required int commentId,
     required bool isLiked,
   }) async {
     final repo = ref.read(feedRepositoryProvider);
-    return await repo.postLikeState(
+    return await repo.postCommentLikeState(
       postId: postId,
       commentId: commentId,
       isLiked: isLiked,
@@ -241,18 +239,5 @@ class CommentController extends _$CommentController {
       commentLikeState: liked,
       likeCount: nextCount.toCompact(),
     );
-  }
-
-  bool? _likeStateFromStatus(String status) {
-    switch (status) {
-      case 'liked':
-      case 'already_liked':
-        return true;
-      case 'unliked':
-      case 'not_liked':
-        return false;
-      default:
-        return null;
-    }
   }
 }

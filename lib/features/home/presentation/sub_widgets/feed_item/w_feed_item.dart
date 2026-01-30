@@ -10,11 +10,13 @@ class FeedItemWidget extends StatelessWidget {
     super.key,
     required this.entity,
     required this.commentEvent,
+    required this.likeEvent,
   });
 
   final FeedItemEntity entity;
 
   final VoidCallback commentEvent;
+  final VoidCallback likeEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class FeedItemWidget extends StatelessWidget {
           creatorName: entity.creatorName,
           comment: entity.contentText,
           commentEvent: commentEvent,
+          likeEvent: likeEvent,
         ).pSymmetric(h: 16),
       ],
     );

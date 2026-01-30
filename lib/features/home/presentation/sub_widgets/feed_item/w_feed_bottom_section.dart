@@ -10,6 +10,7 @@ class FeedBottomSectionWidget extends StatefulWidget {
     required this.commentCountText,
     required this.comment,
     required this.commentEvent,
+    required this.likeEvent,
   });
 
   final String creatorName;
@@ -19,6 +20,7 @@ class FeedBottomSectionWidget extends StatefulWidget {
   final String comment;
 
   final VoidCallback commentEvent;
+  final VoidCallback likeEvent;
 
   @override
   State<FeedBottomSectionWidget> createState() =>
@@ -48,7 +50,7 @@ class _FeedBottomSectionWidgetState extends State<FeedBottomSectionWidget> {
         color: Colors.pinkAccent,
       ),
       widget.likesCountText.text.light.make(),
-    ]);
+    ]).onTap(widget.likeEvent);
   }
 
   Widget _commentButtonWidget(BuildContext context) {
