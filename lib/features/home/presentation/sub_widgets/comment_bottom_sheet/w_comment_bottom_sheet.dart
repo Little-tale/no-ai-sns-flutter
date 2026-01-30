@@ -1,12 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/core/constants/app_size.dart';
-import 'package:no_ai_sns/core/presentation/w_login_required.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
-import 'package:no_ai_sns/features/auth/presentation/pages/login_page.dart';
-import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/comment_controller/comment_controller.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_item.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -36,16 +32,31 @@ class _CommentBottomSheetWidgetState
   void initState() {
     super.initState();
     _commentController = TextEditingController();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = commentControllerProvider(postId: widget.postID);
       ref.read(provider.notifier).load();
     });
+    widget.controller.addListener(_onScroll);
   }
 
   @override
   void dispose() {
+    widget.controller.removeListener(_onScroll);
     _commentController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (!widget.controller.hasClients) {
+      return;
+    }
+    final position = widget.controller.position;
+    if (position.pixels >= position.maxScrollExtent - 40) {
+      ref
+          .read(commentControllerProvider(postId: widget.postID).notifier)
+          .loadNext();
+    }
   }
 
   @override
@@ -144,13 +155,12 @@ class _CommentBottomSheetWidgetState
     ScrollController controller,
     CommentControllerProvider provider,
   ) {
-    final provider = commentControllerProvider(postId: widget.postID);
-
     final items = ref.watch(provider.select((s) => s.items));
     final isLoading = ref.watch(provider.select((s) => s.isLoading));
+    final isLoadingMore = ref.watch(provider.select((s) => s.isLoadingMore));
     final errorMessage = ref.watch(provider.select((s) => s.errorMessage));
 
-    if (isLoading) {
+    if (isLoading && items.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
     if (errorMessage != null) {
@@ -161,8 +171,14 @@ class _CommentBottomSheetWidgetState
     }
     return ListView.builder(
       controller: controller,
-      itemCount: items.length,
+      itemCount: items.length + (isLoadingMore ? 1 : 0),
       itemBuilder: (context, index) {
+        if (index >= items.length) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
         return CommentItemWidget(
           item: items[index],
           onLikeTap: () {

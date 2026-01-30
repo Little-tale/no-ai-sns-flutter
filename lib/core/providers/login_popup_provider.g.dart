@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'home_notifier.dart';
+part of 'login_popup_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,52 +9,51 @@ part of 'home_notifier.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(HomeNotifier)
-const homeProvider = HomeNotifierProvider._();
+@ProviderFor(LoginPopup)
+const loginPopupProvider = LoginPopupProvider._();
 
-final class HomeNotifierProvider
-    extends $NotifierProvider<HomeNotifier, HomeState> {
-  const HomeNotifierProvider._()
+final class LoginPopupProvider extends $NotifierProvider<LoginPopup, bool> {
+  const LoginPopupProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'homeProvider',
+        name: r'loginPopupProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$homeNotifierHash();
+  String debugGetCreateSourceHash() => _$loginPopupHash();
 
   @$internal
   @override
-  HomeNotifier create() => HomeNotifier();
+  LoginPopup create() => LoginPopup();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(HomeState value) {
+  Override overrideWithValue(bool value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<HomeState>(value),
+      providerOverride: $SyncValueProvider<bool>(value),
     );
   }
 }
 
-String _$homeNotifierHash() => r'b8a6cb665912bb8adc60a0fd116d7321d2723a3a';
+String _$loginPopupHash() => r'8f67392b55b9a7f8bf816424c497bb5caa88fe93';
 
-abstract class _$HomeNotifier extends $Notifier<HomeState> {
-  HomeState build();
+abstract class _$LoginPopup extends $Notifier<bool> {
+  bool build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<HomeState, HomeState>;
+    final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<HomeState, HomeState>,
-              HomeState,
+              AnyNotifier<bool, bool>,
+              bool,
               Object?,
               Object?
             >;

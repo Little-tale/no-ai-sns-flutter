@@ -29,4 +29,17 @@ final class CommentMapper {
   static String _toAbsoluteUrl(String path) {
     return '$baseURL$path';
   }
+
+  static bool toLikeState(String state) {
+    switch (state) {
+      case 'liked':
+      case 'already_liked':
+        return true;
+      case 'unliked':
+      case 'not_liked':
+        return false;
+      default:
+        return false;
+    }
+  }
 }

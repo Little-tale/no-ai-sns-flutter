@@ -1,7 +1,4 @@
-String formatCompactNumber(
-  num value, {
-  int precision = 1,
-}) {
+String formatCompactNumber(num value, {int precision = 1}) {
   final absValue = value.abs();
   final sign = value.isNegative ? '-' : '';
 
@@ -22,12 +19,7 @@ String formatCompactNumber(
   return _formatWithSuffix(sign, compact, 'B', precision);
 }
 
-String _formatWithSuffix(
-  String sign,
-  num value,
-  String suffix,
-  int precision,
-) {
+String _formatWithSuffix(String sign, num value, String suffix, int precision) {
   final fixed = value.toStringAsFixed(precision);
   final trimmed = fixed.replaceAll(RegExp(r'\.?0+$'), '');
   return '$sign$trimmed$suffix';
@@ -56,5 +48,11 @@ int? parseCompactNumberToInt(String text) {
 extension CompactNumberFormat on num {
   String toCompact({int precision = 1}) {
     return formatCompactNumber(this, precision: precision);
+  }
+}
+
+extension CompactNumberFormatText on String {
+  int? toCompact() {
+    return parseCompactNumberToInt(this);
   }
 }

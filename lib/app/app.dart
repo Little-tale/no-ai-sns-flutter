@@ -5,7 +5,7 @@ import 'package:no_ai_sns/core/presentation/w_login_required.dart';
 import 'package:no_ai_sns/design_system/theme/app_theme.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/login_page.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
-import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 
 import '../core/constants/app_strings.dart';
 import 'app_router.dart';
@@ -37,14 +37,11 @@ class _AuthPopupListener extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<bool>(authProvider.select((s) => s.showLoginPopup), (
-      prev,
-      next,
-    ) {
+    ref.listen<bool>(loginPopupProvider, (prev, next) {
       if (!next) {
         return;
       }
-      ref.read(authProvider.notifier).clearLoginPopup();
+      ref.read(loginPopupProvider.notifier).hide();
       if (_isLoginSheetOpen) {
         return;
       }
@@ -65,11 +62,9 @@ class _AuthPopupListener extends ConsumerWidget {
             return LoginRequiredWidget(
               tappedLogin: () {
                 AppRouter.router.go(LoginPage.routeName);
-                ref.read(authProvider.notifier).clearLoginPopup();
               },
               tappedSignUp: () {
                 AppRouter.router.go(RegisterPage.routeName);
-                ref.read(authProvider.notifier).clearLoginPopup();
               },
               tappedMaybeLater: () {
                 GoRouter.of(context).pop();

@@ -2,9 +2,10 @@ import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/core/utils/throttle.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/feed_repository/feed_repository_provider.dart';
-import 'package:no_ai_sns/features/home/presentation/providers/home_notifier.dart';
+import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/state/comment_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -24,8 +25,19 @@ class CommentController extends _$CommentController {
     return CommentState(postId: postId, isLoading: true);
   }
 
-  Future<void> load({String? cursor, int? limit}) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+  Future<void> load({
+    String? cursor,
+    int? limit,
+    bool isLoadMore = false,
+  }) async {
+    if (isLoadMore) {
+      if (state.isLoadingMore) {
+        return;
+      }
+      state = state.copyWith(isLoadingMore: true, errorMessage: null);
+    } else {
+      state = state.copyWith(isLoading: true, errorMessage: null);
+    }
 
     final result = await _loadGetCommentAPI(
       postId: state.postId,
@@ -35,14 +47,30 @@ class CommentController extends _$CommentController {
 
     switch (result) {
       case Success<List<CommentItemEntity>>(value: final value):
-        state = state.copyWith(isLoading: false, items: value);
+        if (cursor != null || isLoadMore) {
+          state = state.copyWith(
+            items: [...state.items, ...value],
+            isLoadingMore: false,
+          );
+        } else {
+          state = state.copyWith(isLoading: false, items: value);
+        }
 
       case Failure<List<CommentItemEntity>>():
         state = state.copyWith(
           isLoading: false,
+          isLoadingMore: false,
           errorMessage: 'Failed to load comments',
         );
     }
+  }
+
+  void loadNext() async {
+    if (state.items.isEmpty || state.isLoading || state.isLoadingMore) {
+      return;
+    }
+    final cursor = state.items.last.id;
+    await load(cursor: cursor.toString(), isLoadMore: true);
   }
 
   void changeCommentText(String text) {
@@ -108,18 +136,15 @@ class CommentController extends _$CommentController {
       final currentItem = state.items[currentIndex];
 
       switch (result) {
-        case Success<String>(value: final status):
-          final serverLiked = _likeStateFromStatus(status);
-          if (serverLiked == null) {
-            return;
-          }
+        case Success<bool>(value: final status):
+          final serverLiked = status;
           if (serverLiked != currentItem.commentLikeState) {
             _updateItemAt(
               currentIndex,
               _applyLikeState(currentItem, serverLiked),
             );
           }
-        case Failure<String>():
+        case Failure<bool>():
           if (currentItem.commentLikeState == desiredLiked) {
             _updateItemAt(
               currentIndex,
@@ -137,7 +162,7 @@ class CommentController extends _$CommentController {
     final isLogin = await auth.getAccessToken() != null;
 
     if (!isLogin) {
-      ref.read(authProvider.notifier).requireLoginPopup();
+      ref.read(loginPopupProvider.notifier).show();
     }
     return isLogin;
   }
@@ -170,13 +195,13 @@ class CommentController extends _$CommentController {
     return result;
   }
 
-  Future<Result<String>> _changeLikeStateAPI({
+  Future<Result<bool>> _changeLikeStateAPI({
     required int postId,
     required int commentId,
     required bool isLiked,
   }) async {
     final repo = ref.read(feedRepositoryProvider);
-    return await repo.postLikeState(
+    return await repo.postCommentLikeState(
       postId: postId,
       commentId: commentId,
       isLiked: isLiked,
@@ -214,18 +239,5 @@ class CommentController extends _$CommentController {
       commentLikeState: liked,
       likeCount: nextCount.toCompact(),
     );
-  }
-
-  bool? _likeStateFromStatus(String status) {
-    switch (status) {
-      case 'liked':
-      case 'already_liked':
-        return true;
-      case 'unliked':
-      case 'not_liked':
-        return false;
-      default:
-        return null;
-    }
   }
 }

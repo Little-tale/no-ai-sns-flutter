@@ -1,20 +1,18 @@
 import 'package:no_ai_sns/core/providers/feed_repository_provider.dart';
 import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
-import 'package:no_ai_sns/features/home/domain/repositories/feed_repository.dart';
-import 'package:no_ai_sns/features/home/presentation/providers/home_state.gen.dart';
+import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_notifier.g.dart';
 
 @riverpod
 class HomeNotifier extends _$HomeNotifier {
-  late final FeedRepository _repository;
   static const int _limit = 20;
 
   @override
   HomeState build() {
-    _repository = ref.watch(feedRepositoryProvider);
+    ref.watch(feedRepositoryProvider);
 
     // build() 완료 후 초기 피드를 불러와야 state 접근 가능
     Future.microtask(() => loadInitialFeed());
@@ -26,7 +24,9 @@ class HomeNotifier extends _$HomeNotifier {
   Future<void> loadInitialFeed() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
-    final result = await _repository.getFeeds(limit: _limit);
+    final result = await ref
+        .read(feedRepositoryProvider)
+        .getFeeds(limit: _limit);
 
     switch (result) {
       case Success(value: final items):
@@ -49,10 +49,9 @@ class HomeNotifier extends _$HomeNotifier {
 
     state = state.copyWith(isLoadingMore: true, errorMessage: null);
 
-    final result = await _repository.getFeeds(
-      limit: _limit,
-      cursor: state.cursor,
-    );
+    final result = await ref
+        .read(feedRepositoryProvider)
+        .getFeeds(limit: _limit, cursor: state.cursor);
 
     switch (result) {
       case Success(value: final newItems):
@@ -76,6 +75,27 @@ class HomeNotifier extends _$HomeNotifier {
     await loadInitialFeed();
   }
 
+  // 좋아요 버튼 클릭시
+  void likeButtonTapped(int index) async {
+    final item = state.items[index];
+    final inverseLikeState = !item.likeStatus;
+
+    _uiUpdateForLikeState(index: index, likeState: inverseLikeState);
+
+    final repo = ref.read(feedRepositoryProvider);
+    final result = await repo.postFeedLikeState(
+      postId: item.id,
+      isLiked: inverseLikeState,
+    );
+
+    switch (result) {
+      case Success<bool>():
+        return;
+      case Failure<bool>():
+        _uiUpdateForLikeState(index: index, likeState: !inverseLikeState);
+    }
+  }
+
   void incrementCommentCount(int postId) {
     final updatedItems = state.items.map((item) {
       if (item.id != postId) {
@@ -88,6 +108,23 @@ class HomeNotifier extends _$HomeNotifier {
       final nextText = (current + 1).toCompact();
       return item.copyWith(commentCountText: nextText);
     }).toList();
+
+    state = state.copyWith(items: updatedItems);
+  }
+
+  void _uiUpdateForLikeState({required int index, bool? likeState}) {
+    final item = state.items[index];
+
+    final inverseLikeState = likeState ?? !item.likeStatus;
+    final currentLikeCount = item.likeCountText.toCompact() ?? 0;
+    final updatedItems = [...state.items];
+
+    updatedItems[index] = updatedItems[index].copyWith(
+      likeStatus: inverseLikeState,
+      likeCountText: inverseLikeState
+          ? (currentLikeCount + 1).toCompact()
+          : (currentLikeCount - 1).toCompact(),
+    );
 
     state = state.copyWith(items: updatedItems);
   }

@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:no_ai_sns/core/data/DTO/refresh/dto_refrsh_request.gen.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/core/network/refresh/refresh_client.dart';
-import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
+import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 
 // Dio 인스턴스 Provider
 final dioProvider = Provider<Dio>((ref) {
@@ -88,7 +88,7 @@ final dioProvider = Provider<Dio>((ref) {
             final newToken = await refreshTokenWithLock();
             if (newToken == null || newToken.isEmpty) {
               await tokenDelete();
-              ref.read(authProvider.notifier).requireLoginPopup();
+              ref.read(loginPopupProvider.notifier).show();
               return handler.next(error);
             }
             requestOptions.headers['Authorization'] = 'Bearer $newToken';
@@ -96,7 +96,7 @@ final dioProvider = Provider<Dio>((ref) {
             return handler.resolve(cloned);
           } catch (_) {
             await tokenDelete();
-            ref.read(authProvider.notifier).requireLoginPopup();
+            ref.read(loginPopupProvider.notifier).show();
             return handler.next(error);
           }
         }
