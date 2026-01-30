@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:no_ai_sns/core/data/DTO/refresh/dto_refrsh_request.gen.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/core/network/refresh/refresh_client.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 
 // Dio 인스턴스 Provider
 final dioProvider = Provider<Dio>((ref) {
@@ -22,12 +22,12 @@ final dioProvider = Provider<Dio>((ref) {
   );
 
   final dio = Dio(baseOptions);
-  const storage = FlutterSecureStorage();
   final refreshDio = Dio(baseOptions);
   final refreshClient = RefreshClient(refreshDio);
+  final tokenStorage = ref.read(tokenStorageProvider.notifier);
 
   Future<String?> refreshAccessToken() async {
-    final refreshToken = await storage.read(key: 'refresh_token');
+    final refreshToken = await tokenStorage.getRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) {
       return null;
     }
@@ -36,11 +36,12 @@ final dioProvider = Provider<Dio>((ref) {
     );
     final newAccessToken = dto.accessToken;
     final newRefreshToken = dto.refreshToken;
-    if (newAccessToken.isNotEmpty) {
-      await storage.write(key: 'access_token', value: newAccessToken);
-    }
-    if (newRefreshToken.isNotEmpty) {
-      await storage.write(key: 'refresh_token', value: newRefreshToken);
+
+    if (newAccessToken.isNotEmpty && newRefreshToken.isNotEmpty) {
+      await tokenStorage.saveTokens(
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      );
     }
     return newAccessToken;
   }
@@ -64,16 +65,15 @@ final dioProvider = Provider<Dio>((ref) {
   }
 
   Future<void> tokenDelete() async {
-    await storage.delete(key: 'access_token');
-    await storage.delete(key: 'refresh_token');
+    await tokenStorage.clearTokens();
   }
 
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = await storage.read(key: 'access_token');
-        if (token != null && token.isNotEmpty) {
-          options.headers['Authorization'] = 'Bearer $token';
+        final accessToken = await tokenStorage.getAccessToken();
+        if (accessToken != null && accessToken.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $accessToken';
         }
         return handler.next(options);
       },
