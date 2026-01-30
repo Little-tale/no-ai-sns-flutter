@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:no_ai_sns/core/data/DTO/auth/dto_register_request.gen.dart';
 import 'package:no_ai_sns/core/network/auth/auth_client.dart';
 import 'package:no_ai_sns/core/providers/auth_client_provider.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_state.gen.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_notifier.g.dart';
@@ -13,17 +13,11 @@ part 'auth_notifier.g.dart';
 @riverpod
 class AuthNotifier extends _$AuthNotifier {
   late final AuthClient _authClient;
-  late final FlutterSecureStorage _storage;
   Timer? _nicknameDebounce;
-
-  // 토큰 저장 키
-  static const String _accessTokenKey = 'access_token';
-  static const String _refreshTokenKey = 'refresh_token';
 
   @override
   AuthState build() {
     _authClient = ref.watch(authClientProvider);
-    _storage = ref.watch(secureStorageProvider);
     
     // 상태 초기화 시 timer 정리
     ref.onDispose(() {
@@ -129,9 +123,11 @@ class AuthNotifier extends _$AuthNotifier {
         'password': password,
       });
       
-      // accessToken, refreshToken 로컬 저장
-      await _storage.write(key: _accessTokenKey, value: response.accessToken);
-      await _storage.write(key: _refreshTokenKey, value: response.refreshToken);
+      // 토큰 저장 (token_storage_provider 참고)
+      await ref.read(tokenStorageProvider.notifier).saveTokens(
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+      );
       
       state = state.copyWith(isLoading: false);
       return null; // 성공
@@ -213,17 +209,16 @@ class AuthNotifier extends _$AuthNotifier {
 
   // 토큰 가져오기
   Future<String?> getAccessToken() async {
-    return await _storage.read(key: _accessTokenKey);
+    return await ref.read(tokenStorageProvider.notifier).getAccessToken();
   }
 
   Future<String?> getRefreshToken() async {
-    return await _storage.read(key: _refreshTokenKey);
+    return await ref.read(tokenStorageProvider.notifier).getRefreshToken();
   }
 
   // 로그아웃 (토큰 삭제)
   Future<void> logout() async {
-    await _storage.delete(key: _accessTokenKey);
-    await _storage.delete(key: _refreshTokenKey);
+    await ref.read(tokenStorageProvider.notifier).clearTokens();
     state = const AuthState();
   }
 
@@ -238,7 +233,3 @@ class AuthNotifier extends _$AuthNotifier {
     state = state.copyWith(showLoginPopup: false);
   }
 }
-
-// FlutterSecureStorage Provider
-@riverpod
-FlutterSecureStorage secureStorage(Ref ref) => const FlutterSecureStorage();

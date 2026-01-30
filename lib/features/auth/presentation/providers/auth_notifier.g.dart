@@ -41,7 +41,7 @@ final class AuthNotifierProvider
   }
 }
 
-String _$authNotifierHash() => r'ae2ad20c40fc9163f1b40a090751108484ea2cef';
+String _$authNotifierHash() => r'dbae9f884597a2131a0e810d5ba7cec6da1a60ec';
 
 abstract class _$AuthNotifier extends $Notifier<AuthState> {
   AuthState build();
@@ -61,50 +61,3 @@ abstract class _$AuthNotifier extends $Notifier<AuthState> {
     element.handleValue(ref, created);
   }
 }
-
-@ProviderFor(secureStorage)
-const secureStorageProvider = SecureStorageProvider._();
-
-final class SecureStorageProvider
-    extends
-        $FunctionalProvider<
-          FlutterSecureStorage,
-          FlutterSecureStorage,
-          FlutterSecureStorage
-        >
-    with $Provider<FlutterSecureStorage> {
-  const SecureStorageProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'secureStorageProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$secureStorageHash();
-
-  @$internal
-  @override
-  $ProviderElement<FlutterSecureStorage> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  FlutterSecureStorage create(Ref ref) {
-    return secureStorage(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(FlutterSecureStorage value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<FlutterSecureStorage>(value),
-    );
-  }
-}
-
-String _$secureStorageHash() => r'5f0f1e7075cbfc89c9f88bceffd63f21bf812b87';
