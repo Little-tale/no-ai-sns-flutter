@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/features/auth/presentation/pages/login_page.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/user_id_storage_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
-
-import '../../../auth/presentation/pages/login_page.dart';
 
 class SplashPage extends ConsumerWidget {
   const SplashPage({super.key});
@@ -33,12 +33,18 @@ class SplashPage extends ConsumerWidget {
               child: const Text('Go to Home'),
             ),
             ElevatedButton(
-              onPressed: () {
-                final storage = ref.read(tokenStorageProvider.notifier);
-                storage.clearTokens();
-                context.go(HomePage.routeName);
+              onPressed: () async {
+                // accessToken 지울 때 userId도 같이 지움
+                await Future.wait([
+                  ref.read(tokenStorageProvider.notifier).clearTokens(),
+                  ref.read(userIdStorageProvider.notifier).clearUserId(),
+                ]);
+
+                if (context.mounted) {
+                  context.go(HomePage.routeName);
+                }
               },
-              child: const Text('AccessToken Remove Go to Home'),
+              child: const Text('AccessToken & UserID Remove Go to Home'),
             ),
           ],
         ),

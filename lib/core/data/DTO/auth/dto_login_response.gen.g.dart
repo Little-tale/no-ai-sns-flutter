@@ -11,6 +11,7 @@ _LoginResponseDTO _$LoginResponseDTOFromJson(Map<String, dynamic> json) =>
       accessToken: json['access_token'] as String,
       refreshToken: json['refresh_token'] as String,
       tokenType: json['token_type'] as String,
+      user: UserDTO.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$LoginResponseDTOToJson(_LoginResponseDTO instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$LoginResponseDTOToJson(_LoginResponseDTO instance) =>
       'access_token': instance.accessToken,
       'refresh_token': instance.refreshToken,
       'token_type': instance.tokenType,
+      'user': instance.user,
     };

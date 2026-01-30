@@ -7,6 +7,7 @@ import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/core/network/refresh/refresh_client.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/user_id_storage_provider.dart';
 
 // Dio 인스턴스 Provider
 final dioProvider = Provider<Dio>((ref) {
@@ -25,6 +26,7 @@ final dioProvider = Provider<Dio>((ref) {
   final refreshDio = Dio(baseOptions);
   final refreshClient = RefreshClient(refreshDio);
   final tokenStorage = ref.read(tokenStorageProvider.notifier);
+  final userIdStorage = ref.read(userIdStorageProvider.notifier);
 
   Future<String?> refreshAccessToken() async {
     final refreshToken = await tokenStorage.getRefreshToken();
@@ -64,8 +66,11 @@ final dioProvider = Provider<Dio>((ref) {
     }
   }
 
-  Future<void> tokenDelete() async {
-    await tokenStorage.clearTokens();
+  Future<void> deleteUserInfo() async {
+    await Future.wait([
+      tokenStorage.clearTokens(),
+      userIdStorage.clearUserId(),
+    ]);
   }
 
   dio.interceptors.add(
@@ -87,7 +92,7 @@ final dioProvider = Provider<Dio>((ref) {
           try {
             final newToken = await refreshTokenWithLock();
             if (newToken == null || newToken.isEmpty) {
-              await tokenDelete();
+              await deleteUserInfo();
               ref.read(loginPopupProvider.notifier).show();
               return handler.next(error);
             }
@@ -95,7 +100,7 @@ final dioProvider = Provider<Dio>((ref) {
             final cloned = await dio.fetch(requestOptions);
             return handler.resolve(cloned);
           } catch (_) {
-            await tokenDelete();
+            await deleteUserInfo();
             ref.read(loginPopupProvider.notifier).show();
             return handler.next(error);
           }

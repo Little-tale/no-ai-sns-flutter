@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginResponseDTO {
 
-@JsonKey(name: 'access_token') String get accessToken;@JsonKey(name: 'refresh_token') String get refreshToken;@JsonKey(name: 'token_type') String get tokenType;
+@JsonKey(name: 'access_token') String get accessToken;@JsonKey(name: 'refresh_token') String get refreshToken;@JsonKey(name: 'token_type') String get tokenType; UserDTO get user;
 /// Create a copy of LoginResponseDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LoginResponseDTOCopyWith<LoginResponseDTO> get copyWith => _$LoginResponseDTOCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponseDTO&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponseDTO&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.user, user) || other.user == user));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,tokenType);
+int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,tokenType,user);
 
 @override
 String toString() {
-  return 'LoginResponseDTO(accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType)';
+  return 'LoginResponseDTO(accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType, user: $user)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $LoginResponseDTOCopyWith<$Res>  {
   factory $LoginResponseDTOCopyWith(LoginResponseDTO value, $Res Function(LoginResponseDTO) _then) = _$LoginResponseDTOCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'access_token') String accessToken,@JsonKey(name: 'refresh_token') String refreshToken,@JsonKey(name: 'token_type') String tokenType
+@JsonKey(name: 'access_token') String accessToken,@JsonKey(name: 'refresh_token') String refreshToken,@JsonKey(name: 'token_type') String tokenType, UserDTO user
 });
 
 
-
+$UserDTOCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -65,15 +65,25 @@ class _$LoginResponseDTOCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponseDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? refreshToken = null,Object? tokenType = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? refreshToken = null,Object? tokenType = null,Object? user = null,}) {
   return _then(_self.copyWith(
 accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,tokenType: null == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
-as String,
+as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserDTO,
   ));
 }
-
+/// Create a copy of LoginResponseDTO
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserDTOCopyWith<$Res> get user {
+  
+  return $UserDTOCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 
@@ -152,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'token_type')  String tokenType)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'token_type')  String tokenType,  UserDTO user)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginResponseDTO() when $default != null:
-return $default(_that.accessToken,_that.refreshToken,_that.tokenType);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.tokenType,_that.user);case _:
   return orElse();
 
 }
@@ -173,10 +183,10 @@ return $default(_that.accessToken,_that.refreshToken,_that.tokenType);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'token_type')  String tokenType)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'token_type')  String tokenType,  UserDTO user)  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponseDTO():
-return $default(_that.accessToken,_that.refreshToken,_that.tokenType);}
+return $default(_that.accessToken,_that.refreshToken,_that.tokenType,_that.user);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +200,10 @@ return $default(_that.accessToken,_that.refreshToken,_that.tokenType);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'token_type')  String tokenType)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'access_token')  String accessToken, @JsonKey(name: 'refresh_token')  String refreshToken, @JsonKey(name: 'token_type')  String tokenType,  UserDTO user)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponseDTO() when $default != null:
-return $default(_that.accessToken,_that.refreshToken,_that.tokenType);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.tokenType,_that.user);case _:
   return null;
 
 }
@@ -205,12 +215,13 @@ return $default(_that.accessToken,_that.refreshToken,_that.tokenType);case _:
 @JsonSerializable()
 
 class _LoginResponseDTO implements LoginResponseDTO {
-   _LoginResponseDTO({@JsonKey(name: 'access_token') required this.accessToken, @JsonKey(name: 'refresh_token') required this.refreshToken, @JsonKey(name: 'token_type') required this.tokenType});
+   _LoginResponseDTO({@JsonKey(name: 'access_token') required this.accessToken, @JsonKey(name: 'refresh_token') required this.refreshToken, @JsonKey(name: 'token_type') required this.tokenType, required this.user});
   factory _LoginResponseDTO.fromJson(Map<String, dynamic> json) => _$LoginResponseDTOFromJson(json);
 
 @override@JsonKey(name: 'access_token') final  String accessToken;
 @override@JsonKey(name: 'refresh_token') final  String refreshToken;
 @override@JsonKey(name: 'token_type') final  String tokenType;
+@override final  UserDTO user;
 
 /// Create a copy of LoginResponseDTO
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +236,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponseDTO&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponseDTO&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.tokenType, tokenType) || other.tokenType == tokenType)&&(identical(other.user, user) || other.user == user));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,tokenType);
+int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,tokenType,user);
 
 @override
 String toString() {
-  return 'LoginResponseDTO(accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType)';
+  return 'LoginResponseDTO(accessToken: $accessToken, refreshToken: $refreshToken, tokenType: $tokenType, user: $user)';
 }
 
 
@@ -245,11 +256,11 @@ abstract mixin class _$LoginResponseDTOCopyWith<$Res> implements $LoginResponseD
   factory _$LoginResponseDTOCopyWith(_LoginResponseDTO value, $Res Function(_LoginResponseDTO) _then) = __$LoginResponseDTOCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'access_token') String accessToken,@JsonKey(name: 'refresh_token') String refreshToken,@JsonKey(name: 'token_type') String tokenType
+@JsonKey(name: 'access_token') String accessToken,@JsonKey(name: 'refresh_token') String refreshToken,@JsonKey(name: 'token_type') String tokenType, UserDTO user
 });
 
 
-
+@override $UserDTOCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -262,16 +273,26 @@ class __$LoginResponseDTOCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponseDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? refreshToken = null,Object? tokenType = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? refreshToken = null,Object? tokenType = null,Object? user = null,}) {
   return _then(_LoginResponseDTO(
 accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,tokenType: null == tokenType ? _self.tokenType : tokenType // ignore: cast_nullable_to_non_nullable
-as String,
+as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserDTO,
   ));
 }
 
-
+/// Create a copy of LoginResponseDTO
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserDTOCopyWith<$Res> get user {
+  
+  return $UserDTOCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
 }
 
 // dart format on
