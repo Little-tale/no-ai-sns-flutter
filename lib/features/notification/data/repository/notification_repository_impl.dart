@@ -49,4 +49,14 @@ final class NotificationRepositoryImpl extends NotificationRepository {
       return false;
     }
   }
+
+  @override
+  Future<bool> postAllAlertRead() async {
+    try {
+      await _client.postAllAlertRead();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }

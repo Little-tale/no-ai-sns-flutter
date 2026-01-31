@@ -42,6 +42,26 @@ class NotificationNotifier extends _$NotificationNotifier {
     }
   }
 
+  void tappedAllRead() async {
+    final state = this.state.value;
+    if (state == null) return;
+
+    final repo = ref.read(notificationRepositoryProvider);
+
+    final unreadAlerts = state.alerts.where((alert) => !alert.isRead).toList();
+    if (unreadAlerts.isEmpty) return;
+
+    if (await repo.postAllAlertRead()) {
+      final copy = [...state.alerts];
+      for (int i = 0; i < copy.length; i++) {
+        if (!copy[i].isRead) {
+          copy[i] = copy[i].copyWith(isRead: true);
+        }
+      }
+      this.state = AsyncData(state.copyWith(alerts: copy));
+    }
+  }
+
   // MARK: Private
 
   Future<NotificationState> _fetchAlerts({String? cursor}) async {

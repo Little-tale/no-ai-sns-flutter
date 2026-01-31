@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/core/presentation/w_ios_button.dart';
+import 'package:no_ai_sns/design_system/tokens/spacing.dart';
 import 'package:no_ai_sns/features/notification/presentation/providers/notification_notifier/notification_notifier.dart';
 import 'package:no_ai_sns/features/notification/presentation/sub_widgets/w_notification.item.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -24,7 +26,17 @@ final class NotificationPage extends HookConsumerWidget {
     }, [controller]);
 
     return Scaffold(
-      appBar: AppBar(title: "Notifications".text.make()),
+      appBar: AppBar(
+        title: "Notifications".text.make(),
+        actions: [
+          'All READ'.text
+              .make()
+              .onIOSTap(() {
+                ref.read(notificationProvider.notifier).tappedAllRead();
+              })
+              .pOnly(right: AppSpacing.lg),
+        ],
+      ),
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) =>

@@ -20,4 +20,7 @@ abstract class NotificationClient {
 
   @POST('/notifications/{notification_id}/read')
   Future<void> postAlertRead(@Path('notification_id') int notificationId);
+
+  @POST('/notifications/read-all')
+  Future<void> postAllAlertRead();
 }

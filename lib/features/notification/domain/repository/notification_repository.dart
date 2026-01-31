@@ -10,4 +10,6 @@ abstract class NotificationRepository {
   Future<Result<int>> getAlertCount();
 
   Future<bool> postAlertRead({required int notificationId});
+
+  Future<bool> postAllAlertRead();
 }
