@@ -20,7 +20,7 @@ final class NotificationNotifierProvider
         argument: null,
         retry: null,
         name: r'notificationProvider',
-        isAutoDispose: false,
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -34,7 +34,7 @@ final class NotificationNotifierProvider
 }
 
 String _$notificationNotifierHash() =>
-    r'7b0a0c5eec2b8d3aae7b0bbf6c83f5e294145639';
+    r'333172a13db95d9be26378ad0d4f36d8313ccb0b';
 
 abstract class _$NotificationNotifier
     extends $AsyncNotifier<NotificationState> {

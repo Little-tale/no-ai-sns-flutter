@@ -4,6 +4,7 @@ import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
+import 'package:no_ai_sns/features/notification/presentation/providers/repository/notification_repository/notification_repository_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_notifier.g.dart';
@@ -13,18 +14,24 @@ class HomeNotifier extends _$HomeNotifier {
   static const int _limit = 20;
 
   @override
-  HomeState build() {
+  Future<HomeState> build() async {
     ref.watch(feedRepositoryProvider);
+    final initial = await loadInitialFeed();
+    Future.microtask(() async {
+      final count = await _fetchAlertCount();
+      final current = state.value;
 
-    // build() 완료 후 초기 피드를 불러와야 state 접근 가능
-    Future.microtask(() => loadInitialFeed());
-
-    return const HomeState();
+      if (count == null || current == null) {
+        return;
+      }
+      state = AsyncData(current.copyWith(alertCount: count));
+    });
+    return initial;
   }
 
   // 초기 피드 로드
-  Future<void> loadInitialFeed() async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+  Future<HomeState> loadInitialFeed() async {
+    // state = state.copyWith(isLoading: true, errorMessage: null);
 
     final result = await ref
         .read(feedRepositoryProvider)
@@ -32,24 +39,36 @@ class HomeNotifier extends _$HomeNotifier {
 
     switch (result) {
       case Success(value: final items):
-        state = state.copyWith(
+        return HomeState(
           items: items,
           isLoading: false,
           cursor: items.isNotEmpty ? items.last.id.toString() : null,
         );
       case Failure(error: final error):
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: error.toString(),
-        );
+        return HomeState(isLoading: false, errorMessage: error.toString());
+    }
+  }
+
+  Future<int?> _fetchAlertCount() async {
+    final repo = ref.read(notificationRepositoryProvider);
+    final result = await repo.getAlertCount();
+    switch (result) {
+      case Success<int>(value: final count):
+        return count;
+      case Failure<int>(error: final error):
+        return null;
     }
   }
 
   // 더 많은 피드 로드 (무한 스크롤)
   Future<void> loadMoreFeed() async {
+    final state = this.state.value;
+    if (state == null) return;
     if (state.isLoadingMore || state.cursor == null) return;
 
-    state = state.copyWith(isLoadingMore: true, errorMessage: null);
+    this.state = AsyncData(
+      state.copyWith(isLoadingMore: true, errorMessage: null),
+    );
 
     final result = await ref
         .read(feedRepositoryProvider)
@@ -58,27 +77,32 @@ class HomeNotifier extends _$HomeNotifier {
     switch (result) {
       case Success(value: final newItems):
         final updatedItems = [...state.items, ...newItems];
-        state = state.copyWith(
-          items: updatedItems,
-          isLoadingMore: false,
-          cursor: newItems.isNotEmpty ? newItems.last.id.toString() : null,
+        this.state = AsyncData(
+          state.copyWith(
+            items: updatedItems,
+            isLoadingMore: false,
+            cursor: newItems.isNotEmpty ? newItems.last.id.toString() : null,
+          ),
         );
       case Failure(error: final error):
-        state = state.copyWith(
-          isLoadingMore: false,
-          errorMessage: error.toString(),
+        this.state = AsyncData(
+          state.copyWith(isLoadingMore: false, errorMessage: error.toString()),
         );
     }
   }
 
   // 피드 새로고침
   Future<void> refreshFeed() async {
-    state = const HomeState();
-    await loadInitialFeed();
+    state = const AsyncLoading();
+    final next = await loadInitialFeed();
+    state = AsyncData(next);
   }
 
   // 좋아요 버튼 클릭시
   void likeButtonTapped(int index) async {
+    final state = this.state.value;
+    if (state == null) return;
+
     final item = state.items[index];
     final inverseLikeState = !item.likeStatus;
 
@@ -100,7 +124,9 @@ class HomeNotifier extends _$HomeNotifier {
 
   // 상단 알림 버튼 클릭시
   Future<bool> tappedAlertButtonTapped() async {
-    final token = await ref.read(tokenStorageProvider.notifier).getAccessToken();
+    final token = await ref
+        .read(tokenStorageProvider.notifier)
+        .getAccessToken();
     if (token == null) {
       ref.read(loginPopupProvider.notifier).show();
       return false;
@@ -110,6 +136,9 @@ class HomeNotifier extends _$HomeNotifier {
   }
 
   void incrementCommentCount(int postId) {
+    final state = this.state.value;
+    if (state == null) return;
+
     final updatedItems = state.items.map((item) {
       if (item.id != postId) {
         return item;
@@ -122,10 +151,13 @@ class HomeNotifier extends _$HomeNotifier {
       return item.copyWith(commentCountText: nextText);
     }).toList();
 
-    state = state.copyWith(items: updatedItems);
+    this.state = AsyncData(state.copyWith(items: updatedItems));
   }
 
   void _uiUpdateForLikeState({required int index, bool? likeState}) {
+    final state = this.state.value;
+    if (state == null) return;
+
     final item = state.items[index];
 
     final inverseLikeState = likeState ?? !item.likeStatus;
@@ -139,6 +171,6 @@ class HomeNotifier extends _$HomeNotifier {
           : (currentLikeCount - 1).toCompact(),
     );
 
-    state = state.copyWith(items: updatedItems);
+    this.state = AsyncData(state.copyWith(items: updatedItems));
   }
 }

@@ -6,7 +6,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'notification_notifier.g.dart';
 
-@Riverpod(keepAlive: true)
+// (keepAlive: true)
+@riverpod
 class NotificationNotifier extends _$NotificationNotifier {
   @override
   Future<NotificationState> build() async {

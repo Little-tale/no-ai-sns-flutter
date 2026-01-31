@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeState {
 
- List<FeedItemEntity> get items; bool get isLoading; bool get isLoadingMore; bool get hasMore; String? get cursor; String? get errorMessage; int get limit;
+ List<FeedItemEntity> get items; bool get isLoading; bool get isLoadingMore; bool get hasMore; String? get cursor; String? get errorMessage; int get limit; int get alertCount;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.limit, limit) || other.limit == limit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.alertCount, alertCount) || other.alertCount == alertCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),isLoading,isLoadingMore,hasMore,cursor,errorMessage,limit);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),isLoading,isLoadingMore,hasMore,cursor,errorMessage,limit,alertCount);
 
 @override
 String toString() {
-  return 'HomeState(items: $items, isLoading: $isLoading, isLoadingMore: $isLoadingMore, hasMore: $hasMore, cursor: $cursor, errorMessage: $errorMessage, limit: $limit)';
+  return 'HomeState(items: $items, isLoading: $isLoading, isLoadingMore: $isLoadingMore, hasMore: $hasMore, cursor: $cursor, errorMessage: $errorMessage, limit: $limit, alertCount: $alertCount)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- List<FeedItemEntity> items, bool isLoading, bool isLoadingMore, bool hasMore, String? cursor, String? errorMessage, int limit
+ List<FeedItemEntity> items, bool isLoading, bool isLoadingMore, bool hasMore, String? cursor, String? errorMessage, int limit, int alertCount
 });
 
 
@@ -62,7 +62,7 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? isLoading = null,Object? isLoadingMore = null,Object? hasMore = null,Object? cursor = freezed,Object? errorMessage = freezed,Object? limit = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? isLoading = null,Object? isLoadingMore = null,Object? hasMore = null,Object? cursor = freezed,Object? errorMessage = freezed,Object? limit = null,Object? alertCount = null,}) {
   return _then(_self.copyWith(
 items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
 as List<FeedItemEntity>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -71,6 +71,7 @@ as bool,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nulla
 as bool,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
 as String?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
+as int,alertCount: null == alertCount ? _self.alertCount : alertCount // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<FeedItemEntity> items,  bool isLoading,  bool isLoadingMore,  bool hasMore,  String? cursor,  String? errorMessage,  int limit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<FeedItemEntity> items,  bool isLoading,  bool isLoadingMore,  bool hasMore,  String? cursor,  String? errorMessage,  int limit,  int alertCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_that.cursor,_that.errorMessage,_that.limit);case _:
+return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_that.cursor,_that.errorMessage,_that.limit,_that.alertCount);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<FeedItemEntity> items,  bool isLoading,  bool isLoadingMore,  bool hasMore,  String? cursor,  String? errorMessage,  int limit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<FeedItemEntity> items,  bool isLoading,  bool isLoadingMore,  bool hasMore,  String? cursor,  String? errorMessage,  int limit,  int alertCount)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_that.cursor,_that.errorMessage,_that.limit);}
+return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_that.cursor,_that.errorMessage,_that.limit,_that.alertCount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +192,10 @@ return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<FeedItemEntity> items,  bool isLoading,  bool isLoadingMore,  bool hasMore,  String? cursor,  String? errorMessage,  int limit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<FeedItemEntity> items,  bool isLoading,  bool isLoadingMore,  bool hasMore,  String? cursor,  String? errorMessage,  int limit,  int alertCount)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_that.cursor,_that.errorMessage,_that.limit);case _:
+return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_that.cursor,_that.errorMessage,_that.limit,_that.alertCount);case _:
   return null;
 
 }
@@ -206,7 +207,7 @@ return $default(_that.items,_that.isLoading,_that.isLoadingMore,_that.hasMore,_t
 
 
 class _HomeState implements HomeState {
-  const _HomeState({final  List<FeedItemEntity> items = const <FeedItemEntity>[], this.isLoading = false, this.isLoadingMore = false, this.hasMore = true, this.cursor, this.errorMessage, this.limit = 20}): _items = items;
+  const _HomeState({final  List<FeedItemEntity> items = const <FeedItemEntity>[], this.isLoading = false, this.isLoadingMore = false, this.hasMore = true, this.cursor, this.errorMessage, this.limit = 20, this.alertCount = 0}): _items = items;
   
 
  final  List<FeedItemEntity> _items;
@@ -222,6 +223,7 @@ class _HomeState implements HomeState {
 @override final  String? cursor;
 @override final  String? errorMessage;
 @override@JsonKey() final  int limit;
+@override@JsonKey() final  int alertCount;
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +235,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.limit, limit) || other.limit == limit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.alertCount, alertCount) || other.alertCount == alertCount));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),isLoading,isLoadingMore,hasMore,cursor,errorMessage,limit);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),isLoading,isLoadingMore,hasMore,cursor,errorMessage,limit,alertCount);
 
 @override
 String toString() {
-  return 'HomeState(items: $items, isLoading: $isLoading, isLoadingMore: $isLoadingMore, hasMore: $hasMore, cursor: $cursor, errorMessage: $errorMessage, limit: $limit)';
+  return 'HomeState(items: $items, isLoading: $isLoading, isLoadingMore: $isLoadingMore, hasMore: $hasMore, cursor: $cursor, errorMessage: $errorMessage, limit: $limit, alertCount: $alertCount)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<FeedItemEntity> items, bool isLoading, bool isLoadingMore, bool hasMore, String? cursor, String? errorMessage, int limit
+ List<FeedItemEntity> items, bool isLoading, bool isLoadingMore, bool hasMore, String? cursor, String? errorMessage, int limit, int alertCount
 });
 
 
@@ -270,7 +272,7 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? isLoading = null,Object? isLoadingMore = null,Object? hasMore = null,Object? cursor = freezed,Object? errorMessage = freezed,Object? limit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? isLoading = null,Object? isLoadingMore = null,Object? hasMore = null,Object? cursor = freezed,Object? errorMessage = freezed,Object? limit = null,Object? alertCount = null,}) {
   return _then(_HomeState(
 items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
 as List<FeedItemEntity>,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
@@ -279,6 +281,7 @@ as bool,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nulla
 as bool,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
 as String?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
+as int,alertCount: null == alertCount ? _self.alertCount : alertCount // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

@@ -6,4 +6,6 @@ abstract class NotificationRepository {
     required int limit,
     String? cursor,
   });
+
+  Future<Result<int>> getAlertCount();
 }
