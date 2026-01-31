@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/notification/domain/entities/alert_/alert_entity.gen.dart';
 import 'package:no_ai_sns/features/notification/presentation/providers/repository/notification_repository/notification_repository_provider.dart';
@@ -7,28 +6,67 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'notification_notifier.g.dart';
 
-@Riverpod()
+@Riverpod(keepAlive: true)
 class NotificationNotifier extends _$NotificationNotifier {
   @override
-  NotificationState build() {
-    Future.microtask(() => _loadAlert());
-    return NotificationState(isLoading: true);
+  Future<NotificationState> build() async {
+    return await _fetchAlerts();
   }
 
-  void _loadAlert() async {
+  void moreRequest() {
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
+    if (!current.isMore) return;
+    if (current.alerts.isEmpty) return;
+    if (current.isMoreLoading) return;
+    state = AsyncValue.data(current.copyWith(isMoreLoading: true));
+    final item = current.alerts.last.alertID;
+    _loadAlert(cursor: item.toString());
+  }
+
+  Future<NotificationState> _fetchAlerts({String? cursor}) async {
+    final current = state.value;
+    final limit = 15;
     final repo = ref.read(notificationRepositoryProvider);
-    final result = await repo.getAlerts(limit: 15, cursor: null);
+    final result = await repo.getAlerts(limit: limit, cursor: cursor);
 
     switch (result) {
       case Success<List<AlertEntity>>(value: final alerts):
-        state = state.copyWith(alerts: alerts, isLoading: false);
+        if (cursor != null) {
+          if (current == null) {
+            return NotificationState(
+              alerts: alerts,
+              isMore: alerts.length == limit,
+              isMoreLoading: false,
+            );
+          }
+          return current.copyWith(
+            alerts: [...current.alerts, ...alerts],
+            isMore: alerts.length == limit,
+            isMoreLoading: false,
+          );
+        } else {
+          return NotificationState(
+            alerts: alerts,
+            isMore: alerts.length == limit,
+            isMoreLoading: false,
+          );
+        }
+
       case Failure<List<AlertEntity>>(error: final error):
-        debugPrint(error.toString());
-        state = state.copyWith(
-          alerts: [],
-          isLoading: false,
-          isInitialError: true,
-        );
+        throw error; // 문제 생기면 아래처럼 수정
+      // return NotificationState(
+      //   alerts: [],
+      //   isInitialError: true,
+      //   isMoreLoading: false,
+      // );
     }
+  }
+
+  void _loadAlert({String? cursor}) async {
+    final next = await _fetchAlerts(cursor: cursor);
+    state = AsyncValue.data(next);
   }
 }

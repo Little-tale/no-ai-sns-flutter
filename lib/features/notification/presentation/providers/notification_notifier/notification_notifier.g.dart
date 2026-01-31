@@ -13,14 +13,14 @@ part of 'notification_notifier.dart';
 const notificationProvider = NotificationNotifierProvider._();
 
 final class NotificationNotifierProvider
-    extends $NotifierProvider<NotificationNotifier, NotificationState> {
+    extends $AsyncNotifierProvider<NotificationNotifier, NotificationState> {
   const NotificationNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'notificationProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -31,31 +31,25 @@ final class NotificationNotifierProvider
   @$internal
   @override
   NotificationNotifier create() => NotificationNotifier();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(NotificationState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<NotificationState>(value),
-    );
-  }
 }
 
 String _$notificationNotifierHash() =>
-    r'13e30efc29993448fcb10eea6b26a7dd955f33a8';
+    r'7b0a0c5eec2b8d3aae7b0bbf6c83f5e294145639';
 
-abstract class _$NotificationNotifier extends $Notifier<NotificationState> {
-  NotificationState build();
+abstract class _$NotificationNotifier
+    extends $AsyncNotifier<NotificationState> {
+  FutureOr<NotificationState> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<NotificationState, NotificationState>;
+    final ref =
+        this.ref as $Ref<AsyncValue<NotificationState>, NotificationState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<NotificationState, NotificationState>,
-              NotificationState,
+              AnyNotifier<AsyncValue<NotificationState>, NotificationState>,
+              AsyncValue<NotificationState>,
               Object?,
               Object?
             >;

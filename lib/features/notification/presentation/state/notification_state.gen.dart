@@ -10,5 +10,6 @@ sealed class NotificationState with _$NotificationState {
     @Default(false) bool isMore,
     @Default(false) bool isLoading,
     @Default(false) bool isInitialError,
+    @Default(false) bool isMoreLoading,
   }) = _NotificationState;
 }
