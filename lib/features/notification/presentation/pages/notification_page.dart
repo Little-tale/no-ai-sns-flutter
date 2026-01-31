@@ -31,15 +31,22 @@ final class NotificationPage extends HookConsumerWidget {
             const Center(child: Text("Failed to load notifications")),
         data: (data) {
           if (data.isInitialError) {
-            return const Center(
-              child: Text("Failed to load notifications"),
-            );
+            return const Center(child: Text("Failed to load notifications"));
           }
           return ListView.builder(
             controller: controller,
             itemCount: data.alerts.length,
             itemBuilder: (context, index) {
-              return NotificationItemWidget(item: data.alerts[index]);
+              final item = data.alerts[index];
+              return NotificationItemWidget(
+                item: item,
+                tappedItem: () {
+                  debugPrint('tapped ${item.alertID}');
+                  ref
+                      .read(notificationProvider.notifier)
+                      .tappedItem(item: item, index: index);
+                },
+              );
             },
           );
         },

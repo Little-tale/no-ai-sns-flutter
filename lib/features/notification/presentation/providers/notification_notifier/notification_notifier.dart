@@ -14,6 +14,8 @@ class NotificationNotifier extends _$NotificationNotifier {
     return await _fetchAlerts();
   }
 
+  // MARK: Internal
+
   void moreRequest() {
     final current = state.value;
     if (current == null) {
@@ -26,6 +28,21 @@ class NotificationNotifier extends _$NotificationNotifier {
     final item = current.alerts.last.alertID;
     _loadAlert(cursor: item.toString());
   }
+
+  void tappedItem({required AlertEntity item, required int index}) async {
+    final state = this.state.value;
+    if (item.isRead || state == null) return;
+
+    final repo = ref.read(notificationRepositoryProvider);
+
+    if (await repo.postAlertRead(notificationId: item.alertID)) {
+      final copy = [...state.alerts];
+      copy[index] = item.copyWith(isRead: true);
+      this.state = AsyncData(state.copyWith(alerts: copy));
+    }
+  }
+
+  // MARK: Private
 
   Future<NotificationState> _fetchAlerts({String? cursor}) async {
     final current = state.value;

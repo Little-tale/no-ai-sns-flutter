@@ -17,4 +17,7 @@ abstract class NotificationClient {
 
   @GET('/notifications/count')
   Future<NotificationCountDTO> getUnreadCount();
+
+  @POST('/notifications/{notification_id}/read')
+  Future<void> postAlertRead(@Path('notification_id') int notificationId);
 }

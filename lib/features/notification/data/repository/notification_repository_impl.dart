@@ -39,4 +39,14 @@ final class NotificationRepositoryImpl extends NotificationRepository {
       return Result.Failure(Exception(error.toString()));
     }
   }
+
+  @override
+  Future<bool> postAlertRead({required int notificationId}) async {
+    try {
+      await _client.postAlertRead(notificationId);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }

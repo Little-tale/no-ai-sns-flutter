@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:no_ai_sns/core/constants/app_icons.dart';
+import 'package:no_ai_sns/core/presentation/w_ios_button.dart';
 import 'package:no_ai_sns/design_system/tokens/colors.dart';
 import 'package:no_ai_sns/features/notification/domain/entities/alert_/alert_entity.gen.dart';
 import 'package:no_ai_sns/features/notification/domain/entities/alert_type/alert_type_entity.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class NotificationItemWidget extends StatelessWidget {
-  const NotificationItemWidget({super.key, required this.item});
+  const NotificationItemWidget({
+    super.key,
+    required this.item,
+    required this.tappedItem,
+  });
 
   final AlertEntity item;
+
+  final VoidCallback tappedItem;
 
   @override
   Widget build(BuildContext context) {
     debugPrint(item.toString());
+    return Stack(
+      children: [
+        _body(context)
+            .pSymmetric(v: 8, h: 12)
+            .color(_getBackgroundColor(item.type, context)),
+        if (item.isRead)
+          Positioned.fill(
+            child: Container(color: Colors.black.withValues(alpha: 0.5)),
+          ),
+      ],
+    ).onIOSTap(tappedItem);
+  }
+
+  Widget _body(BuildContext context) {
     return HStack(spacing: 12, [
       _getLeadingWidget(item.type, context),
 
@@ -32,7 +53,7 @@ class NotificationItemWidget extends StatelessWidget {
                 .pSymmetric(h: 16, v: 6),
           ),
         ),
-    ]).pSymmetric(v: 8, h: 12).color(_getBackgroundColor(item.type, context));
+    ]);
   }
 
   Widget _titleBodyWidget() {
