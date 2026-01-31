@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:no_ai_sns/core/data/DTO/notification/dot_notification_count.gen.dart';
 import 'package:no_ai_sns/core/data/DTO/notification/dto_notification.gen.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -13,4 +14,13 @@ abstract class NotificationClient {
     @Query('limit') required int limit,
     @Query('cursor') String? cursor,
   });
+
+  @GET('/notifications/count')
+  Future<NotificationCountDTO> getUnreadCount();
+
+  @POST('/notifications/{notification_id}/read')
+  Future<void> postAlertRead(@Path('notification_id') int notificationId);
+
+  @POST('/notifications/read-all')
+  Future<void> postAllAlertRead();
 }

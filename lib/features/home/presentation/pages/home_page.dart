@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/app/app_router.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
@@ -23,13 +22,7 @@ class HomePage extends HookConsumerWidget {
 
     useEffect(() {
       void onScroll() {
-        if (!scrollController.hasClients) {
-          return;
-        }
-        final position = scrollController.position;
-        if (position.pixels >= position.maxScrollExtent - 200) {
-          ref.read(homeProvider.notifier).loadMoreFeed();
-        }
+        _onScroll(scrollController, ref);
       }
 
       scrollController.addListener(onScroll);
@@ -41,67 +34,94 @@ class HomePage extends HookConsumerWidget {
         onRefresh: () => ref.read(homeProvider.notifier).refreshFeed(),
         child: CustomScrollView(
           controller: scrollController,
-          slivers: [
-            SliverAppBar(
-              floating: true,
-              title: TopNavigationBarWidget(
-                currentAlertCount: 4,
-                tappedNotification: () async {
-                  final canMove = await ref
-                      .read(homeProvider.notifier)
-                      .tappedAlertButtonTapped();
-                  if (canMove) {
-                    AppRouter.router.push(NotificationPage.routeName);
-                  }
-                },
-              ),
-              toolbarHeight: 40,
-              backgroundColor: context.theme.scaffoldBackgroundColor,
-            ),
-            if (state.isLoading)
-              const SliverFillRemaining(
-                child: Center(child: CircularProgressIndicator()),
-              )
-            else
-              SliverList.builder(
-                itemCount: state.items.length,
-                itemBuilder: (context, index) => FeedItemWidget(
-                  entity: state.items[index],
-                  commentEvent: () {
-                    _bottmSheetComment(context, state, index);
-                  },
-                  likeEvent: () {
-                    ref.read(homeProvider.notifier).likeButtonTapped(index);
-                  },
-                ).pOnly(bottom: 16).pOnly(top: 8),
-              ),
-            if (state.isLoadingMore)
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
-              ),
-            if (state.errorMessage != null && state.items.isNotEmpty)
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 16,
-                  ),
-                  child: Text(
-                    state.errorMessage!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ),
-              ),
-          ],
+          slivers: _buildSlivers(ref, context, state),
         ),
       ),
     );
   }
 
-  Future<dynamic> _bottmSheetComment(
+  List<Widget> _buildSlivers(
+    WidgetRef ref,
+    BuildContext context,
+    AsyncValue<HomeState> state,
+  ) {
+    return [
+      _appBarWidget(ref, context, state.value),
+      ...state.when(
+        loading: () => const [
+          SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        ],
+        error: (error, stackTrace) => const [
+          SliverFillRemaining(
+            child: Center(child: Text('Failed to load feed')),
+          ),
+        ],
+        data: (data) => _buildContentSlivers(ref, context, data),
+      ),
+    ];
+  }
+
+  List<Widget> _buildContentSlivers(
+    WidgetRef ref,
+    BuildContext context,
+    HomeState state,
+  ) {
+    return [
+      SliverList.builder(
+        itemCount: state.items.length,
+        itemBuilder: (context, index) => FeedItemWidget(
+          entity: state.items[index],
+          commentEvent: () {
+            _bottomSheetComment(context, state, index);
+          },
+          likeEvent: () {
+            ref.read(homeProvider.notifier).likeButtonTapped(index);
+          },
+        ).pOnly(bottom: 16).pOnly(top: 8),
+      ),
+      if (state.isLoadingMore)
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        ),
+      if (state.errorMessage != null && state.items.isNotEmpty)
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            child: Text(
+              state.errorMessage!,
+              style: const TextStyle(color: Colors.red),
+            ),
+          ),
+        ),
+    ];
+  }
+
+  Widget _appBarWidget(WidgetRef ref, BuildContext context, HomeState? state) {
+    final count = state?.alertCount ?? 0;
+    return SliverAppBar(
+      floating: true,
+      title: TopNavigationBarWidget(
+        currentAlertCount: count,
+        tappedNotification: () async {
+          final canMove = await ref
+              .read(homeProvider.notifier)
+              .tappedAlertButtonTapped();
+          if (canMove) {
+            AppRouter.router.push(NotificationPage.routeName);
+          }
+        },
+      ),
+      toolbarHeight: 40,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
+    );
+  }
+
+  Future<dynamic> _bottomSheetComment(
     BuildContext context,
     HomeState state,
     int index,
@@ -135,5 +155,15 @@ class HomePage extends HookConsumerWidget {
         );
       },
     );
+  }
+
+  static void _onScroll(ScrollController scrollController, WidgetRef ref) {
+    if (!scrollController.hasClients) {
+      return;
+    }
+    final position = scrollController.position;
+    if (position.pixels >= position.maxScrollExtent - 200) {
+      ref.read(homeProvider.notifier).loadMoreFeed();
+    }
   }
 }

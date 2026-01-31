@@ -26,4 +26,37 @@ final class NotificationRepositoryImpl extends NotificationRepository {
       return Result.Failure(Exception(error.toString()));
     }
   }
+
+  @override
+  Future<Result<int>> getAlertCount() async {
+    try {
+      final result = await _client.getUnreadCount();
+      final count = result.count;
+      return Result.Success(count);
+    } on DioException catch (error) {
+      return Result.Failure(Exception(error.message));
+    } catch (error) {
+      return Result.Failure(Exception(error.toString()));
+    }
+  }
+
+  @override
+  Future<bool> postAlertRead({required int notificationId}) async {
+    try {
+      await _client.postAlertRead(notificationId);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> postAllAlertRead() async {
+    try {
+      await _client.postAllAlertRead();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }

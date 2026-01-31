@@ -13,5 +13,6 @@ sealed class HomeState with _$HomeState {
     String? cursor,
     String? errorMessage,
     @Default(20) int limit,
+    @Default(0) int alertCount,
   }) = _HomeState;
 }

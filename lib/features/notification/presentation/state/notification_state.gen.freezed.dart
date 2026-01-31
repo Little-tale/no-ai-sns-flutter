@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NotificationState {
 
- List<AlertEntity> get alerts; bool get isMore; bool get isLoading; bool get isInitialError;
+ List<AlertEntity> get alerts; bool get isMore; bool get isLoading; bool get isInitialError; bool get isMoreLoading;
 /// Create a copy of NotificationState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $NotificationStateCopyWith<NotificationState> get copyWith => _$NotificationStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationState&&const DeepCollectionEquality().equals(other.alerts, alerts)&&(identical(other.isMore, isMore) || other.isMore == isMore)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isInitialError, isInitialError) || other.isInitialError == isInitialError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationState&&const DeepCollectionEquality().equals(other.alerts, alerts)&&(identical(other.isMore, isMore) || other.isMore == isMore)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isInitialError, isInitialError) || other.isInitialError == isInitialError)&&(identical(other.isMoreLoading, isMoreLoading) || other.isMoreLoading == isMoreLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(alerts),isMore,isLoading,isInitialError);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(alerts),isMore,isLoading,isInitialError,isMoreLoading);
 
 @override
 String toString() {
-  return 'NotificationState(alerts: $alerts, isMore: $isMore, isLoading: $isLoading, isInitialError: $isInitialError)';
+  return 'NotificationState(alerts: $alerts, isMore: $isMore, isLoading: $isLoading, isInitialError: $isInitialError, isMoreLoading: $isMoreLoading)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $NotificationStateCopyWith<$Res>  {
   factory $NotificationStateCopyWith(NotificationState value, $Res Function(NotificationState) _then) = _$NotificationStateCopyWithImpl;
 @useResult
 $Res call({
- List<AlertEntity> alerts, bool isMore, bool isLoading, bool isInitialError
+ List<AlertEntity> alerts, bool isMore, bool isLoading, bool isInitialError, bool isMoreLoading
 });
 
 
@@ -62,12 +62,13 @@ class _$NotificationStateCopyWithImpl<$Res>
 
 /// Create a copy of NotificationState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? alerts = null,Object? isMore = null,Object? isLoading = null,Object? isInitialError = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? alerts = null,Object? isMore = null,Object? isLoading = null,Object? isInitialError = null,Object? isMoreLoading = null,}) {
   return _then(_self.copyWith(
 alerts: null == alerts ? _self.alerts : alerts // ignore: cast_nullable_to_non_nullable
 as List<AlertEntity>,isMore: null == isMore ? _self.isMore : isMore // ignore: cast_nullable_to_non_nullable
 as bool,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isInitialError: null == isInitialError ? _self.isInitialError : isInitialError // ignore: cast_nullable_to_non_nullable
+as bool,isMoreLoading: null == isMoreLoading ? _self.isMoreLoading : isMoreLoading // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -150,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AlertEntity> alerts,  bool isMore,  bool isLoading,  bool isInitialError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AlertEntity> alerts,  bool isMore,  bool isLoading,  bool isInitialError,  bool isMoreLoading)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NotificationState() when $default != null:
-return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError);case _:
+return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError,_that.isMoreLoading);case _:
   return orElse();
 
 }
@@ -171,10 +172,10 @@ return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AlertEntity> alerts,  bool isMore,  bool isLoading,  bool isInitialError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AlertEntity> alerts,  bool isMore,  bool isLoading,  bool isInitialError,  bool isMoreLoading)  $default,) {final _that = this;
 switch (_that) {
 case _NotificationState():
-return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError);}
+return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError,_that.isMoreLoading);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -188,10 +189,10 @@ return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AlertEntity> alerts,  bool isMore,  bool isLoading,  bool isInitialError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AlertEntity> alerts,  bool isMore,  bool isLoading,  bool isInitialError,  bool isMoreLoading)?  $default,) {final _that = this;
 switch (_that) {
 case _NotificationState() when $default != null:
-return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError);case _:
+return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError,_that.isMoreLoading);case _:
   return null;
 
 }
@@ -203,7 +204,7 @@ return $default(_that.alerts,_that.isMore,_that.isLoading,_that.isInitialError);
 
 
 class _NotificationState implements NotificationState {
-   _NotificationState({final  List<AlertEntity> alerts = const [], this.isMore = false, this.isLoading = false, this.isInitialError = false}): _alerts = alerts;
+   _NotificationState({final  List<AlertEntity> alerts = const [], this.isMore = false, this.isLoading = false, this.isInitialError = false, this.isMoreLoading = false}): _alerts = alerts;
   
 
  final  List<AlertEntity> _alerts;
@@ -216,6 +217,7 @@ class _NotificationState implements NotificationState {
 @override@JsonKey() final  bool isMore;
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool isInitialError;
+@override@JsonKey() final  bool isMoreLoading;
 
 /// Create a copy of NotificationState
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +229,16 @@ _$NotificationStateCopyWith<_NotificationState> get copyWith => __$NotificationS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationState&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&(identical(other.isMore, isMore) || other.isMore == isMore)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isInitialError, isInitialError) || other.isInitialError == isInitialError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationState&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&(identical(other.isMore, isMore) || other.isMore == isMore)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isInitialError, isInitialError) || other.isInitialError == isInitialError)&&(identical(other.isMoreLoading, isMoreLoading) || other.isMoreLoading == isMoreLoading));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_alerts),isMore,isLoading,isInitialError);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_alerts),isMore,isLoading,isInitialError,isMoreLoading);
 
 @override
 String toString() {
-  return 'NotificationState(alerts: $alerts, isMore: $isMore, isLoading: $isLoading, isInitialError: $isInitialError)';
+  return 'NotificationState(alerts: $alerts, isMore: $isMore, isLoading: $isLoading, isInitialError: $isInitialError, isMoreLoading: $isMoreLoading)';
 }
 
 
@@ -247,7 +249,7 @@ abstract mixin class _$NotificationStateCopyWith<$Res> implements $NotificationS
   factory _$NotificationStateCopyWith(_NotificationState value, $Res Function(_NotificationState) _then) = __$NotificationStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<AlertEntity> alerts, bool isMore, bool isLoading, bool isInitialError
+ List<AlertEntity> alerts, bool isMore, bool isLoading, bool isInitialError, bool isMoreLoading
 });
 
 
@@ -264,12 +266,13 @@ class __$NotificationStateCopyWithImpl<$Res>
 
 /// Create a copy of NotificationState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? alerts = null,Object? isMore = null,Object? isLoading = null,Object? isInitialError = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? alerts = null,Object? isMore = null,Object? isLoading = null,Object? isInitialError = null,Object? isMoreLoading = null,}) {
   return _then(_NotificationState(
 alerts: null == alerts ? _self._alerts : alerts // ignore: cast_nullable_to_non_nullable
 as List<AlertEntity>,isMore: null == isMore ? _self.isMore : isMore // ignore: cast_nullable_to_non_nullable
 as bool,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isInitialError: null == isInitialError ? _self.isInitialError : isInitialError // ignore: cast_nullable_to_non_nullable
+as bool,isMoreLoading: null == isMoreLoading ? _self.isMoreLoading : isMoreLoading // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

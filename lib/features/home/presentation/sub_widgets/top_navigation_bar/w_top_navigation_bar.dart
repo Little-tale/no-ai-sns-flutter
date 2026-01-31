@@ -22,6 +22,7 @@ class TopNavigationBarWidget extends StatelessWidget {
 
       Stack(
         children: [
+          // TODO: App Logo
           Icon(size: 30, Icons.notifications_none),
           if (currentAlertCount > 0)
             Positioned(
