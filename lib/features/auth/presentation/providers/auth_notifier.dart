@@ -6,6 +6,7 @@ import 'package:no_ai_sns/core/network/auth/auth_client.dart';
 import 'package:no_ai_sns/core/providers/auth_client_provider.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_state.gen.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
+import 'package:no_ai_sns/features/auth/presentation/providers/user_id_storage_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_notifier.g.dart';
@@ -122,12 +123,15 @@ class AuthNotifier extends _$AuthNotifier {
         'username': email,
         'password': password,
       });
-      
-      // 토큰 저장 (token_storage_provider 참고)
+
+      // 토큰 저장
       await ref.read(tokenStorageProvider.notifier).saveTokens(
         accessToken: response.accessToken,
         refreshToken: response.refreshToken,
       );
+
+      // userId 저장
+      await ref.read(userIdStorageProvider.notifier).saveUserId(response.user.id);
       
       state = state.copyWith(isLoading: false);
       return null; // 성공
@@ -216,9 +220,16 @@ class AuthNotifier extends _$AuthNotifier {
     return await ref.read(tokenStorageProvider.notifier).getRefreshToken();
   }
 
-  // 로그아웃 (토큰 삭제)
+  Future<int?> getUserId() async {
+    return await ref.read(userIdStorageProvider.notifier).getUserId();
+  }
+
+  // 로그아웃 시 토큰, userId 삭제
   Future<void> logout() async {
-    await ref.read(tokenStorageProvider.notifier).clearTokens();
+    await Future.wait([
+      ref.read(tokenStorageProvider.notifier).clearTokens(),
+      ref.read(userIdStorageProvider.notifier).clearUserId(),
+    ]);
     state = const AuthState();
   }
 
