@@ -58,6 +58,7 @@ dependencies:
   flutter_hooks: ^0.21.3+1
   hooks_riverpod: ^3.0.3 # 상태관리
   flutter_secure_storage: ^10.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter_native_splash:
   color: "#d1f0e4" # 스플래시 화면의 배경색 설정
