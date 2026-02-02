@@ -3,7 +3,7 @@ class AppIcons {
 
   static const String _base = 'assets/icons';
 
-  static const String appLogo = '$_base/app_logo.png';
+  static const String appLogo = '$_base/app_icon.png';
   static const String commentPerspective = '$_base/comment_perspective.png';
   static const String likePerspective = '$_base/like_perspective.png';
   static const String errorIcon = '$_base/error_icon.png';
