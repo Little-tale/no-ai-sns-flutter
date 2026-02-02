@@ -48,20 +48,7 @@ class SplashPage extends ConsumerWidget {
               },
               child: const Text('AccessToken & UserID Remove Go to Home'),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                // accessToken 지울 때 userId도 같이 지움
-                await Future.wait([
-                  ref.read(tokenStorageProvider.notifier).clearTokens(),
-                  ref.read(userIdStorageProvider.notifier).clearUserId(),
-                ]);
 
-                if (context.mounted) {
-                  context.go(HomePage.routeName);
-                }
-              },
-              child: const Text('AccessToken & UserID Remove Go to Home'),
-            ),
             ElevatedButton(
               onPressed: () {
                 showTopToast(

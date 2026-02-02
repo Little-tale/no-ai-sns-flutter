@@ -8,18 +8,18 @@ part of 'user_id_storage_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// User ID 저장소 관리 Provider
-/// FlutterSecureStorage를 사용하여 User ID를 안전하게 저장/읽기/삭제합니다.
+/// userId 저장소 관리 Provider
+/// FlutterSecureStorage 써서 userId 저장, 읽기, 삭제
 
 @ProviderFor(UserIdStorage)
 const userIdStorageProvider = UserIdStorageProvider._();
 
-/// User ID 저장소 관리 Provider
-/// FlutterSecureStorage를 사용하여 User ID를 안전하게 저장/읽기/삭제합니다.
+/// userId 저장소 관리 Provider
+/// FlutterSecureStorage 써서 userId 저장, 읽기, 삭제
 final class UserIdStorageProvider
     extends $NotifierProvider<UserIdStorage, void> {
-  /// User ID 저장소 관리 Provider
-  /// FlutterSecureStorage를 사용하여 User ID를 안전하게 저장/읽기/삭제합니다.
+  /// userId 저장소 관리 Provider
+  /// FlutterSecureStorage 써서 userId 저장, 읽기, 삭제
   const UserIdStorageProvider._()
     : super(
         from: null,
@@ -47,10 +47,10 @@ final class UserIdStorageProvider
   }
 }
 
-String _$userIdStorageHash() => r'2cbe8cc3feec1be1c8bb8767384ed6a74d5ff232';
+String _$userIdStorageHash() => r'fe9f71dddc65c53e37188d991d6ecef33c468ed2';
 
-/// User ID 저장소 관리 Provider
-/// FlutterSecureStorage를 사용하여 User ID를 안전하게 저장/읽기/삭제합니다.
+/// userId 저장소 관리 Provider
+/// FlutterSecureStorage 써서 userId 저장, 읽기, 삭제
 
 abstract class _$UserIdStorage extends $Notifier<void> {
   void build();
