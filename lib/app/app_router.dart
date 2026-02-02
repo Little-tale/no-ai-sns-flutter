@@ -61,6 +61,18 @@ class AppRouter {
               ),
             ],
           ),
+
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/dm',
+                pageBuilder: (context, state) {
+                  return const NoTransitionPage(child: Placeholder());
+                },
+              ),
+            ],
+          ),
+
           StatefulShellBranch(
             routes: [
               GoRoute(

@@ -41,43 +41,23 @@ class _MainShellPageState extends State<MainShellPage> {
         selectedItemColor: AppColors.brand,
         unselectedItemColor: const Color(0xFF94A3B8),
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
           BottomNavigationBarItem(
             icon: _buildAddIcon(index: 2, selectedIndex: selectedIndex),
             label: '',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.send),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.send), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
         ],
       ),
     );
   }
 
   void _onTap(BuildContext context, int index) {
-    // 비행기 아이콘
-    if (index == 3) {
-      context.push(UploadPage.routeName);
-      return;
-    }
-
     // 가운데 "+" 아이콘
     if (index == 2) {
-      setState(() {
-        selectedIndex = 2;
-      });
+      context.push(UploadPage.routeName);
       return;
     }
 
@@ -110,11 +90,7 @@ class _MainShellPageState extends State<MainShellPage> {
           color: AppColors.brand,
           shape: BoxShape.circle,
         ),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 24,
-        ),
+        child: const Icon(Icons.add, color: Colors.white, size: 24),
       );
     }
 
