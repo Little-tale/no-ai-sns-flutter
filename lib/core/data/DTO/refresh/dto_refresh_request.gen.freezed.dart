@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'dto_refrsh_request.gen.dart';
+part of 'dto_refresh_request.gen.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ part of 'dto_refrsh_request.gen.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$RefrshRequestDTO {
+mixin _$RefreshRequestDTO {
 
 @JsonKey(name: "refresh_token") String get refreshToken;
-/// Create a copy of RefrshRequestDTO
+/// Create a copy of RefreshRequestDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$RefrshRequestDTOCopyWith<RefrshRequestDTO> get copyWith => _$RefrshRequestDTOCopyWithImpl<RefrshRequestDTO>(this as RefrshRequestDTO, _$identity);
+$RefreshRequestDTOCopyWith<RefreshRequestDTO> get copyWith => _$RefreshRequestDTOCopyWithImpl<RefreshRequestDTO>(this as RefreshRequestDTO, _$identity);
 
-  /// Serializes this RefrshRequestDTO to a JSON map.
+  /// Serializes this RefreshRequestDTO to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefrshRequestDTO&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RefreshRequestDTO&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,refreshToken);
 
 @override
 String toString() {
-  return 'RefrshRequestDTO(refreshToken: $refreshToken)';
+  return 'RefreshRequestDTO(refreshToken: $refreshToken)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $RefrshRequestDTOCopyWith<$Res>  {
-  factory $RefrshRequestDTOCopyWith(RefrshRequestDTO value, $Res Function(RefrshRequestDTO) _then) = _$RefrshRequestDTOCopyWithImpl;
+abstract mixin class $RefreshRequestDTOCopyWith<$Res>  {
+  factory $RefreshRequestDTOCopyWith(RefreshRequestDTO value, $Res Function(RefreshRequestDTO) _then) = _$RefreshRequestDTOCopyWithImpl;
 @useResult
 $Res call({
 @JsonKey(name: "refresh_token") String refreshToken
@@ -56,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$RefrshRequestDTOCopyWithImpl<$Res>
-    implements $RefrshRequestDTOCopyWith<$Res> {
-  _$RefrshRequestDTOCopyWithImpl(this._self, this._then);
+class _$RefreshRequestDTOCopyWithImpl<$Res>
+    implements $RefreshRequestDTOCopyWith<$Res> {
+  _$RefreshRequestDTOCopyWithImpl(this._self, this._then);
 
-  final RefrshRequestDTO _self;
-  final $Res Function(RefrshRequestDTO) _then;
+  final RefreshRequestDTO _self;
+  final $Res Function(RefreshRequestDTO) _then;
 
-/// Create a copy of RefrshRequestDTO
+/// Create a copy of RefreshRequestDTO
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? refreshToken = null,}) {
   return _then(_self.copyWith(
@@ -75,8 +75,8 @@ as String,
 }
 
 
-/// Adds pattern-matching-related methods to [RefrshRequestDTO].
-extension RefrshRequestDTOPatterns on RefrshRequestDTO {
+/// Adds pattern-matching-related methods to [RefreshRequestDTO].
+extension RefreshRequestDTOPatterns on RefreshRequestDTO {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -89,10 +89,10 @@ extension RefrshRequestDTOPatterns on RefrshRequestDTO {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RefrshRequestDTO value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RefreshRequestDTO value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _RefrshRequestDTO() when $default != null:
+case _RefreshRequestDTO() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -111,10 +111,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RefrshRequestDTO value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RefreshRequestDTO value)  $default,){
 final _that = this;
 switch (_that) {
-case _RefrshRequestDTO():
+case _RefreshRequestDTO():
 return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -129,10 +129,10 @@ return $default(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RefrshRequestDTO value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RefreshRequestDTO value)?  $default,){
 final _that = this;
 switch (_that) {
-case _RefrshRequestDTO() when $default != null:
+case _RefreshRequestDTO() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -152,7 +152,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "refresh_token")  String refreshToken)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _RefrshRequestDTO() when $default != null:
+case _RefreshRequestDTO() when $default != null:
 return $default(_that.refreshToken);case _:
   return orElse();
 
@@ -173,7 +173,7 @@ return $default(_that.refreshToken);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "refresh_token")  String refreshToken)  $default,) {final _that = this;
 switch (_that) {
-case _RefrshRequestDTO():
+case _RefreshRequestDTO():
 return $default(_that.refreshToken);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -190,7 +190,7 @@ return $default(_that.refreshToken);}
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "refresh_token")  String refreshToken)?  $default,) {final _that = this;
 switch (_that) {
-case _RefrshRequestDTO() when $default != null:
+case _RefreshRequestDTO() when $default != null:
 return $default(_that.refreshToken);case _:
   return null;
 
@@ -202,26 +202,26 @@ return $default(_that.refreshToken);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _RefrshRequestDTO implements RefrshRequestDTO {
-   _RefrshRequestDTO({@JsonKey(name: "refresh_token") required this.refreshToken});
-  factory _RefrshRequestDTO.fromJson(Map<String, dynamic> json) => _$RefrshRequestDTOFromJson(json);
+class _RefreshRequestDTO implements RefreshRequestDTO {
+   _RefreshRequestDTO({@JsonKey(name: "refresh_token") required this.refreshToken});
+  factory _RefreshRequestDTO.fromJson(Map<String, dynamic> json) => _$RefreshRequestDTOFromJson(json);
 
 @override@JsonKey(name: "refresh_token") final  String refreshToken;
 
-/// Create a copy of RefrshRequestDTO
+/// Create a copy of RefreshRequestDTO
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$RefrshRequestDTOCopyWith<_RefrshRequestDTO> get copyWith => __$RefrshRequestDTOCopyWithImpl<_RefrshRequestDTO>(this, _$identity);
+_$RefreshRequestDTOCopyWith<_RefreshRequestDTO> get copyWith => __$RefreshRequestDTOCopyWithImpl<_RefreshRequestDTO>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$RefrshRequestDTOToJson(this, );
+  return _$RefreshRequestDTOToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RefrshRequestDTO&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RefreshRequestDTO&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -230,15 +230,15 @@ int get hashCode => Object.hash(runtimeType,refreshToken);
 
 @override
 String toString() {
-  return 'RefrshRequestDTO(refreshToken: $refreshToken)';
+  return 'RefreshRequestDTO(refreshToken: $refreshToken)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$RefrshRequestDTOCopyWith<$Res> implements $RefrshRequestDTOCopyWith<$Res> {
-  factory _$RefrshRequestDTOCopyWith(_RefrshRequestDTO value, $Res Function(_RefrshRequestDTO) _then) = __$RefrshRequestDTOCopyWithImpl;
+abstract mixin class _$RefreshRequestDTOCopyWith<$Res> implements $RefreshRequestDTOCopyWith<$Res> {
+  factory _$RefreshRequestDTOCopyWith(_RefreshRequestDTO value, $Res Function(_RefreshRequestDTO) _then) = __$RefreshRequestDTOCopyWithImpl;
 @override @useResult
 $Res call({
 @JsonKey(name: "refresh_token") String refreshToken
@@ -249,17 +249,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$RefrshRequestDTOCopyWithImpl<$Res>
-    implements _$RefrshRequestDTOCopyWith<$Res> {
-  __$RefrshRequestDTOCopyWithImpl(this._self, this._then);
+class __$RefreshRequestDTOCopyWithImpl<$Res>
+    implements _$RefreshRequestDTOCopyWith<$Res> {
+  __$RefreshRequestDTOCopyWithImpl(this._self, this._then);
 
-  final _RefrshRequestDTO _self;
-  final $Res Function(_RefrshRequestDTO) _then;
+  final _RefreshRequestDTO _self;
+  final $Res Function(_RefreshRequestDTO) _then;
 
-/// Create a copy of RefrshRequestDTO
+/// Create a copy of RefreshRequestDTO
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? refreshToken = null,}) {
-  return _then(_RefrshRequestDTO(
+  return _then(_RefreshRequestDTO(
 refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,
   ));

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_ai_sns/core/data/DTO/refresh/dto_refrsh_request.gen.dart';
+import 'package:no_ai_sns/core/data/DTO/refresh/dto_refresh_request.gen.dart';
 import 'package:no_ai_sns/core/network/base_url.dart';
 import 'package:no_ai_sns/core/network/refresh/refresh_client.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
@@ -33,8 +33,8 @@ final dioProvider = Provider<Dio>((ref) {
     if (refreshToken == null || refreshToken.isEmpty) {
       return null;
     }
-    final dto = await refreshClient.refrsh(
-      RefrshRequestDTO(refreshToken: refreshToken),
+    final dto = await refreshClient.refresh(
+      RefreshRequestDTO(refreshToken: refreshToken),
     );
     final newAccessToken = dto.accessToken;
     final newRefreshToken = dto.refreshToken;

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/core/utils/toast_utils.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/login_page.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/user_id_storage_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
+import 'package:no_ai_sns/features/notification/presentation/sub_widgets/top_toasts/w_alert_top_toast.dart';
 
 class SplashPage extends ConsumerWidget {
   const SplashPage({super.key});
@@ -45,6 +47,16 @@ class SplashPage extends ConsumerWidget {
                 }
               },
               child: const Text('AccessToken & UserID Remove Go to Home'),
+            ),
+
+            ElevatedButton(
+              onPressed: () {
+                showTopToast(
+                  context,
+                  AlertTopToastWidget(message: 'This is a test alert toast.'),
+                );
+              },
+              child: const Text('Test Toast'),
             ),
           ],
         ),

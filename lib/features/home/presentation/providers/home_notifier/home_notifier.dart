@@ -26,6 +26,10 @@ class HomeNotifier extends _$HomeNotifier {
       }
       state = AsyncData(current.copyWith(alertCount: count));
     });
+    // Test Error SnackBar
+    // Future.delayed(3.seconds, () {
+    //   state = AsyncData(initial.copyWith(errorMessage: "Failed to load feed"));
+    // });
     return initial;
   }
 
@@ -152,6 +156,16 @@ class HomeNotifier extends _$HomeNotifier {
     }).toList();
 
     this.state = AsyncData(state.copyWith(items: updatedItems));
+  }
+
+  void reLoadAlertCount() async {
+    final result = await _fetchAlertCount();
+    if (result != null) {
+      final state = this.state.value;
+      if (state != null) {
+        this.state = AsyncData(state.copyWith(alertCount: result));
+      }
+    }
   }
 
   void _uiUpdateForLikeState({required int index, bool? likeState}) {

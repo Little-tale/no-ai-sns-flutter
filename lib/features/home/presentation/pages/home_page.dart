@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/app/app_router.dart';
+import 'package:no_ai_sns/core/network/SSE/provider/notification_sse_provider.dart';
+import 'package:no_ai_sns/core/utils/toast_utils.dart';
+import 'package:no_ai_sns/design_system/tokens/colors.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_bottom_sheet.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/feed_item/w_feed_item.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/top_navigation_bar/w_top_navigation_bar.dart';
 import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
+import 'package:no_ai_sns/features/notification/presentation/sub_widgets/top_toasts/w_alert_top_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -19,6 +23,22 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeProvider);
     final scrollController = useScrollController();
+
+    // 에러 메시지 스낵바
+    ref.listen(homeProvider, (p, n) {
+      final msg = n.value?.errorMessage;
+      if (msg != null) {
+        HomePage.showErrorSnackBar(context, msg);
+      }
+    });
+
+    // 알림 갯수 SSE
+    ref.listen(notificationSseProvider, (prev, next) {
+      next.whenData((dto) {
+        showTopToast(context, AlertTopToastWidget(message: dto.body));
+        ref.read(homeProvider.notifier).reLoadAlertCount();
+      });
+    });
 
     useEffect(() {
       void onScroll() {
@@ -88,16 +108,6 @@ class HomePage extends HookConsumerWidget {
             child: Center(child: CircularProgressIndicator()),
           ),
         ),
-      if (state.errorMessage != null && state.items.isNotEmpty)
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            child: Text(
-              state.errorMessage!,
-              style: const TextStyle(color: Colors.red),
-            ),
-          ),
-        ),
     ];
   }
 
@@ -165,5 +175,15 @@ class HomePage extends HookConsumerWidget {
     if (position.pixels >= position.maxScrollExtent - 200) {
       ref.read(homeProvider.notifier).loadMoreFeed();
     }
+  }
+
+  static void showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: message.text.size(20).color(Colors.white).make(),
+        duration: const Duration(seconds: 2),
+        backgroundColor: AppColors.aiRejected,
+      ),
+    );
   }
 }

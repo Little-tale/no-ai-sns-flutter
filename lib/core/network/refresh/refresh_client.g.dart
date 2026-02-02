@@ -18,7 +18,7 @@ class _RefreshClient implements RefreshClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<RefreshResponseDTO> refrsh(RefrshRequestDTO requestDTO) async {
+  Future<RefreshResponseDTO> refresh(RefreshRequestDTO requestDTO) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
