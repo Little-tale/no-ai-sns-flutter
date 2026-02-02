@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class FeedBottomSectionWidget extends StatefulWidget {
+final class FeedBottomSectionWidget extends StatefulWidget {
   const FeedBottomSectionWidget({
     super.key,
     required this.creatorName,
@@ -55,7 +55,7 @@ class _FeedBottomSectionWidgetState extends State<FeedBottomSectionWidget> {
 
   Widget _commentButtonWidget(BuildContext context) {
     return HStack(spacing: 4, [
-      Icon(size: 24, Icons.comment, color: context.theme.primaryColor),
+      Icon(size: 24, Icons.comment, color: context.colors.inverseSurface),
       widget.commentCountText.text.light.make(),
     ]);
   }

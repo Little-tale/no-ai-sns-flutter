@@ -6,7 +6,6 @@ import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_pro
 import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:no_ai_sns/features/notification/presentation/providers/repository/notification_repository/notification_repository_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 part 'home_notifier.g.dart';
 
@@ -157,6 +156,16 @@ class HomeNotifier extends _$HomeNotifier {
     }).toList();
 
     this.state = AsyncData(state.copyWith(items: updatedItems));
+  }
+
+  void reLoadAlertCount() async {
+    final result = await _fetchAlertCount();
+    if (result != null) {
+      final state = this.state.value;
+      if (state != null) {
+        this.state = AsyncData(state.copyWith(alertCount: result));
+      }
+    }
   }
 
   void _uiUpdateForLikeState({required int index, bool? likeState}) {

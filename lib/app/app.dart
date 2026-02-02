@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/core/presentation/w_login_required.dart';
 import 'package:no_ai_sns/design_system/theme/app_theme.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/login_page.dart';

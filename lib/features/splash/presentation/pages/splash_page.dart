@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/core/utils/toast_utils.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_provider.dart';
 import 'package:no_ai_sns/features/home/presentation/pages/home_page.dart';
+import 'package:no_ai_sns/features/notification/presentation/sub_widgets/top_toasts/w_alert_top_toast.dart';
 
 import '../../../auth/presentation/pages/login_page.dart';
 
@@ -39,6 +41,15 @@ class SplashPage extends ConsumerWidget {
                 context.go(HomePage.routeName);
               },
               child: const Text('AccessToken Remove Go to Home'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showTopToast(
+                  context,
+                  AlertTopToastWidget(message: 'This is a test alert toast.'),
+                );
+              },
+              child: const Text('Test Toast'),
             ),
           ],
         ),
