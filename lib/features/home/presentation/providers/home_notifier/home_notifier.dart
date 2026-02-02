@@ -6,6 +6,7 @@ import 'package:no_ai_sns/features/auth/presentation/providers/token_storage_pro
 import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:no_ai_sns/features/notification/presentation/providers/repository/notification_repository/notification_repository_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 part 'home_notifier.g.dart';
 
@@ -26,6 +27,10 @@ class HomeNotifier extends _$HomeNotifier {
       }
       state = AsyncData(current.copyWith(alertCount: count));
     });
+    // Test Error SnackBar
+    // Future.delayed(3.seconds, () {
+    //   state = AsyncData(initial.copyWith(errorMessage: "Failed to load feed"));
+    // });
     return initial;
   }
 

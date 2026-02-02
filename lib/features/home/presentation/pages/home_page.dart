@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/app/app_router.dart';
+import 'package:no_ai_sns/design_system/tokens/colors.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/state/home_state.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/w_comment_bottom_sheet.dart';
@@ -19,6 +20,13 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeProvider);
     final scrollController = useScrollController();
+
+    ref.listen(homeProvider, (p, n) {
+      final msg = n.value?.errorMessage;
+      if (msg != null) {
+        HomePage.showErrorSnackBar(context, msg);
+      }
+    });
 
     useEffect(() {
       void onScroll() {
@@ -165,5 +173,15 @@ class HomePage extends HookConsumerWidget {
     if (position.pixels >= position.maxScrollExtent - 200) {
       ref.read(homeProvider.notifier).loadMoreFeed();
     }
+  }
+
+  static void showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: message.text.size(20).color(Colors.white).make(),
+        duration: const Duration(seconds: 2),
+        backgroundColor: AppColors.aiRejected,
+      ),
+    );
   }
 }
