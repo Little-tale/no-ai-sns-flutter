@@ -8,10 +8,14 @@ extension ExtToast on Widget {
     Duration duration = const Duration(seconds: 3),
   }) {
     final overlay = Overlay.of(context, rootOverlay: true);
+    // OverlayEntry.builder 안에서 원본 context 참조하는데 dispose로 비활성화될 수 있음
+    // 이 때 홈 화면으로 이동하면 Looking up a deactivated widget's ancestor is unsafe 에러 발생
+    // -> context가 비활성화되기 전에 미리 값을 계산해서 저장
+    final topOffset = context.safeAreaTop + 8;
     late final OverlayEntry entry;
     entry = OverlayEntry(
       builder: (_) => _TopToastOverlay(
-        topOffset: context.safeAreaTop + 8,
+        topOffset: topOffset,
         onDismiss: entry.remove,
         duration: duration,
         child: child,
