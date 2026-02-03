@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:no_ai_sns/features/upload/presentation/sub_widgets/w_new_post_upload_images.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class UploadPage extends StatelessWidget {
   const UploadPage({super.key});
@@ -8,10 +10,8 @@ class UploadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Upload')),
-      body: const Center(
-        child: Text('Upload'),
-      ),
+      appBar: AppBar(title: 'New Post'.text.make()),
+      body: SingleChildScrollView(child: VStack([NewPostuploadImagesWidget()])),
     );
   }
 }
