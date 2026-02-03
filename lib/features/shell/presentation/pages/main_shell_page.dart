@@ -73,8 +73,8 @@ class _MainShellPageState extends State<MainShellPage> {
   }
 
   int _navIndexFromBranch(int branchIndex) {
-    if (branchIndex == 2) {
-      return 3;
+    if (branchIndex >= 2) {
+      return branchIndex + 1;
     }
     return branchIndex;
   }
