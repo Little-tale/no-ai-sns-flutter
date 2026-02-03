@@ -39,7 +39,7 @@ class _MainShellPageState extends State<MainShellPage> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         selectedItemColor: AppColors.brand,
-        unselectedItemColor: const Color(0xFF94A3B8),
+        unselectedItemColor: AppColors.textSecondaryDark,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
@@ -73,8 +73,8 @@ class _MainShellPageState extends State<MainShellPage> {
   }
 
   int _navIndexFromBranch(int branchIndex) {
-    if (branchIndex == 2) {
-      return 3;
+    if (branchIndex >= 2) {
+      return branchIndex + 1;
     }
     return branchIndex;
   }
