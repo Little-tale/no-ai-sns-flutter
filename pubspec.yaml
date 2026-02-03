@@ -60,6 +60,7 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   flutter_launcher_icons: ^0.14.4
   image_picker: ^1.2.1
+  dotted_border: ^3.1.0
 
 flutter_native_splash:
   color: "#d1f0e4" # 스플래시 화면의 배경색 설정

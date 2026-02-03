@@ -9,7 +9,18 @@ import 'package:no_ai_sns/design_system/design_system.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class NewPostuploadImagesWidget extends StatefulWidget {
-  const NewPostuploadImagesWidget({super.key});
+  const NewPostuploadImagesWidget({
+    super.key,
+    required this.currentMax,
+    required this.images,
+    required this.onAddImages,
+    required this.onRemoveImage,
+  });
+
+  final int currentMax;
+  final List<XFile> images;
+  final void Function(List<XFile> images) onAddImages;
+  final void Function(int index) onRemoveImage;
 
   @override
   State<NewPostuploadImagesWidget> createState() =>
@@ -17,12 +28,10 @@ class NewPostuploadImagesWidget extends StatefulWidget {
 }
 
 class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
-  final int _currentMax = 5;
-  final List<XFile> _images = [];
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickFromGallery() async {
-    final remaining = _currentMax - _images.length;
+    final remaining = widget.currentMax - widget.images.length;
     if (remaining <= 0) return;
     if (remaining == 1) {
       final single = await _picker.pickImage(
@@ -31,7 +40,7 @@ class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
       );
       if (!mounted) return;
       if (single == null) return;
-      setState(() => _images.add(single));
+      widget.onAddImages([single]);
       return;
     }
 
@@ -41,31 +50,30 @@ class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
     );
     if (!mounted) return;
     if (picked.isEmpty) return;
-    setState(() => _images.addAll(picked));
+    widget.onAddImages(picked);
   }
 
   Future<void> _pickFromCamera() async {
-    if (_images.length >= _currentMax) return;
+    if (widget.images.length >= widget.currentMax) return;
     final picked = await _picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 85,
     );
     if (!mounted) return;
     if (picked == null) return;
-    setState(() => _images.add(picked));
+    widget.onAddImages([picked]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      // mainAxisSize: MainAxisSize.max,
       children: [
         HStack([
           Spacer(),
-          '${_images.length} / $_currentMax'.text
+          '${widget.images.length} / ${widget.currentMax}'.text
               .bodyMedium(context)
               .make()
-              .pOnly(bottom: AppSpacing.md),
+              .pSymmetric(v: AppSpacing.md),
           AppSpacing.md.widthBox,
         ]),
 
@@ -82,7 +90,7 @@ class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
               spacing: spacing,
               runSpacing: spacing,
               children:
-                  _images
+                  widget.images
                       .asMap()
                       .entries
                       .map(
@@ -131,9 +139,7 @@ class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
                   child: Icon(Icons.close, size: 16, color: Colors.white),
                 ),
               ).onTap(() {
-                setState(() {
-                  _images.removeAt(index);
-                });
+                widget.onRemoveImage(index);
               }),
         ),
       ],
@@ -148,46 +154,59 @@ class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
         child: const Center(child: Icon(Icons.add_a_photo_outlined, size: 40)),
       ).expand(),
     ).onIOSTap(() {
+      FocusScope.of(context).unfocus();
       showBottomSheet(
         context: context,
         builder: (context) {
-          return SizedBox(
-            width: double.infinity,
-            child: VStack(crossAlignment: CrossAxisAlignment.center, [
-              'Select Image Source'.text.size(12).make().p(AppSpacing.md),
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          });
 
-              Container(
-                color: context.colors.onSurface.withAlpha(120),
-                height: 0.5,
-                width: double.infinity,
-              ),
+          return FocusScope(
+            canRequestFocus: false,
+            child: SizedBox(
+              width: double.infinity,
+              child: VStack(crossAlignment: CrossAxisAlignment.center, [
+                'Select Image Source'.text.size(12).make().p(AppSpacing.md),
 
-              _actionSheetButtonWidget(
-                context: context,
-                text: 'Photo Library',
-                leadingIcon: Icons.photo_library_outlined,
-              ).onIOSTap(() {
-                context.pop();
-                _images.length >= _currentMax ? null : _pickFromGallery();
-              }),
+                Container(
+                  color: context.colors.onSurface.withAlpha(120),
+                  height: 0.5,
+                  width: double.infinity,
+                ),
 
-              Container(
-                color: context.colors.onSurface.withAlpha(120),
-                height: 0.5,
-                width: double.infinity,
-              ),
+                _actionSheetButtonWidget(
+                  context: context,
+                  text: 'Photo Library',
+                  leadingIcon: Icons.photo_library_outlined,
+                ).onIOSTap(() {
+                  context.pop();
+                  FocusScope.of(context).unfocus();
+                  widget.images.length >= widget.currentMax
+                      ? null
+                      : _pickFromGallery();
+                }),
 
-              _actionSheetButtonWidget(
-                context: context,
-                text: 'Take Photo',
-                leadingIcon: Icons.camera_alt_outlined,
-              ).onIOSTap(() {
-                context.pop();
-                _images.length >= _currentMax ? null : _pickFromCamera();
-              }),
+                Container(
+                  color: context.colors.onSurface.withAlpha(120),
+                  height: 0.5,
+                  width: double.infinity,
+                ),
 
-              context.bottomSafeArea.heightBox,
-            ]),
+                _actionSheetButtonWidget(
+                  context: context,
+                  text: 'Take Photo',
+                  leadingIcon: Icons.camera_alt_outlined,
+                ).onIOSTap(() {
+                  context.pop();
+                  widget.images.length >= widget.currentMax
+                      ? null
+                      : _pickFromCamera();
+                }),
+
+                context.bottomSafeArea.heightBox,
+              ]),
+            ),
           );
         },
       );
