@@ -42,7 +42,6 @@ class AppRouter {
           return MainShellPage(navigationShell: navigationShell);
         },
         branches: [
-          // Branch 0: Home
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -58,7 +57,6 @@ class AppRouter {
               ),
             ],
           ),
-          // Branch 1: Search
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -74,7 +72,6 @@ class AppRouter {
               ),
             ],
           ),
-          // Branch 2: DM
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -90,7 +87,6 @@ class AppRouter {
               ),
             ],
           ),
-          // Branch 3: Profile
           StatefulShellBranch(
             routes: [
               GoRoute(
