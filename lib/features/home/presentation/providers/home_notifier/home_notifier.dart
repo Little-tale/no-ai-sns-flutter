@@ -45,6 +45,7 @@ class HomeNotifier extends _$HomeNotifier {
     switch (result) {
       case Success(value: final items):
         return HomeState(
+          alertCount: state.value?.alertCount ?? 0,
           items: items,
           isLoading: false,
           cursor: items.isNotEmpty ? items.last.id.toString() : null,
