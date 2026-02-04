@@ -96,7 +96,6 @@ gen-external-apklibs
 ### Flutter ###
 # Flutter/Dart/Pub related
 .flutter-plugins
-.fvm/flutter_sdk
 .packages
 coverage/
 lib/generated_plugin_registrant.dart
@@ -301,7 +300,6 @@ replay_pid*
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*
@@ -744,7 +742,6 @@ playground.xcworkspace
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 
-
 # Accio dependency management
 Dependencies/
 .accio/
@@ -914,3 +911,6 @@ obj/
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,java,android,macos,androidstudio,intellij,gradle,maven,node,python,windows,flutter,swift,objective-c
+
+# FVM Version Cache
+.fvm/
