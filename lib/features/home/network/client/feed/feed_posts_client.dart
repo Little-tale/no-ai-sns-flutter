@@ -46,4 +46,12 @@ abstract class FeedPostsClient {
 
   @DELETE('/posts/{post_id}/like')
   Future<String> deleteFeedLike({@Path('post_id') required int postId});
+
+  // Post Item 반환하지만 재호출 예상으로
+  @POST('/posts')
+  @MultiPart()
+  Future<void> postFeed({
+    @Part(name: 'body') required String body,
+    @Part(name: 'images') required List<MultipartFile> images,
+  });
 }

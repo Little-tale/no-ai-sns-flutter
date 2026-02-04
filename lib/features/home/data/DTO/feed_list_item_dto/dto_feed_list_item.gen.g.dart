@@ -10,7 +10,7 @@ _FeedListItemDTO _$FeedListItemDTOFromJson(Map<String, dynamic> json) =>
     _FeedListItemDTO(
       id: (json['id'] as num).toInt(),
       userId: (json['user_id'] as num).toInt(),
-      title: json['title'] as String,
+      title: json['title'] as String?,
       body: json['body'] as String,
       author: AuthorDTO.fromJson(json['author'] as Map<String, dynamic>),
       isLiked: json['is_liked'] as bool,

@@ -152,7 +152,7 @@ class _NewPostuploadImagesWidgetState extends State<NewPostuploadImagesWidget> {
       child: Container(
         color: AppColors.brand.withAlpha(120),
         child: const Center(child: Icon(Icons.add_a_photo_outlined, size: 40)),
-      ).expand(),
+      ),
     ).onIOSTap(() {
       FocusScope.of(context).unfocus();
       showBottomSheet(

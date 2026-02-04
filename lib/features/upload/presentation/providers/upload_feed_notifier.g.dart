@@ -42,7 +42,7 @@ final class UploadFeedNotifierProvider
 }
 
 String _$uploadFeedNotifierHash() =>
-    r'cda1ceca615abb2c1d5efe7cf3860093f46269e2';
+    r'4f46ab7be0bdaa3848ad1cb2a53b473b4bf5da68';
 
 abstract class _$UploadFeedNotifier extends $Notifier<UploadFeedState> {
   UploadFeedState build();

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:no_ai_sns/core/utils/api_exception.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_comment_item_request_dto/dto_comment_item_request.gen.dart';
@@ -121,6 +122,28 @@ final class FeedRepositoryImpl implements FeedRepository {
         final dto = await _client.deleteFeedLike(postId: postId);
         return Result.Success(CommentMapper.toLikeState(dto));
       }
+    } on DioException catch (error) {
+      return Result.Failure(Exception(error.message));
+    } catch (error) {
+      return Result.Failure(Exception(error.toString()));
+    }
+  }
+
+  @override
+  Future<Result<bool>> postFeed({
+    required String body,
+    required List<XFile> images,
+  }) async {
+    try {
+      final files = await Future.wait(
+        images.map(
+          (img) => MultipartFile.fromFile(img.path, filename: img.name),
+        ),
+      );
+
+      await _client.postFeed(body: body, images: files);
+
+      return Result.Success(true);
     } on DioException catch (error) {
       return Result.Failure(Exception(error.message));
     } catch (error) {

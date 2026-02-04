@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UploadFeedState {
 
- List<XFile> get images; String get body;
+ List<XFile> get images; String get body; String? get errorMessage; bool get isRequesting; bool get isSuccess;
 /// Create a copy of UploadFeedState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $UploadFeedStateCopyWith<UploadFeedState> get copyWith => _$UploadFeedStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadFeedState&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.body, body) || other.body == body));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadFeedState&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.body, body) || other.body == body)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isRequesting, isRequesting) || other.isRequesting == isRequesting)&&(identical(other.isSuccess, isSuccess) || other.isSuccess == isSuccess));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(images),body);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(images),body,errorMessage,isRequesting,isSuccess);
 
 @override
 String toString() {
-  return 'UploadFeedState(images: $images, body: $body)';
+  return 'UploadFeedState(images: $images, body: $body, errorMessage: $errorMessage, isRequesting: $isRequesting, isSuccess: $isSuccess)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $UploadFeedStateCopyWith<$Res>  {
   factory $UploadFeedStateCopyWith(UploadFeedState value, $Res Function(UploadFeedState) _then) = _$UploadFeedStateCopyWithImpl;
 @useResult
 $Res call({
- List<XFile> images, String body
+ List<XFile> images, String body, String? errorMessage, bool isRequesting, bool isSuccess
 });
 
 
@@ -62,11 +62,14 @@ class _$UploadFeedStateCopyWithImpl<$Res>
 
 /// Create a copy of UploadFeedState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? images = null,Object? body = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? images = null,Object? body = null,Object? errorMessage = freezed,Object? isRequesting = null,Object? isSuccess = null,}) {
   return _then(_self.copyWith(
 images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
 as List<XFile>,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
-as String,
+as String,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,isRequesting: null == isRequesting ? _self.isRequesting : isRequesting // ignore: cast_nullable_to_non_nullable
+as bool,isSuccess: null == isSuccess ? _self.isSuccess : isSuccess // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -148,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<XFile> images,  String body)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<XFile> images,  String body,  String? errorMessage,  bool isRequesting,  bool isSuccess)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UploadFeedState() when $default != null:
-return $default(_that.images,_that.body);case _:
+return $default(_that.images,_that.body,_that.errorMessage,_that.isRequesting,_that.isSuccess);case _:
   return orElse();
 
 }
@@ -169,10 +172,10 @@ return $default(_that.images,_that.body);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<XFile> images,  String body)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<XFile> images,  String body,  String? errorMessage,  bool isRequesting,  bool isSuccess)  $default,) {final _that = this;
 switch (_that) {
 case _UploadFeedState():
-return $default(_that.images,_that.body);}
+return $default(_that.images,_that.body,_that.errorMessage,_that.isRequesting,_that.isSuccess);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -186,10 +189,10 @@ return $default(_that.images,_that.body);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<XFile> images,  String body)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<XFile> images,  String body,  String? errorMessage,  bool isRequesting,  bool isSuccess)?  $default,) {final _that = this;
 switch (_that) {
 case _UploadFeedState() when $default != null:
-return $default(_that.images,_that.body);case _:
+return $default(_that.images,_that.body,_that.errorMessage,_that.isRequesting,_that.isSuccess);case _:
   return null;
 
 }
@@ -201,7 +204,7 @@ return $default(_that.images,_that.body);case _:
 
 
 class _UploadFeedState implements UploadFeedState {
-   _UploadFeedState({final  List<XFile> images = const [], this.body = ""}): _images = images;
+   _UploadFeedState({final  List<XFile> images = const [], this.body = "", this.errorMessage, this.isRequesting = false, this.isSuccess = false}): _images = images;
   
 
  final  List<XFile> _images;
@@ -212,6 +215,9 @@ class _UploadFeedState implements UploadFeedState {
 }
 
 @override@JsonKey() final  String body;
+@override final  String? errorMessage;
+@override@JsonKey() final  bool isRequesting;
+@override@JsonKey() final  bool isSuccess;
 
 /// Create a copy of UploadFeedState
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +229,16 @@ _$UploadFeedStateCopyWith<_UploadFeedState> get copyWith => __$UploadFeedStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadFeedState&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.body, body) || other.body == body));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadFeedState&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.body, body) || other.body == body)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.isRequesting, isRequesting) || other.isRequesting == isRequesting)&&(identical(other.isSuccess, isSuccess) || other.isSuccess == isSuccess));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images),body);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_images),body,errorMessage,isRequesting,isSuccess);
 
 @override
 String toString() {
-  return 'UploadFeedState(images: $images, body: $body)';
+  return 'UploadFeedState(images: $images, body: $body, errorMessage: $errorMessage, isRequesting: $isRequesting, isSuccess: $isSuccess)';
 }
 
 
@@ -243,7 +249,7 @@ abstract mixin class _$UploadFeedStateCopyWith<$Res> implements $UploadFeedState
   factory _$UploadFeedStateCopyWith(_UploadFeedState value, $Res Function(_UploadFeedState) _then) = __$UploadFeedStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<XFile> images, String body
+ List<XFile> images, String body, String? errorMessage, bool isRequesting, bool isSuccess
 });
 
 
@@ -260,11 +266,14 @@ class __$UploadFeedStateCopyWithImpl<$Res>
 
 /// Create a copy of UploadFeedState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? images = null,Object? body = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? images = null,Object? body = null,Object? errorMessage = freezed,Object? isRequesting = null,Object? isSuccess = null,}) {
   return _then(_UploadFeedState(
 images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
 as List<XFile>,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
-as String,
+as String,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,isRequesting: null == isRequesting ? _self.isRequesting : isRequesting // ignore: cast_nullable_to_non_nullable
+as bool,isSuccess: null == isSuccess ? _self.isSuccess : isSuccess // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

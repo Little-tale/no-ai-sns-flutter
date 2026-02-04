@@ -11,7 +11,7 @@ sealed class FeedListItemDTO with _$FeedListItemDTO {
   factory FeedListItemDTO({
     required int id,
     @JsonKey(name: 'user_id') required int userId,
-    required String title,
+    String? title,
     required String body,
     required AuthorDTO author,
     @JsonKey(name: 'is_liked') required bool isLiked,

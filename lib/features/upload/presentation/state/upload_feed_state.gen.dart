@@ -8,5 +8,8 @@ sealed class UploadFeedState with _$UploadFeedState {
   factory UploadFeedState({
     @Default([]) List<XFile> images,
     @Default("") String body,
+    String? errorMessage,
+    @Default(false) bool isRequesting,
+    @Default(false) bool isSuccess,
   }) = _UploadFeedState;
 }

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FeedListItemDTO {
 
- int get id;@JsonKey(name: 'user_id') int get userId; String get title; String get body; AuthorDTO get author;@JsonKey(name: 'is_liked') bool get isLiked;@JsonKey(name: 'like_count') int get likeCount;@JsonKey(name: 'comment_count') int get commentCount;@JsonKey(name: 'created_at') String get createdAt; List<ImageItemDTO> get images;
+ int get id;@JsonKey(name: 'user_id') int get userId; String? get title; String get body; AuthorDTO get author;@JsonKey(name: 'is_liked') bool get isLiked;@JsonKey(name: 'like_count') int get likeCount;@JsonKey(name: 'comment_count') int get commentCount;@JsonKey(name: 'created_at') String get createdAt; List<ImageItemDTO> get images;
 /// Create a copy of FeedListItemDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FeedListItemDTOCopyWith<$Res>  {
   factory $FeedListItemDTOCopyWith(FeedListItemDTO value, $Res Function(FeedListItemDTO) _then) = _$FeedListItemDTOCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'user_id') int userId, String title, String body, AuthorDTO author,@JsonKey(name: 'is_liked') bool isLiked,@JsonKey(name: 'like_count') int likeCount,@JsonKey(name: 'comment_count') int commentCount,@JsonKey(name: 'created_at') String createdAt, List<ImageItemDTO> images
+ int id,@JsonKey(name: 'user_id') int userId, String? title, String body, AuthorDTO author,@JsonKey(name: 'is_liked') bool isLiked,@JsonKey(name: 'like_count') int likeCount,@JsonKey(name: 'comment_count') int commentCount,@JsonKey(name: 'created_at') String createdAt, List<ImageItemDTO> images
 });
 
 
@@ -65,12 +65,12 @@ class _$FeedListItemDTOCopyWithImpl<$Res>
 
 /// Create a copy of FeedListItemDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? title = null,Object? body = null,Object? author = null,Object? isLiked = null,Object? likeCount = null,Object? commentCount = null,Object? createdAt = null,Object? images = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? title = freezed,Object? body = null,Object? author = null,Object? isLiked = null,Object? likeCount = null,Object? commentCount = null,Object? createdAt = null,Object? images = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
+as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as AuthorDTO,isLiked: null == isLiked ? _self.isLiked : isLiked // ignore: cast_nullable_to_non_nullable
 as bool,likeCount: null == likeCount ? _self.likeCount : likeCount // ignore: cast_nullable_to_non_nullable
@@ -168,7 +168,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'user_id')  int userId,  String title,  String body,  AuthorDTO author, @JsonKey(name: 'is_liked')  bool isLiked, @JsonKey(name: 'like_count')  int likeCount, @JsonKey(name: 'comment_count')  int commentCount, @JsonKey(name: 'created_at')  String createdAt,  List<ImageItemDTO> images)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'user_id')  int userId,  String? title,  String body,  AuthorDTO author, @JsonKey(name: 'is_liked')  bool isLiked, @JsonKey(name: 'like_count')  int likeCount, @JsonKey(name: 'comment_count')  int commentCount, @JsonKey(name: 'created_at')  String createdAt,  List<ImageItemDTO> images)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedListItemDTO() when $default != null:
 return $default(_that.id,_that.userId,_that.title,_that.body,_that.author,_that.isLiked,_that.likeCount,_that.commentCount,_that.createdAt,_that.images);case _:
@@ -189,7 +189,7 @@ return $default(_that.id,_that.userId,_that.title,_that.body,_that.author,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'user_id')  int userId,  String title,  String body,  AuthorDTO author, @JsonKey(name: 'is_liked')  bool isLiked, @JsonKey(name: 'like_count')  int likeCount, @JsonKey(name: 'comment_count')  int commentCount, @JsonKey(name: 'created_at')  String createdAt,  List<ImageItemDTO> images)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'user_id')  int userId,  String? title,  String body,  AuthorDTO author, @JsonKey(name: 'is_liked')  bool isLiked, @JsonKey(name: 'like_count')  int likeCount, @JsonKey(name: 'comment_count')  int commentCount, @JsonKey(name: 'created_at')  String createdAt,  List<ImageItemDTO> images)  $default,) {final _that = this;
 switch (_that) {
 case _FeedListItemDTO():
 return $default(_that.id,_that.userId,_that.title,_that.body,_that.author,_that.isLiked,_that.likeCount,_that.commentCount,_that.createdAt,_that.images);}
@@ -206,7 +206,7 @@ return $default(_that.id,_that.userId,_that.title,_that.body,_that.author,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'user_id')  int userId,  String title,  String body,  AuthorDTO author, @JsonKey(name: 'is_liked')  bool isLiked, @JsonKey(name: 'like_count')  int likeCount, @JsonKey(name: 'comment_count')  int commentCount, @JsonKey(name: 'created_at')  String createdAt,  List<ImageItemDTO> images)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'user_id')  int userId,  String? title,  String body,  AuthorDTO author, @JsonKey(name: 'is_liked')  bool isLiked, @JsonKey(name: 'like_count')  int likeCount, @JsonKey(name: 'comment_count')  int commentCount, @JsonKey(name: 'created_at')  String createdAt,  List<ImageItemDTO> images)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedListItemDTO() when $default != null:
 return $default(_that.id,_that.userId,_that.title,_that.body,_that.author,_that.isLiked,_that.likeCount,_that.commentCount,_that.createdAt,_that.images);case _:
@@ -221,12 +221,12 @@ return $default(_that.id,_that.userId,_that.title,_that.body,_that.author,_that.
 @JsonSerializable()
 
 class _FeedListItemDTO implements FeedListItemDTO {
-   _FeedListItemDTO({required this.id, @JsonKey(name: 'user_id') required this.userId, required this.title, required this.body, required this.author, @JsonKey(name: 'is_liked') required this.isLiked, @JsonKey(name: 'like_count') required this.likeCount, @JsonKey(name: 'comment_count') required this.commentCount, @JsonKey(name: 'created_at') required this.createdAt, required final  List<ImageItemDTO> images}): _images = images;
+   _FeedListItemDTO({required this.id, @JsonKey(name: 'user_id') required this.userId, this.title, required this.body, required this.author, @JsonKey(name: 'is_liked') required this.isLiked, @JsonKey(name: 'like_count') required this.likeCount, @JsonKey(name: 'comment_count') required this.commentCount, @JsonKey(name: 'created_at') required this.createdAt, required final  List<ImageItemDTO> images}): _images = images;
   factory _FeedListItemDTO.fromJson(Map<String, dynamic> json) => _$FeedListItemDTOFromJson(json);
 
 @override final  int id;
 @override@JsonKey(name: 'user_id') final  int userId;
-@override final  String title;
+@override final  String? title;
 @override final  String body;
 @override final  AuthorDTO author;
 @override@JsonKey(name: 'is_liked') final  bool isLiked;
@@ -274,7 +274,7 @@ abstract mixin class _$FeedListItemDTOCopyWith<$Res> implements $FeedListItemDTO
   factory _$FeedListItemDTOCopyWith(_FeedListItemDTO value, $Res Function(_FeedListItemDTO) _then) = __$FeedListItemDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'user_id') int userId, String title, String body, AuthorDTO author,@JsonKey(name: 'is_liked') bool isLiked,@JsonKey(name: 'like_count') int likeCount,@JsonKey(name: 'comment_count') int commentCount,@JsonKey(name: 'created_at') String createdAt, List<ImageItemDTO> images
+ int id,@JsonKey(name: 'user_id') int userId, String? title, String body, AuthorDTO author,@JsonKey(name: 'is_liked') bool isLiked,@JsonKey(name: 'like_count') int likeCount,@JsonKey(name: 'comment_count') int commentCount,@JsonKey(name: 'created_at') String createdAt, List<ImageItemDTO> images
 });
 
 
@@ -291,12 +291,12 @@ class __$FeedListItemDTOCopyWithImpl<$Res>
 
 /// Create a copy of FeedListItemDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? title = null,Object? body = null,Object? author = null,Object? isLiked = null,Object? likeCount = null,Object? commentCount = null,Object? createdAt = null,Object? images = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? title = freezed,Object? body = null,Object? author = null,Object? isLiked = null,Object? likeCount = null,Object? commentCount = null,Object? createdAt = null,Object? images = null,}) {
   return _then(_FeedListItemDTO(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
+as int,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as AuthorDTO,isLiked: null == isLiked ? _self.isLiked : isLiked // ignore: cast_nullable_to_non_nullable
 as bool,likeCount: null == likeCount ? _self.likeCount : likeCount // ignore: cast_nullable_to_non_nullable

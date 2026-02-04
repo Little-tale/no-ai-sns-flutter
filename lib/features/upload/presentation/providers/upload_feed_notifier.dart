@@ -1,4 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:no_ai_sns/core/utils/result.dart';
+import 'package:no_ai_sns/features/home/presentation/providers/feed_repository/feed_repository_provider.dart';
 import 'package:no_ai_sns/features/upload/presentation/state/upload_feed_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -28,5 +31,27 @@ class UploadFeedNotifier extends _$UploadFeedNotifier {
 
   void clear() {
     state = UploadFeedState();
+  }
+
+  void tappedPost() {
+    if (state.isRequesting) return;
+    state = state.copyWith(isRequesting: true);
+    _requestPost();
+  }
+
+  _requestPost() async {
+    final repo = ref.read(feedRepositoryProvider);
+
+    final result = await repo.postFeed(body: state.body, images: state.images);
+
+    switch (result) {
+      case Success<bool>():
+        state = state.copyWith(isSuccess: true, isRequesting: false);
+      case Failure<bool>():
+        state = state.copyWith(
+          errorMessage: "Failed to post feed",
+          isRequesting: false,
+        );
+    }
   }
 }

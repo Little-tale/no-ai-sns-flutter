@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/core/presentation/w_ios_button.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
@@ -19,57 +20,72 @@ class UploadPage extends ConsumerStatefulWidget {
 class _UploadPageState extends ConsumerState<UploadPage> {
   @override
   Widget build(BuildContext context) {
-    final images = ref.watch(uploadFeedProvider.select((p) => p.images));
+    ref.listen(uploadFeedProvider, (prev, next) {
+      if (next.isSuccess) {
+        context.pop();
+      }
+      if (next.errorMessage != null && next.errorMessage?.isNotEmpty == true) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.errorMessage!)));
+      }
+    });
 
-    return Scaffold(
-      appBar: AppBar(
-        title: 'New Post'.text.make(),
-        actions: [
-          if (images.isEmpty)
-            'Post'.text
-                .color(context.colors.primary.withAlpha(120))
-                .size(16)
-                .make()
-                .pSymmetric(h: AppSpacing.md)
-          else
-            'Post'.text
-                .size(16)
-                .make()
-                .pSymmetric(h: AppSpacing.md)
-                .onIOSTap(() {}),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: VStack([
-          // Image Section
-          NewPostuploadImagesWidget(
-            currentMax: 5,
-            images: images,
-            onAddImages: (xFiles) {
-              final notifier = ref.read(uploadFeedProvider.notifier);
-              notifier.addImages(xFiles);
-            },
-            onRemoveImage: (index) {
-              final notifier = ref.read(uploadFeedProvider.notifier);
-              notifier.removeAt(index);
-            },
-          ).pOnly(bottom: AppSpacing.md),
-          // Text Field Section
-          NewPostTextFieldWidget(
-            textChange: (text) {
-              final notifier = ref.read(uploadFeedProvider.notifier);
-              notifier.textChanged(text);
-            },
-          ).pSymmetric(h: AppSpacing.sm).pOnly(bottom: AppSpacing.xxl),
-
-          _description(
-            context,
-          ).pSymmetric(h: AppSpacing.sm).pOnly(bottom: AppSpacing.md),
-        ]),
-      ),
-    ).onTap(() {
+    return Scaffold(appBar: _topBar(context), body: _body(context)).onTap(() {
       FocusScope.of(context).unfocus();
     });
+  }
+
+  SingleChildScrollView _body(BuildContext context) {
+    final images = ref.watch(uploadFeedProvider.select((p) => p.images));
+    return SingleChildScrollView(
+      child: VStack([
+        // Image Section
+        NewPostuploadImagesWidget(
+          currentMax: 5,
+          images: images,
+          onAddImages: (xFiles) {
+            final notifier = ref.read(uploadFeedProvider.notifier);
+            notifier.addImages(xFiles);
+          },
+          onRemoveImage: (index) {
+            final notifier = ref.read(uploadFeedProvider.notifier);
+            notifier.removeAt(index);
+          },
+        ).pOnly(bottom: AppSpacing.md),
+        // Text Field Section
+        NewPostTextFieldWidget(
+          textChange: (text) {
+            final notifier = ref.read(uploadFeedProvider.notifier);
+            notifier.textChanged(text);
+          },
+        ).pSymmetric(h: AppSpacing.sm).pOnly(bottom: AppSpacing.xxl),
+
+        _description(
+          context,
+        ).pSymmetric(h: AppSpacing.sm).pOnly(bottom: AppSpacing.md),
+      ]),
+    );
+  }
+
+  AppBar _topBar(BuildContext context) {
+    final state = ref.watch(uploadFeedProvider);
+
+    return AppBar(
+      title: 'New Post'.text.make(),
+      actions: [
+        if (state.images.isEmpty || state.body.isEmpty)
+          'Post'.text
+              .color(context.colors.primary.withAlpha(120))
+              .size(16)
+              .make()
+              .pSymmetric(h: AppSpacing.md)
+        else
+          'Post'.text.size(16).make().pSymmetric(h: AppSpacing.md).onIOSTap(() {
+            ref.read(uploadFeedProvider.notifier).tappedPost();
+          }),
+      ],
+    );
   }
 
   Widget _description(BuildContext context) {
