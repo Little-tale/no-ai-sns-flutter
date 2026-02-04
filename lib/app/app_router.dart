@@ -9,6 +9,7 @@ import '../features/home/presentation/pages/home_page.dart';
 import '../features/profile/presentation/pages/profile_page.dart';
 import '../features/search/presentation/pages/search_page.dart';
 import '../features/shell/presentation/pages/main_shell_page.dart';
+import '../features/shell/presentation/widgets/shell_page_wrapper.dart';
 import '../features/splash/presentation/pages/splash_page.dart';
 import '../features/upload/presentation/pages/upload_page.dart';
 
@@ -45,7 +46,12 @@ class AppRouter {
               GoRoute(
                 path: HomePage.routeName,
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: HomePage());
+                  return const NoTransitionPage(
+                    child: ShellPageWrapper(
+                      branchIndex: 0,
+                      child: HomePage(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -55,29 +61,42 @@ class AppRouter {
               GoRoute(
                 path: SearchPage.routeName,
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: SearchPage());
+                  return const NoTransitionPage(
+                    child: ShellPageWrapper(
+                      branchIndex: 1,
+                      child: SearchPage(),
+                    ),
+                  );
                 },
               ),
             ],
           ),
-
           StatefulShellBranch(
             routes: [
               GoRoute(
                 path: '/dm',
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: Placeholder());
+                  return const NoTransitionPage(
+                    child: ShellPageWrapper(
+                      branchIndex: 2,
+                      child: Placeholder(),
+                    ),
+                  );
                 },
               ),
             ],
           ),
-
           StatefulShellBranch(
             routes: [
               GoRoute(
                 path: ProfilePage.routeName,
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: ProfilePage());
+                  return const NoTransitionPage(
+                    child: ShellPageWrapper(
+                      branchIndex: 3,
+                      child: ProfilePage(),
+                    ),
+                  );
                 },
               ),
             ],
