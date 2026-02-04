@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:no_ai_sns/core/providers/feed_repository_provider.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 import 'package:no_ai_sns/core/utils/number_format.dart';
@@ -50,17 +51,6 @@ class HomeNotifier extends _$HomeNotifier {
         );
       case Failure(error: final error):
         return HomeState(isLoading: false, errorMessage: error.toString());
-    }
-  }
-
-  Future<int?> _fetchAlertCount() async {
-    final repo = ref.read(notificationRepositoryProvider);
-    final result = await repo.getAlertCount();
-    switch (result) {
-      case Success<int>(value: final count):
-        return count;
-      case Failure<int>(error: final error):
-        return null;
     }
   }
 
@@ -165,6 +155,20 @@ class HomeNotifier extends _$HomeNotifier {
       if (state != null) {
         this.state = AsyncData(state.copyWith(alertCount: result));
       }
+    }
+  }
+
+  // MARK: Private
+
+  Future<int?> _fetchAlertCount() async {
+    final repo = ref.read(notificationRepositoryProvider);
+    final result = await repo.getAlertCount();
+    switch (result) {
+      case Success<int>(value: final count):
+        return count;
+      case Failure<int>(error: final error):
+        debugPrint(error.toString());
+        return null;
     }
   }
 

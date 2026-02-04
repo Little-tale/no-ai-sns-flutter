@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ImageItemDTO {
 
- int get id;@JsonKey(name: 'image_path') String get imagePath;@JsonKey(name: 'ai_label') String get aiLabel;@JsonKey(name: 'ai_score') double get aiScore;@JsonKey(name: 'created_at') String get createdAt;
+ int get id;@JsonKey(name: 'image_path') String get imagePath;@JsonKey(name: 'ai_label') String? get aiLabel;@JsonKey(name: 'ai_score') double? get aiScore;@JsonKey(name: 'created_at') String get createdAt;
 /// Create a copy of ImageItemDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ImageItemDTOCopyWith<$Res>  {
   factory $ImageItemDTOCopyWith(ImageItemDTO value, $Res Function(ImageItemDTO) _then) = _$ImageItemDTOCopyWithImpl;
 @useResult
 $Res call({
- int id,@JsonKey(name: 'image_path') String imagePath,@JsonKey(name: 'ai_label') String aiLabel,@JsonKey(name: 'ai_score') double aiScore,@JsonKey(name: 'created_at') String createdAt
+ int id,@JsonKey(name: 'image_path') String imagePath,@JsonKey(name: 'ai_label') String? aiLabel,@JsonKey(name: 'ai_score') double? aiScore,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -65,13 +65,13 @@ class _$ImageItemDTOCopyWithImpl<$Res>
 
 /// Create a copy of ImageItemDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? imagePath = null,Object? aiLabel = null,Object? aiScore = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? imagePath = null,Object? aiLabel = freezed,Object? aiScore = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as String,aiLabel: null == aiLabel ? _self.aiLabel : aiLabel // ignore: cast_nullable_to_non_nullable
-as String,aiScore: null == aiScore ? _self.aiScore : aiScore // ignore: cast_nullable_to_non_nullable
-as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,aiLabel: freezed == aiLabel ? _self.aiLabel : aiLabel // ignore: cast_nullable_to_non_nullable
+as String?,aiScore: freezed == aiScore ? _self.aiScore : aiScore // ignore: cast_nullable_to_non_nullable
+as double?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -154,7 +154,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_path')  String imagePath, @JsonKey(name: 'ai_label')  String aiLabel, @JsonKey(name: 'ai_score')  double aiScore, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_path')  String imagePath, @JsonKey(name: 'ai_label')  String? aiLabel, @JsonKey(name: 'ai_score')  double? aiScore, @JsonKey(name: 'created_at')  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ImageItemDTO() when $default != null:
 return $default(_that.id,_that.imagePath,_that.aiLabel,_that.aiScore,_that.createdAt);case _:
@@ -175,7 +175,7 @@ return $default(_that.id,_that.imagePath,_that.aiLabel,_that.aiScore,_that.creat
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_path')  String imagePath, @JsonKey(name: 'ai_label')  String aiLabel, @JsonKey(name: 'ai_score')  double aiScore, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id, @JsonKey(name: 'image_path')  String imagePath, @JsonKey(name: 'ai_label')  String? aiLabel, @JsonKey(name: 'ai_score')  double? aiScore, @JsonKey(name: 'created_at')  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _ImageItemDTO():
 return $default(_that.id,_that.imagePath,_that.aiLabel,_that.aiScore,_that.createdAt);}
@@ -192,7 +192,7 @@ return $default(_that.id,_that.imagePath,_that.aiLabel,_that.aiScore,_that.creat
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'image_path')  String imagePath, @JsonKey(name: 'ai_label')  String aiLabel, @JsonKey(name: 'ai_score')  double aiScore, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id, @JsonKey(name: 'image_path')  String imagePath, @JsonKey(name: 'ai_label')  String? aiLabel, @JsonKey(name: 'ai_score')  double? aiScore, @JsonKey(name: 'created_at')  String createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ImageItemDTO() when $default != null:
 return $default(_that.id,_that.imagePath,_that.aiLabel,_that.aiScore,_that.createdAt);case _:
@@ -207,13 +207,13 @@ return $default(_that.id,_that.imagePath,_that.aiLabel,_that.aiScore,_that.creat
 @JsonSerializable()
 
 class _ImageItemDTO implements ImageItemDTO {
-   _ImageItemDTO({required this.id, @JsonKey(name: 'image_path') required this.imagePath, @JsonKey(name: 'ai_label') required this.aiLabel, @JsonKey(name: 'ai_score') required this.aiScore, @JsonKey(name: 'created_at') required this.createdAt});
+   _ImageItemDTO({required this.id, @JsonKey(name: 'image_path') required this.imagePath, @JsonKey(name: 'ai_label') this.aiLabel, @JsonKey(name: 'ai_score') this.aiScore, @JsonKey(name: 'created_at') required this.createdAt});
   factory _ImageItemDTO.fromJson(Map<String, dynamic> json) => _$ImageItemDTOFromJson(json);
 
 @override final  int id;
 @override@JsonKey(name: 'image_path') final  String imagePath;
-@override@JsonKey(name: 'ai_label') final  String aiLabel;
-@override@JsonKey(name: 'ai_score') final  double aiScore;
+@override@JsonKey(name: 'ai_label') final  String? aiLabel;
+@override@JsonKey(name: 'ai_score') final  double? aiScore;
 @override@JsonKey(name: 'created_at') final  String createdAt;
 
 /// Create a copy of ImageItemDTO
@@ -249,7 +249,7 @@ abstract mixin class _$ImageItemDTOCopyWith<$Res> implements $ImageItemDTOCopyWi
   factory _$ImageItemDTOCopyWith(_ImageItemDTO value, $Res Function(_ImageItemDTO) _then) = __$ImageItemDTOCopyWithImpl;
 @override @useResult
 $Res call({
- int id,@JsonKey(name: 'image_path') String imagePath,@JsonKey(name: 'ai_label') String aiLabel,@JsonKey(name: 'ai_score') double aiScore,@JsonKey(name: 'created_at') String createdAt
+ int id,@JsonKey(name: 'image_path') String imagePath,@JsonKey(name: 'ai_label') String? aiLabel,@JsonKey(name: 'ai_score') double? aiScore,@JsonKey(name: 'created_at') String createdAt
 });
 
 
@@ -266,13 +266,13 @@ class __$ImageItemDTOCopyWithImpl<$Res>
 
 /// Create a copy of ImageItemDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? imagePath = null,Object? aiLabel = null,Object? aiScore = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? imagePath = null,Object? aiLabel = freezed,Object? aiScore = freezed,Object? createdAt = null,}) {
   return _then(_ImageItemDTO(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
-as String,aiLabel: null == aiLabel ? _self.aiLabel : aiLabel // ignore: cast_nullable_to_non_nullable
-as String,aiScore: null == aiScore ? _self.aiScore : aiScore // ignore: cast_nullable_to_non_nullable
-as double,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,aiLabel: freezed == aiLabel ? _self.aiLabel : aiLabel // ignore: cast_nullable_to_non_nullable
+as String?,aiScore: freezed == aiScore ? _self.aiScore : aiScore // ignore: cast_nullable_to_non_nullable
+as double?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

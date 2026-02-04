@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/app/app_router.dart';
 import 'package:no_ai_sns/core/network/SSE/provider/notification_sse_provider.dart';
@@ -14,21 +13,42 @@ import 'package:no_ai_sns/features/notification/presentation/pages/notification_
 import 'package:no_ai_sns/features/notification/presentation/sub_widgets/top_toasts/w_alert_top_toast.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class HomePage extends HookConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   static const routeName = '/home';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    final controller = ScrollController();
+    _scrollController = controller;
+    controller.addListener(_onScrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScrollListener);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(homeProvider);
-    final scrollController = useScrollController();
 
     // 에러 메시지 스낵바
     ref.listen(homeProvider, (p, n) {
       final msg = n.value?.errorMessage;
       if (msg != null) {
-        HomePage.showErrorSnackBar(context, msg);
+        showErrorSnackBar(context, msg);
       }
     });
 
@@ -40,24 +60,19 @@ class HomePage extends HookConsumerWidget {
       });
     });
 
-    useEffect(() {
-      void onScroll() {
-        _onScroll(scrollController, ref);
-      }
-
-      scrollController.addListener(onScroll);
-      return () => scrollController.removeListener(onScroll);
-    }, [scrollController, ref]);
-
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () => ref.read(homeProvider.notifier).refreshFeed(),
         child: CustomScrollView(
-          controller: scrollController,
+          controller: _scrollController,
           slivers: _buildSlivers(ref, context, state),
         ),
       ),
     );
+  }
+
+  void _onScrollListener() {
+    _onScroll(_scrollController, ref);
   }
 
   List<Widget> _buildSlivers(

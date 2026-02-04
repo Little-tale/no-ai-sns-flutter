@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:no_ai_sns/core/constants/app_size.dart';
 
-extension ExtToast on Widget {
-  void showTopToast(
-    BuildContext context,
-    Widget child, {
-    Duration duration = const Duration(seconds: 3),
-  }) {
-    final overlay = Overlay.of(context, rootOverlay: true);
-    late final OverlayEntry entry;
-    entry = OverlayEntry(
-      builder: (_) => _TopToastOverlay(
-        topOffset: context.safeAreaTop + 8,
-        onDismiss: entry.remove,
-        duration: duration,
-        child: child,
-      ),
-    );
+void showTopToast(
+  BuildContext context,
+  Widget child, {
+  Duration duration = const Duration(seconds: 3),
+}) {
+  final overlay = Overlay.of(context, rootOverlay: true);
+  // OverlayEntry.builder 안에서 원본 context 참조하는데 dispose로 비활성화될 수 있음
+  // 이 때 홈 화면으로 이동하면 Looking up a deactivated widget's ancestor is unsafe 에러 발생
+  // -> context가 비활성화되기 전에 미리 값을 계산해서 저장
+  final topOffset = context.safeAreaTop + 8;
+  late final OverlayEntry entry;
+  entry = OverlayEntry(
+    builder: (_) => _TopToastOverlay(
+      topOffset: topOffset,
+      onDismiss: entry.remove,
+      duration: duration,
+      child: child,
+    ),
+  );
 
-    overlay.insert(entry);
-  }
+  overlay.insert(entry);
 }
 
 class _TopToastOverlay extends StatefulWidget {

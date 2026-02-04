@@ -18,6 +18,13 @@ class UploadPage extends ConsumerStatefulWidget {
 }
 
 class _UploadPageState extends ConsumerState<UploadPage> {
+  // widget 설정값만 바뀌는 순간에 실행되는 lifecycle.
+  @override
+  void didUpdateWidget(covariant UploadPage oldWidget) {
+    debugPrint('didUpdateWidget');
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(uploadFeedProvider, (prev, next) {
