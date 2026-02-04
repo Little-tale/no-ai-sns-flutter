@@ -16,7 +16,6 @@ import '../features/upload/presentation/pages/upload_page.dart';
 class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey =
       GlobalKey<NavigatorState>();
-
   static final GoRouter router = GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: SplashPage.routeName,

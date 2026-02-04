@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
@@ -30,5 +31,10 @@ abstract class FeedRepository {
     required int postId,
     required int commentId,
     required bool isLiked,
+  });
+
+  Future<Result<bool>> postFeed({
+    required String body,
+    required List<XFile> images,
   });
 }

@@ -10,8 +10,8 @@ sealed class ImageItemDTO with _$ImageItemDTO {
   factory ImageItemDTO({
     required int id,
     @JsonKey(name: 'image_path') required String imagePath,
-    @JsonKey(name: 'ai_label') required String aiLabel,
-    @JsonKey(name: 'ai_score') required double aiScore,
+    @JsonKey(name: 'ai_label') String? aiLabel,
+    @JsonKey(name: 'ai_score') double? aiScore,
     @JsonKey(name: 'created_at') required String createdAt,
   }) = _ImageItemDTO;
 

@@ -43,6 +43,7 @@ class AppTheme {
         bodyColor: AppColors.textPrimaryDark,
         displayColor: AppColors.textPrimaryDark,
       ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(),
     );
   }
 }

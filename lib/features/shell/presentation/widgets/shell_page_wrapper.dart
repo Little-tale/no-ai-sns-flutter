@@ -58,7 +58,7 @@ class _ShellPageWrapperState extends State<ShellPageWrapper> {
         now.difference(_lastBackPressedTime!) > backPressDuration) {
       _lastBackPressedTime = now;
 
-      const SizedBox().showTopToast(
+      showTopToast(
         context,
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),

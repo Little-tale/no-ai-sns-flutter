@@ -10,8 +10,8 @@ _ImageItemDTO _$ImageItemDTOFromJson(Map<String, dynamic> json) =>
     _ImageItemDTO(
       id: (json['id'] as num).toInt(),
       imagePath: json['image_path'] as String,
-      aiLabel: json['ai_label'] as String,
-      aiScore: (json['ai_score'] as num).toDouble(),
+      aiLabel: json['ai_label'] as String?,
+      aiScore: (json['ai_score'] as num?)?.toDouble(),
       createdAt: json['created_at'] as String,
     );
 

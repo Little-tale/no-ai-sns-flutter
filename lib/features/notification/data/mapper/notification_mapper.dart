@@ -4,8 +4,8 @@ import 'package:no_ai_sns/features/notification/domain/entities/alert_/alert_ent
 import 'package:no_ai_sns/features/notification/domain/entities/alert_type/alert_type_entity.dart';
 
 final class NotificationMapper {
-  static List<AlertEntity> toAlertEntities(List<NotificationDTO> dtos) {
-    return dtos.map(toAlertEntity).toList();
+  static List<AlertEntity> toAlertEntities(List<NotificationDTO> dtoList) {
+    return dtoList.map(toAlertEntity).toList();
   }
 
   static AlertEntity toAlertEntity(NotificationDTO dto) {

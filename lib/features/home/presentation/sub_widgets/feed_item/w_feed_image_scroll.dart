@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:no_ai_sns/design_system/tokens/spacing.dart';
+import 'package:no_ai_sns/design_system/design_system.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -70,6 +70,14 @@ class _FeedImageScrollWidgetState extends State<FeedImageScrollWidget> {
         child: CachedNetworkImage(
           fit: BoxFit.cover,
           imageUrl: widget.imageURLString[index],
+          errorWidget: (context, url, error) {
+            return Center(
+              child: VStack(crossAlignment: CrossAxisAlignment.center, [
+                Icon(Icons.error, color: AppColors.aiRejected),
+                'ERROR'.text.color(AppColors.aiRejected).make(),
+              ]),
+            );
+          },
         ),
       ),
     );

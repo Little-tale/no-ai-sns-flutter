@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:no_ai_sns/core/constants/app_icons.dart';
+import 'package:no_ai_sns/core/constants/app_images.dart';
 import 'package:no_ai_sns/core/presentation/w_ios_button.dart';
 import 'package:no_ai_sns/design_system/tokens/colors.dart';
 import 'package:no_ai_sns/features/notification/domain/entities/alert_/alert_entity.gen.dart';
@@ -75,6 +76,13 @@ class NotificationItemWidget extends StatelessWidget {
         return context.cardColor;
       case AlertType.unknown:
         return context.backgroundColor;
+      case AlertType.postUpload:
+        return context.backgroundColor;
+      case AlertType.postUploadFail:
+        if (context.isDarkMode) {
+          return AppColors.aiRejectedDark.withAlpha(180);
+        }
+        return AppColors.aiRejected;
     }
   }
 
@@ -88,6 +96,11 @@ class NotificationItemWidget extends StatelessWidget {
         return Image.asset(AppIcons.likePerspective, width: 30, height: 30);
       case AlertType.postComment:
         return Image.asset(AppIcons.commentPerspective, width: 30, height: 30);
+      case AlertType.postUpload:
+        return Image.asset(AppImages.alert3D, width: 30, height: 30);
+      case AlertType.postUploadFail:
+        return Image.asset(AppImages.error3D, width: 30, height: 30);
+
       case AlertType.unknown:
         return Icon(Icons.ac_unit_rounded, size: 24);
     }
