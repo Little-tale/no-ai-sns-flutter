@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_ai_sns/design_system/tokens/spacing.dart';
+import 'package:no_ai_sns/features/search/presentation/providers/search_notifier/search_notifier.dart';
 import 'package:no_ai_sns/features/search/presentation/sub_widgets/w_search_bar.dart';
 import 'package:no_ai_sns/features/search/presentation/sub_widgets/w_search_tab_view.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends ConsumerWidget {
   const SearchPage({super.key});
 
   static const routeName = '/search';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
         child: VStack([
@@ -18,7 +20,18 @@ class SearchPage extends StatelessWidget {
             onChangeText: (text) {},
             onTapEnter: () {},
           ).pSymmetric(h: AppSpacing.lg),
-          Expanded(child: SearchTabViewWidget()),
+          Expanded(
+            child: SearchTabViewWidget(
+              onTabChange: (tabCase) {
+                switch (tabCase) {
+                  case SearchTabCase.posts:
+                    return;
+                  case SearchTabCase.users:
+                    return;
+                }
+              },
+            ),
+          ),
         ]),
       ),
     );

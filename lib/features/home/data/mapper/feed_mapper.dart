@@ -1,4 +1,4 @@
-import 'package:no_ai_sns/core/network/base_url.dart';
+import 'package:no_ai_sns/core/utils/image_url_path_helper.dart';
 import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/time_format.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_list_item_dto/dto_feed_list_item.gen.dart';
@@ -18,11 +18,7 @@ final class FeedMapper {
       likeStatus: dto.isLiked,
       likeCountText: dto.likeCount.toCompact(),
       commentCountText: dto.commentCount.toCompact(),
-      imageUrls: dto.images.map((e) => _toAbsoluteUrl(e.imagePath)).toList(),
+      imageUrls: dto.images.map((e) => toAbsoluteUrl(e.imagePath)).toList(),
     );
-  }
-
-  static String _toAbsoluteUrl(String path) {
-    return '$baseURL$path';
   }
 }
