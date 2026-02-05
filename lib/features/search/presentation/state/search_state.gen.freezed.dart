@@ -16,7 +16,7 @@ mixin _$SearchState {
 
  String get searchText;// 검색어
  int get selectedTab;// 현재 탭 위치
- int get limit; String? get postCursor; String? get userCursor;
+ int get limit; List<FeedItemEntity> get feeds; String? get postCursor; List<AuthorEntity> get users; String? get userCursor; bool get isSearching; String? get errorText;
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,16 +27,16 @@ $SearchStateCopyWith<SearchState> get copyWith => _$SearchStateCopyWithImpl<Sear
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchState&&(identical(other.searchText, searchText) || other.searchText == searchText)&&(identical(other.selectedTab, selectedTab) || other.selectedTab == selectedTab)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.postCursor, postCursor) || other.postCursor == postCursor)&&(identical(other.userCursor, userCursor) || other.userCursor == userCursor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchState&&(identical(other.searchText, searchText) || other.searchText == searchText)&&(identical(other.selectedTab, selectedTab) || other.selectedTab == selectedTab)&&(identical(other.limit, limit) || other.limit == limit)&&const DeepCollectionEquality().equals(other.feeds, feeds)&&(identical(other.postCursor, postCursor) || other.postCursor == postCursor)&&const DeepCollectionEquality().equals(other.users, users)&&(identical(other.userCursor, userCursor) || other.userCursor == userCursor)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&(identical(other.errorText, errorText) || other.errorText == errorText));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,searchText,selectedTab,limit,postCursor,userCursor);
+int get hashCode => Object.hash(runtimeType,searchText,selectedTab,limit,const DeepCollectionEquality().hash(feeds),postCursor,const DeepCollectionEquality().hash(users),userCursor,isSearching,errorText);
 
 @override
 String toString() {
-  return 'SearchState(searchText: $searchText, selectedTab: $selectedTab, limit: $limit, postCursor: $postCursor, userCursor: $userCursor)';
+  return 'SearchState(searchText: $searchText, selectedTab: $selectedTab, limit: $limit, feeds: $feeds, postCursor: $postCursor, users: $users, userCursor: $userCursor, isSearching: $isSearching, errorText: $errorText)';
 }
 
 
@@ -47,7 +47,7 @@ abstract mixin class $SearchStateCopyWith<$Res>  {
   factory $SearchStateCopyWith(SearchState value, $Res Function(SearchState) _then) = _$SearchStateCopyWithImpl;
 @useResult
 $Res call({
- String searchText, int selectedTab, int limit, String? postCursor, String? userCursor
+ String searchText, int selectedTab, int limit, List<FeedItemEntity> feeds, String? postCursor, List<AuthorEntity> users, String? userCursor, bool isSearching, String? errorText
 });
 
 
@@ -64,13 +64,17 @@ class _$SearchStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? searchText = null,Object? selectedTab = null,Object? limit = null,Object? postCursor = freezed,Object? userCursor = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? searchText = null,Object? selectedTab = null,Object? limit = null,Object? feeds = null,Object? postCursor = freezed,Object? users = null,Object? userCursor = freezed,Object? isSearching = null,Object? errorText = freezed,}) {
   return _then(_self.copyWith(
 searchText: null == searchText ? _self.searchText : searchText // ignore: cast_nullable_to_non_nullable
 as String,selectedTab: null == selectedTab ? _self.selectedTab : selectedTab // ignore: cast_nullable_to_non_nullable
 as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
-as int,postCursor: freezed == postCursor ? _self.postCursor : postCursor // ignore: cast_nullable_to_non_nullable
-as String?,userCursor: freezed == userCursor ? _self.userCursor : userCursor // ignore: cast_nullable_to_non_nullable
+as int,feeds: null == feeds ? _self.feeds : feeds // ignore: cast_nullable_to_non_nullable
+as List<FeedItemEntity>,postCursor: freezed == postCursor ? _self.postCursor : postCursor // ignore: cast_nullable_to_non_nullable
+as String?,users: null == users ? _self.users : users // ignore: cast_nullable_to_non_nullable
+as List<AuthorEntity>,userCursor: freezed == userCursor ? _self.userCursor : userCursor // ignore: cast_nullable_to_non_nullable
+as String?,isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,errorText: freezed == errorText ? _self.errorText : errorText // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -153,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String searchText,  int selectedTab,  int limit,  String? postCursor,  String? userCursor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String searchText,  int selectedTab,  int limit,  List<FeedItemEntity> feeds,  String? postCursor,  List<AuthorEntity> users,  String? userCursor,  bool isSearching,  String? errorText)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchState() when $default != null:
-return $default(_that.searchText,_that.selectedTab,_that.limit,_that.postCursor,_that.userCursor);case _:
+return $default(_that.searchText,_that.selectedTab,_that.limit,_that.feeds,_that.postCursor,_that.users,_that.userCursor,_that.isSearching,_that.errorText);case _:
   return orElse();
 
 }
@@ -174,10 +178,10 @@ return $default(_that.searchText,_that.selectedTab,_that.limit,_that.postCursor,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String searchText,  int selectedTab,  int limit,  String? postCursor,  String? userCursor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String searchText,  int selectedTab,  int limit,  List<FeedItemEntity> feeds,  String? postCursor,  List<AuthorEntity> users,  String? userCursor,  bool isSearching,  String? errorText)  $default,) {final _that = this;
 switch (_that) {
 case _SearchState():
-return $default(_that.searchText,_that.selectedTab,_that.limit,_that.postCursor,_that.userCursor);}
+return $default(_that.searchText,_that.selectedTab,_that.limit,_that.feeds,_that.postCursor,_that.users,_that.userCursor,_that.isSearching,_that.errorText);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +195,10 @@ return $default(_that.searchText,_that.selectedTab,_that.limit,_that.postCursor,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String searchText,  int selectedTab,  int limit,  String? postCursor,  String? userCursor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String searchText,  int selectedTab,  int limit,  List<FeedItemEntity> feeds,  String? postCursor,  List<AuthorEntity> users,  String? userCursor,  bool isSearching,  String? errorText)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchState() when $default != null:
-return $default(_that.searchText,_that.selectedTab,_that.limit,_that.postCursor,_that.userCursor);case _:
+return $default(_that.searchText,_that.selectedTab,_that.limit,_that.feeds,_that.postCursor,_that.users,_that.userCursor,_that.isSearching,_that.errorText);case _:
   return null;
 
 }
@@ -206,7 +210,7 @@ return $default(_that.searchText,_that.selectedTab,_that.limit,_that.postCursor,
 
 
 class _SearchState implements SearchState {
-   _SearchState({this.searchText = '', this.selectedTab = 0, this.limit = 20, this.postCursor, this.userCursor});
+   _SearchState({this.searchText = '', this.selectedTab = 0, this.limit = 20, final  List<FeedItemEntity> feeds = const [], this.postCursor, final  List<AuthorEntity> users = const [], this.userCursor, this.isSearching = false, this.errorText}): _feeds = feeds,_users = users;
   
 
 @override@JsonKey() final  String searchText;
@@ -214,8 +218,24 @@ class _SearchState implements SearchState {
 @override@JsonKey() final  int selectedTab;
 // 현재 탭 위치
 @override@JsonKey() final  int limit;
+ final  List<FeedItemEntity> _feeds;
+@override@JsonKey() List<FeedItemEntity> get feeds {
+  if (_feeds is EqualUnmodifiableListView) return _feeds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_feeds);
+}
+
 @override final  String? postCursor;
+ final  List<AuthorEntity> _users;
+@override@JsonKey() List<AuthorEntity> get users {
+  if (_users is EqualUnmodifiableListView) return _users;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_users);
+}
+
 @override final  String? userCursor;
+@override@JsonKey() final  bool isSearching;
+@override final  String? errorText;
 
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +247,16 @@ _$SearchStateCopyWith<_SearchState> get copyWith => __$SearchStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchState&&(identical(other.searchText, searchText) || other.searchText == searchText)&&(identical(other.selectedTab, selectedTab) || other.selectedTab == selectedTab)&&(identical(other.limit, limit) || other.limit == limit)&&(identical(other.postCursor, postCursor) || other.postCursor == postCursor)&&(identical(other.userCursor, userCursor) || other.userCursor == userCursor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchState&&(identical(other.searchText, searchText) || other.searchText == searchText)&&(identical(other.selectedTab, selectedTab) || other.selectedTab == selectedTab)&&(identical(other.limit, limit) || other.limit == limit)&&const DeepCollectionEquality().equals(other._feeds, _feeds)&&(identical(other.postCursor, postCursor) || other.postCursor == postCursor)&&const DeepCollectionEquality().equals(other._users, _users)&&(identical(other.userCursor, userCursor) || other.userCursor == userCursor)&&(identical(other.isSearching, isSearching) || other.isSearching == isSearching)&&(identical(other.errorText, errorText) || other.errorText == errorText));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,searchText,selectedTab,limit,postCursor,userCursor);
+int get hashCode => Object.hash(runtimeType,searchText,selectedTab,limit,const DeepCollectionEquality().hash(_feeds),postCursor,const DeepCollectionEquality().hash(_users),userCursor,isSearching,errorText);
 
 @override
 String toString() {
-  return 'SearchState(searchText: $searchText, selectedTab: $selectedTab, limit: $limit, postCursor: $postCursor, userCursor: $userCursor)';
+  return 'SearchState(searchText: $searchText, selectedTab: $selectedTab, limit: $limit, feeds: $feeds, postCursor: $postCursor, users: $users, userCursor: $userCursor, isSearching: $isSearching, errorText: $errorText)';
 }
 
 
@@ -247,7 +267,7 @@ abstract mixin class _$SearchStateCopyWith<$Res> implements $SearchStateCopyWith
   factory _$SearchStateCopyWith(_SearchState value, $Res Function(_SearchState) _then) = __$SearchStateCopyWithImpl;
 @override @useResult
 $Res call({
- String searchText, int selectedTab, int limit, String? postCursor, String? userCursor
+ String searchText, int selectedTab, int limit, List<FeedItemEntity> feeds, String? postCursor, List<AuthorEntity> users, String? userCursor, bool isSearching, String? errorText
 });
 
 
@@ -264,13 +284,17 @@ class __$SearchStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? searchText = null,Object? selectedTab = null,Object? limit = null,Object? postCursor = freezed,Object? userCursor = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? searchText = null,Object? selectedTab = null,Object? limit = null,Object? feeds = null,Object? postCursor = freezed,Object? users = null,Object? userCursor = freezed,Object? isSearching = null,Object? errorText = freezed,}) {
   return _then(_SearchState(
 searchText: null == searchText ? _self.searchText : searchText // ignore: cast_nullable_to_non_nullable
 as String,selectedTab: null == selectedTab ? _self.selectedTab : selectedTab // ignore: cast_nullable_to_non_nullable
 as int,limit: null == limit ? _self.limit : limit // ignore: cast_nullable_to_non_nullable
-as int,postCursor: freezed == postCursor ? _self.postCursor : postCursor // ignore: cast_nullable_to_non_nullable
-as String?,userCursor: freezed == userCursor ? _self.userCursor : userCursor // ignore: cast_nullable_to_non_nullable
+as int,feeds: null == feeds ? _self._feeds : feeds // ignore: cast_nullable_to_non_nullable
+as List<FeedItemEntity>,postCursor: freezed == postCursor ? _self.postCursor : postCursor // ignore: cast_nullable_to_non_nullable
+as String?,users: null == users ? _self._users : users // ignore: cast_nullable_to_non_nullable
+as List<AuthorEntity>,userCursor: freezed == userCursor ? _self.userCursor : userCursor // ignore: cast_nullable_to_non_nullable
+as String?,isSearching: null == isSearching ? _self.isSearching : isSearching // ignore: cast_nullable_to_non_nullable
+as bool,errorText: freezed == errorText ? _self.errorText : errorText // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

@@ -13,25 +13,20 @@ class SearchPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    debugPrint("SearchPage build");
     return Scaffold(
       body: SafeArea(
         child: VStack([
           SearchBarWidget(
-            onChangeText: (text) {},
-            onTapEnter: () {},
+            onChangeText: (text) {
+              ref.read(searchProvider.notifier).textChange(text);
+            },
+            onTapEnter: () {
+              ref.read(searchProvider.notifier).tapEnter();
+            },
           ).pSymmetric(h: AppSpacing.lg),
-          Expanded(
-            child: SearchTabViewWidget(
-              onTabChange: (tabCase) {
-                switch (tabCase) {
-                  case SearchTabCase.posts:
-                    return;
-                  case SearchTabCase.users:
-                    return;
-                }
-              },
-            ),
-          ),
+
+          Expanded(child: SearchTabViewWidget()),
         ]),
       ),
     );

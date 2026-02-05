@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:no_ai_sns/features/search/presentation/providers/search_notifier/search_notifier.dart';
+import 'package:no_ai_sns/features/search/presentation/sub_widgets/feed_result/w_feed_result.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-enum SearchTabCase { posts, users }
-
-class SearchTabViewWidget extends HookWidget {
-  const SearchTabViewWidget({super.key, required this.onTabChange});
-
-  final Function(SearchTabCase) onTabChange;
+class SearchTabViewWidget extends HookConsumerWidget {
+  const SearchTabViewWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTabController(
       initialLength: SearchTabCase.values.length,
     );
 
+    ref.listen(searchProvider.select((p) => p.selectedTab), (previous, next) {
+      if (controller.index != next) {
+        controller.animateTo(next);
+      }
+    });
+
     useEffect(() {
       void listener() {
         if (!controller.indexIsChanging) {
-          final currentIndex = controller.index;
-          onTabChange(SearchTabCase.values[currentIndex]);
+          ref.read(searchProvider.notifier).selectTab(controller.index);
         }
       }
 
       controller.addListener(listener);
       return () => controller.removeListener(listener);
-    }, [controller]);
+    }, [controller, ref]);
 
     return Column(
       children: [
@@ -50,7 +54,7 @@ class SearchTabViewWidget extends HookWidget {
           child: TabBarView(
             controller: controller,
             children: [
-              Center(child: 'Posts View'.text.make()),
+              FeedResultWidget(),
               Center(child: 'Users View'.text.make()),
             ],
           ),
