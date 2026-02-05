@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/design_system/tokens/colors.dart';
+import 'package:no_ai_sns/features/search/presentation/providers/search_notifier/search_notifier.dart';
 import 'package:no_ai_sns/features/upload/presentation/pages/upload_page.dart';
 
-class MainShellPage extends StatefulWidget {
+class MainShellPage extends ConsumerStatefulWidget {
   const MainShellPage({super.key, required this.navigationShell});
 
   final StatefulNavigationShell navigationShell;
 
   @override
-  State<MainShellPage> createState() => _MainShellPageState();
+  ConsumerState<MainShellPage> createState() => _MainShellPageState();
 }
 
-class _MainShellPageState extends State<MainShellPage> {
+class _MainShellPageState extends ConsumerState<MainShellPage> {
   late int selectedIndex;
 
   @override
@@ -62,6 +64,12 @@ class _MainShellPageState extends State<MainShellPage> {
   }
 
   void _onTap(BuildContext context, int index) {
+    // 검색
+    if (index == 1) {
+      final notifier = ref.read(searchProvider.notifier);
+      notifier.reset();
+    }
+
     // 가운데 "+" 아이콘
     if (index == 2) {
       context.push(UploadPage.routeName);

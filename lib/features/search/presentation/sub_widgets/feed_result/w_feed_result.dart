@@ -88,7 +88,7 @@ class FeedResultWidget extends ConsumerWidget {
                 .fittedBox(),
             Spacer(),
           ],
-        ).expand(),
+        ),
       ),
     );
   }

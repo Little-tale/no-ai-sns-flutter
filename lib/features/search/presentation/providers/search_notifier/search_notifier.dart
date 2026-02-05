@@ -28,6 +28,10 @@ final class SearchNotifier extends _$SearchNotifier {
     state = state.copyWith(selectedTab: index);
   }
 
+  void reset() {
+    state = SearchState();
+  }
+
   void textChange(String text) {
     state = state.copyWith(searchText: text);
   }
