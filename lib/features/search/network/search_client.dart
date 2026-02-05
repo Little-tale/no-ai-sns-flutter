@@ -14,10 +14,12 @@ abstract class SearchClient {
   @GET('/users/search')
   Future<List<AuthorDTO>> searchUser({
     @Queries() required SearchUserRequestDTO rdto,
+    @CancelRequest() CancelToken? cancelToken,
   });
 
   @GET('/posts/search')
   Future<List<FeedListItemDTO>> searchFeed({
     @Queries() required SearchFeedRequestDTO rdto,
+    @CancelRequest() CancelToken? cancelToken,
   });
 }

@@ -21,6 +21,7 @@ class SearchBarWidget extends HookConsumerWidget {
     final textValue = useValueListenable(controller);
 
     ref.listen(searchProvider.select((p) => p.searchText), (prev, next) {
+      if (!context.mounted) return;
       if (prev != next) {
         controller.text = next;
       }

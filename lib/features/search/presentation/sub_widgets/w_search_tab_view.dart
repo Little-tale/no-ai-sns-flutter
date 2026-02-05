@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/features/search/presentation/providers/search_notifier/search_notifier.dart';
 import 'package:no_ai_sns/features/search/presentation/sub_widgets/feed_result/w_feed_result.dart';
+import 'package:no_ai_sns/features/search/presentation/sub_widgets/user_result/w_user_result.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SearchTabViewWidget extends HookConsumerWidget {
@@ -53,10 +54,7 @@ class SearchTabViewWidget extends HookConsumerWidget {
         Expanded(
           child: TabBarView(
             controller: controller,
-            children: [
-              FeedResultWidget(),
-              Center(child: 'Users View'.text.make()),
-            ],
+            children: [FeedResultWidget(), UserResultWidget()],
           ),
         ),
       ],

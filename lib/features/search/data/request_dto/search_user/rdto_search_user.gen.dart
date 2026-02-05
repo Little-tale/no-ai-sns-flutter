@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'rdto_search_user.gen.freezed.dart';
@@ -5,6 +7,7 @@ part 'rdto_search_user.gen.g.dart';
 
 @freezed
 sealed class SearchUserRequestDTO with _$SearchUserRequestDTO {
+  @JsonSerializable(includeIfNull: false)
   factory SearchUserRequestDTO({
     required String query,
     required int limit,

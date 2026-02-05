@@ -202,8 +202,8 @@ return $default(_that.query,_that.limit,_that.cursor);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(includeIfNull: false)
 class _SearchUserRequestDTO implements SearchUserRequestDTO {
    _SearchUserRequestDTO({required this.query, required this.limit, this.cursor});
   factory _SearchUserRequestDTO.fromJson(Map<String, dynamic> json) => _$SearchUserRequestDTOFromJson(json);

@@ -20,10 +20,12 @@ class _SearchClient implements SearchClient {
   @override
   Future<List<AuthorDTO>> searchUser({
     required SearchUserRequestDTO rdto,
+    CancelToken? cancelToken,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(rdto.toJson());
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<AuthorDTO>>(
@@ -33,6 +35,7 @@ class _SearchClient implements SearchClient {
             '/users/search',
             queryParameters: queryParameters,
             data: _data,
+            cancelToken: cancelToken,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
@@ -52,10 +55,12 @@ class _SearchClient implements SearchClient {
   @override
   Future<List<FeedListItemDTO>> searchFeed({
     required SearchFeedRequestDTO rdto,
+    CancelToken? cancelToken,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(rdto.toJson());
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<List<FeedListItemDTO>>(
@@ -65,6 +70,7 @@ class _SearchClient implements SearchClient {
             '/posts/search',
             queryParameters: queryParameters,
             data: _data,
+            cancelToken: cancelToken,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );

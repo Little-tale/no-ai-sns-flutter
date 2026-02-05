@@ -6,6 +6,7 @@ import 'package:no_ai_sns/features/search/data/request_dto/search_user/rdto_sear
 import 'package:no_ai_sns/features/search/presentation/providers/search_repo/search_repository_provider.dart';
 import 'package:no_ai_sns/features/search/presentation/state/search_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:dio/dio.dart';
 
 part 'search_notifier.g.dart';
 
@@ -13,10 +14,13 @@ enum SearchTabCase { posts, users }
 
 @riverpod
 final class SearchNotifier extends _$SearchNotifier {
+  CancelToken? _cancelToken;
+
   @override
   SearchState build() {
-    Future.microtask(() {
-      tapEnter();
+    ref.onDispose(() {
+      _cancelToken?.cancel('dispose');
+      _cancelToken = null;
     });
     return SearchState();
   }
@@ -25,7 +29,9 @@ final class SearchNotifier extends _$SearchNotifier {
     if (state.selectedTab == index) {
       return;
     }
+    _cancelPending();
     state = state.copyWith(selectedTab: index);
+    _requestInfo(currentTabCase: SearchTabCase.values[index]);
   }
 
   void reset() {
@@ -37,9 +43,14 @@ final class SearchNotifier extends _$SearchNotifier {
   }
 
   void tapEnter() async {
+    if (!ref.mounted) {
+      return;
+    }
     if (state.isSearching) return;
     _requestInfo(currentTabCase: SearchTabCase.values[state.selectedTab]);
   }
+
+  void loadMore() {}
 
   // MARK: API
   void _requestInfo({
@@ -47,6 +58,12 @@ final class SearchNotifier extends _$SearchNotifier {
     String? searchText,
     String? cursor,
   }) async {
+    if (!ref.mounted) {
+      return;
+    }
+    _cancelPending();
+    final token = CancelToken();
+    _cancelToken = token;
     final text = searchText ?? state.searchText;
     final limit = state.limit;
     final currentTab = currentTabCase;
@@ -55,7 +72,11 @@ final class SearchNotifier extends _$SearchNotifier {
       case SearchTabCase.posts:
         final result = await repo.searchFeed(
           rdto: SearchFeedRequestDTO(query: text, limit: limit, cursor: cursor),
+          cancelToken: token,
         );
+        if (!ref.mounted || token.isCancelled) {
+          return;
+        }
         switch (result) {
           case Success<List<FeedItemEntity>>():
             state = state.copyWith(feeds: result.value, isSearching: false);
@@ -68,7 +89,11 @@ final class SearchNotifier extends _$SearchNotifier {
       case SearchTabCase.users:
         final result = await repo.searchUser(
           rdto: SearchUserRequestDTO(query: text, limit: limit, cursor: cursor),
+          cancelToken: token,
         );
+        if (!ref.mounted || token.isCancelled) {
+          return;
+        }
         switch (result) {
           case Success<List<AuthorEntity>>():
             state = state.copyWith(users: result.value, isSearching: false);
@@ -79,5 +104,10 @@ final class SearchNotifier extends _$SearchNotifier {
             );
         }
     }
+  }
+
+  void _cancelPending() {
+    _cancelToken?.cancel('new request');
+    _cancelToken = null;
   }
 }

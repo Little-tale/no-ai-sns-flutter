@@ -19,9 +19,13 @@ final class SearchRepositoryImpl implements SearchRepository {
   @override
   Future<Result<List<FeedItemEntity>>> searchFeed({
     required SearchFeedRequestDTO rdto,
+    CancelToken? cancelToken,
   }) async {
     try {
-      final dto = await _client.searchFeed(rdto: rdto);
+      final dto = await _client.searchFeed(
+        rdto: rdto,
+        cancelToken: cancelToken,
+      );
       final mapping = FeedMapper.toMapFeedListDTO(dto);
       return Result.Success(mapping);
     } on DioException catch (error) {
@@ -34,9 +38,13 @@ final class SearchRepositoryImpl implements SearchRepository {
   @override
   Future<Result<List<AuthorEntity>>> searchUser({
     required SearchUserRequestDTO rdto,
+    CancelToken? cancelToken,
   }) async {
     try {
-      final dto = await _client.searchUser(rdto: rdto);
+      final dto = await _client.searchUser(
+        rdto: rdto,
+        cancelToken: cancelToken,
+      );
       final mapping = UserMapper.toMapList(dto);
       return Result.Success(mapping);
     } on DioException catch (error) {

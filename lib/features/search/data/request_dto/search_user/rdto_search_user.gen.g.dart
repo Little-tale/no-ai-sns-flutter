@@ -19,5 +19,5 @@ Map<String, dynamic> _$SearchUserRequestDTOToJson(
 ) => <String, dynamic>{
   'query': instance.query,
   'limit': instance.limit,
-  'cursor': instance.cursor,
+  'cursor': ?instance.cursor,
 };
