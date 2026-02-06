@@ -58,20 +58,4 @@ class SearchFeedNotifier extends _$SearchFeedNotifier {
       ),
     );
   }
-
-  void _applyCommentCount(int postId, int delta) {
-    final updatedItems = state.items.map((item) {
-      if (item.id != postId) {
-        return item;
-      }
-      final current = parseCompactNumberToInt(item.commentCountText);
-      if (current == null) {
-        return item;
-      }
-      final next = (current + delta).clamp(0, 1 << 30);
-      return item.copyWith(commentCountText: next.toCompact());
-    }).toList();
-
-    this.state = AsyncData(state.copyWith(items: updatedItems));
-  }
 }

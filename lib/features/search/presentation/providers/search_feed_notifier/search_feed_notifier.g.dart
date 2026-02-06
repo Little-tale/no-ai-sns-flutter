@@ -59,7 +59,7 @@ final class SearchFeedNotifierProvider
 }
 
 String _$searchFeedNotifierHash() =>
-    r'faf28cdc0ea7c1c14be1195ac393d15adc3920f8';
+    r'ec01e2264b75e91e83ce142323c6e0ef7f6c5125';
 
 final class SearchFeedNotifierFamily extends $Family
     with
