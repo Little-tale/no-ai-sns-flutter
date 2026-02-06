@@ -10,10 +10,12 @@ class SearchBarWidget extends HookConsumerWidget {
     super.key,
     required this.onChangeText,
     required this.onTapEnter,
+    required this.onTapClose,
   });
 
   final Function(String) onChangeText;
   final VoidCallback onTapEnter;
+  final VoidCallback onTapClose;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,6 +55,7 @@ class SearchBarWidget extends HookConsumerWidget {
                   onPressed: () {
                     controller.clear();
                     FocusScope.of(context).unfocus();
+                    onTapClose();
                   },
                   icon: Icon(Icons.cancel, color: context.colors.outline),
                 ),

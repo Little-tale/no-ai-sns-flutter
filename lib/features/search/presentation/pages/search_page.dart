@@ -24,6 +24,9 @@ class SearchPage extends ConsumerWidget {
             onTapEnter: () {
               ref.read(searchProvider.notifier).tapEnter();
             },
+            onTapClose: () {
+              ref.read(searchProvider.notifier).reset();
+            },
           ).pSymmetric(h: AppSpacing.lg),
 
           Expanded(child: SearchTabViewWidget()),
