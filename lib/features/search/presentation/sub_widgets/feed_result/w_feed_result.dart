@@ -15,13 +15,19 @@ class FeedResultWidget extends HookConsumerWidget {
     final scrollController = useScrollController();
 
     useEffect(() {
-      void loadMore() {
-        _onScroll(scrollController, ref);
+      void onScroll() {
+        if (!scrollController.hasClients) {
+          return;
+        }
+        final position = scrollController.position;
+        if (position.pixels >= position.maxScrollExtent - 200) {
+          ref.read(searchProvider.notifier).loadMore();
+        }
       }
 
-      scrollController.addListener(loadMore);
-      return () => scrollController.removeListener(loadMore);
-    }, [scrollController]);
+      scrollController.addListener(onScroll);
+      return () => scrollController.removeListener(onScroll);
+    }, [scrollController, ref]);
 
     final items = ref.watch(searchProvider.select((p) => p.feeds));
     return CustomScrollView(
@@ -104,15 +110,5 @@ class FeedResultWidget extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  static void _onScroll(ScrollController scrollController, WidgetRef ref) {
-    if (!scrollController.hasClients) {
-      return;
-    }
-    final position = scrollController.position;
-    if (position.pixels >= position.maxScrollExtent - 200) {
-      ref.read(searchProvider.notifier).loadMore();
-    }
   }
 }

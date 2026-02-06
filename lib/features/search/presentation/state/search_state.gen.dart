@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:no_ai_sns/core/domain/entity/author_entity.gen.dart';
+import 'package:no_ai_sns/core/domain/entity/search_author_entity.gen.dart';
 import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
 
 part 'search_state.gen.freezed.dart';
@@ -11,9 +11,7 @@ sealed class SearchState with _$SearchState {
     @Default(0) int selectedTab, // 현재 탭 위치
     @Default(20) int limit,
     @Default([]) List<FeedItemEntity> feeds,
-    String? postCursor,
-    @Default([]) List<AuthorEntity> users,
-    String? userCursor,
+    @Default([]) List<SearchAuthorEntity> users,
     @Default(false) bool isSearching,
     String? errorText,
   }) = _SearchState;

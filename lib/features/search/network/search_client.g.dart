@@ -18,7 +18,7 @@ class _SearchClient implements SearchClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<AuthorDTO>> searchUser({
+  Future<List<SearchUserDTO>> searchUser({
     required SearchUserRequestDTO rdto,
     CancelToken? cancelToken,
   }) async {
@@ -28,7 +28,7 @@ class _SearchClient implements SearchClient {
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<AuthorDTO>>(
+    final _options = _setStreamType<List<SearchUserDTO>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -40,10 +40,10 @@ class _SearchClient implements SearchClient {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<AuthorDTO> _value;
+    late List<SearchUserDTO> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) => AuthorDTO.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => SearchUserDTO.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);

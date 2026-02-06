@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:no_ai_sns/core/data/mapper/user_mapper.dart';
-import 'package:no_ai_sns/core/domain/entity/author_entity.gen.dart';
+import 'package:no_ai_sns/core/domain/entity/search_author_entity.gen.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/data/mapper/feed_mapper.dart';
 import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
@@ -36,7 +36,7 @@ final class SearchRepositoryImpl implements SearchRepository {
   }
 
   @override
-  Future<Result<List<AuthorEntity>>> searchUser({
+  Future<Result<List<SearchAuthorEntity>>> searchUser({
     required SearchUserRequestDTO rdto,
     CancelToken? cancelToken,
   }) async {

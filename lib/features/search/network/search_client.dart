@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:no_ai_sns/core/data/DTO/author/dto_author.gen.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_list_item_dto/dto_feed_list_item.gen.dart';
+import 'package:no_ai_sns/features/search/data/dto/dto_search_user.gen.dart';
 import 'package:no_ai_sns/features/search/data/request_dto/search_feed/rdto_search_feed.gen.dart';
 import 'package:no_ai_sns/features/search/data/request_dto/search_user/rdto_search_user.gen.dart';
 import 'package:retrofit/retrofit.dart';
@@ -12,7 +13,7 @@ abstract class SearchClient {
   factory SearchClient(Dio dio, {String? baseUrl}) = _SearchClient;
 
   @GET('/users/search')
-  Future<List<AuthorDTO>> searchUser({
+  Future<List<SearchUserDTO>> searchUser({
     @Queries() required SearchUserRequestDTO rdto,
     @CancelRequest() CancelToken? cancelToken,
   });
