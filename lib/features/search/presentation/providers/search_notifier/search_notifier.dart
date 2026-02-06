@@ -1,4 +1,6 @@
 import 'package:no_ai_sns/core/domain/entity/search_author_entity.gen.dart';
+import 'package:no_ai_sns/core/providers/comment_count_bus_provider.dart';
+import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
 import 'package:no_ai_sns/features/search/data/request_dto/search_feed/rdto_search_feed.gen.dart';
@@ -18,6 +20,12 @@ final class SearchNotifier extends _$SearchNotifier {
 
   @override
   SearchState build() {
+    ref.listen<CommentCountEvent?>(commentCountBusProvider, (prev, next) {
+      if (next == null) {
+        return;
+      }
+      _applyCommentCount(next.postId, next.delta);
+    });
     ref.onDispose(() {
       _cancelToken?.cancel('dispose');
       _cancelToken = null;
@@ -51,7 +59,17 @@ final class SearchNotifier extends _$SearchNotifier {
       return;
     }
     if (state.isSearching) return;
-    state = state.copyWith(isSearching: true, errorText: null);
+    final caseOf = SearchTabCase.values[state.selectedTab];
+
+    final copy = state.copyWith(isSearching: true, errorText: null);
+
+    switch (caseOf) {
+      case SearchTabCase.users:
+        state = copy.copyWith(feeds: []);
+      case SearchTabCase.posts:
+        state = copy.copyWith(users: []);
+    }
+
     _requestInfo(currentTabCase: SearchTabCase.values[state.selectedTab]);
   }
 
@@ -156,5 +174,21 @@ final class SearchNotifier extends _$SearchNotifier {
   void _cancelPending() {
     _cancelToken?.cancel('new request');
     _cancelToken = null;
+  }
+
+  void _applyCommentCount(int postId, int delta) {
+    final updatedItems = state.feeds.map((item) {
+      if (item.id != postId) {
+        return item;
+      }
+      final current = parseCompactNumberToInt(item.commentCountText);
+      if (current == null) {
+        return item;
+      }
+      final next = (current + delta).clamp(0, 1 << 30);
+      return item.copyWith(commentCountText: next.toCompact());
+    }).toList();
+
+    state = state.copyWith(feeds: updatedItems);
   }
 }

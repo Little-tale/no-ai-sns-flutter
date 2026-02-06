@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_ai_sns/features/auth/presentation/pages/register_page.dart';
+import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
 import 'package:no_ai_sns/features/notification/presentation/pages/notification_page.dart';
 import 'package:no_ai_sns/features/onboard/presentation/pages/onboard_page.dart';
+import 'package:no_ai_sns/features/search/presentation/pages/search_feed_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/home/presentation/pages/home_page.dart';
@@ -50,10 +52,7 @@ class AppRouter {
                 path: HomePage.routeName,
                 pageBuilder: (context, state) {
                   return const NoTransitionPage(
-                    child: ShellPageWrapper(
-                      branchIndex: 0,
-                      child: HomePage(),
-                    ),
+                    child: ShellPageWrapper(branchIndex: 0, child: HomePage()),
                   );
                 },
               ),
@@ -113,6 +112,14 @@ class AppRouter {
       GoRoute(
         path: NotificationPage.routeName,
         builder: (context, state) => const NotificationPage(),
+      ),
+      // 검색 결과 중 Feed 클릭시
+      GoRoute(
+        path: SearchFeedPage.routeName,
+        builder: (context, state) {
+          final entity = state.extra as FeedItemEntity;
+          return SearchFeedPage(entity: entity);
+        },
       ),
     ],
   );
