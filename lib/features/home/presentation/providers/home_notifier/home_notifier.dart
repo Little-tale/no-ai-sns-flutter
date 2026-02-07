@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_ai_sns/core/providers/comment_count_bus_provider.dart';
 import 'package:no_ai_sns/core/providers/feed_repository_provider.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
 import 'package:no_ai_sns/core/utils/number_format.dart';
@@ -17,6 +18,12 @@ class HomeNotifier extends _$HomeNotifier {
   @override
   Future<HomeState> build() async {
     ref.watch(feedRepositoryProvider);
+    ref.listen<CommentCountEvent?>(commentCountBusProvider, (prev, next) {
+      if (next == null) {
+        return;
+      }
+      _applyCommentCount(next.postId, next.delta);
+    });
     final initial = await loadInitialFeed();
     Future.microtask(() async {
       final count = await _fetchAlertCount();
@@ -144,6 +151,25 @@ class HomeNotifier extends _$HomeNotifier {
       }
       final nextText = (current + 1).toCompact();
       return item.copyWith(commentCountText: nextText);
+    }).toList();
+
+    this.state = AsyncData(state.copyWith(items: updatedItems));
+  }
+
+  void _applyCommentCount(int postId, int delta) {
+    final state = this.state.value;
+    if (state == null) return;
+
+    final updatedItems = state.items.map((item) {
+      if (item.id != postId) {
+        return item;
+      }
+      final current = parseCompactNumberToInt(item.commentCountText);
+      if (current == null) {
+        return item;
+      }
+      final next = (current + delta).clamp(0, 1 << 30);
+      return item.copyWith(commentCountText: next.toCompact());
     }).toList();
 
     this.state = AsyncData(state.copyWith(items: updatedItems));

@@ -3,9 +3,9 @@ import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/core/utils/throttle.dart';
 import 'package:no_ai_sns/features/auth/presentation/providers/auth_notifier.dart';
 import 'package:no_ai_sns/core/providers/login_popup_provider.dart';
+import 'package:no_ai_sns/core/providers/comment_count_bus_provider.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/presentation/providers/feed_repository/feed_repository_provider.dart';
-import 'package:no_ai_sns/features/home/presentation/providers/home_notifier/home_notifier.dart';
 import 'package:no_ai_sns/features/home/presentation/sub_widgets/comment_bottom_sheet/state/comment_state.gen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -98,7 +98,9 @@ class CommentController extends _$CommentController {
             items: copy,
             commentText: '',
           );
-          ref.read(homeProvider.notifier).incrementCommentCount(state.postId);
+          ref
+              .read(commentCountBusProvider.notifier)
+              .emit(postId: state.postId, delta: 1);
         case Failure<CommentItemEntity>():
           state = state.copyWith(
             isLoading: false,

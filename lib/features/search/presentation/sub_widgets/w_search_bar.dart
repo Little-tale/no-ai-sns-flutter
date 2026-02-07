@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:no_ai_sns/design_system/design_system.dart';
+import 'package:no_ai_sns/features/search/presentation/providers/search_notifier/search_notifier.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SearchBarWidget extends HookWidget {
+class SearchBarWidget extends HookConsumerWidget {
   const SearchBarWidget({
     super.key,
     required this.onChangeText,
     required this.onTapEnter,
+    required this.onTapClose,
   });
 
   final Function(String) onChangeText;
   final VoidCallback onTapEnter;
+  final VoidCallback onTapClose;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();
     final textValue = useValueListenable(controller);
+
+    ref.listen(searchProvider.select((p) => p.searchText), (prev, next) {
+      if (!context.mounted) return;
+      if (prev != next) {
+        controller.text = next;
+      }
+    });
 
     return SizedBox(
       height: 44,
@@ -44,6 +55,7 @@ class SearchBarWidget extends HookWidget {
                   onPressed: () {
                     controller.clear();
                     FocusScope.of(context).unfocus();
+                    onTapClose();
                   },
                   icon: Icon(Icons.cancel, color: context.colors.outline),
                 ),

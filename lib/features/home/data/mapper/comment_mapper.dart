@@ -1,4 +1,4 @@
-import 'package:no_ai_sns/core/network/base_url.dart';
+import 'package:no_ai_sns/core/utils/image_url_path_helper.dart';
 import 'package:no_ai_sns/core/utils/number_format.dart';
 import 'package:no_ai_sns/core/utils/time_format.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_comment_item_dto/dto_feed_comment_item.gen.dart';
@@ -22,12 +22,8 @@ final class CommentMapper {
       authorId: dto.author.id,
       commentLikeState: dto.isLiked,
       likeCount: dto.likeCount.toCompact(),
-      profileImageUrlString: imgUrl != null ? _toAbsoluteUrl(imgUrl) : null,
+      profileImageUrlString: imgUrl != null ? toAbsoluteUrl(imgUrl) : null,
     );
-  }
-
-  static String _toAbsoluteUrl(String path) {
-    return '$baseURL$path';
   }
 
   static bool toLikeState(String state) {
