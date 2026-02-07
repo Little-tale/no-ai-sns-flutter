@@ -15,7 +15,10 @@ _MeDTO _$MeDTOFromJson(Map<String, dynamic> json) => _MeDTO(
   profileAiStatus: json['profile_ai_status'] as String?,
   profileAiLabel: json['profile_ai_label'] as String?,
   profileAiScore: (json['profile_ai_score'] as num?)?.toInt(),
-  createdAt: json['created_at'] as String?,
+  createdAt: json['created_at'] as String,
+  followerCount: (json['follower_count'] as num).toInt(),
+  followingCount: (json['following_count'] as num).toInt(),
+  isMe: json['is_me'] as bool,
 );
 
 Map<String, dynamic> _$MeDTOToJson(_MeDTO instance) => <String, dynamic>{
@@ -28,4 +31,7 @@ Map<String, dynamic> _$MeDTOToJson(_MeDTO instance) => <String, dynamic>{
   'profile_ai_label': instance.profileAiLabel,
   'profile_ai_score': instance.profileAiScore,
   'created_at': instance.createdAt,
+  'follower_count': instance.followerCount,
+  'following_count': instance.followingCount,
+  'is_me': instance.isMe,
 };

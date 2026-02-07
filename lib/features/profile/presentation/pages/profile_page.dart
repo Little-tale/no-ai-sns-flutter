@@ -19,76 +19,78 @@ class ProfilePage extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: profileState.when(
-          data: (state) => CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                centerTitle: false,
-                title: 'My Profile'.text.size(20).make(),
-                backgroundColor: context.theme.scaffoldBackgroundColor,
-                elevation: 0,
-                shadowColor: Colors.transparent,
-                surfaceTintColor: Colors.transparent,
-                scrolledUnderElevation: 0,
-              ),
-
-              SliverToBoxAdapter(
-                child: ProfileTopSectionWidget(
-                  profileUrlString: state.profileImageUrl,
-                  userName: state.userName,
-                  userEmail: state.userEmail,
+          data: (state) {
+            final profile = state.profile;
+            return CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  centerTitle: false,
+                  title: 'My Profile'.text.size(20).make(),
+                  backgroundColor: context.theme.scaffoldBackgroundColor,
+                  elevation: 0,
+                  shadowColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  scrolledUnderElevation: 0,
                 ),
-              ),
 
-              SliverToBoxAdapter(
-                child: ProfileFollowInfoSectionWidget(
-                  followers: state.followers,
-                  following: state.following,
-                  postCount: state.postCount,
-                ).p(AppSpacing.lg),
-              ),
-
-              PinnedHeaderSliver(
-                child: Container(
-                  color: context.theme.scaffoldBackgroundColor,
-                  child: HStack([
-                    'My Posts'.text.semiBold
-                        .size(20)
-                        .make()
-                        .pSymmetric(v: AppSpacing.sm)
-                        .pOnly(left: AppSpacing.lg),
-
-                    const Spacer(),
-
-                    Icon(
-                      Icons.grid_on_rounded,
-                      color: context.theme.primaryColor,
-                    ).pOnly(right: AppSpacing.lg),
-                  ]),
+                SliverToBoxAdapter(
+                  child: ProfileTopSectionWidget(
+                    profileUrlString:
+                        profile.profileImageUrl ??
+                        state.profile.profileImageUrl,
+                    userName: profile.nickname,
+                    userEmail: profile.email,
+                  ),
                 ),
-              ),
 
-              SliverGrid.builder(
-                itemCount: state.postImageUrls.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                SliverToBoxAdapter(
+                  child: ProfileFollowInfoSectionWidget(
+                    followers: profile.followCount.toString(),
+                    following: profile.followingCount.toString(),
+                    postCount: state.postCount,
+                  ).p(AppSpacing.lg),
                 ),
-                itemBuilder: (context, index) {
-                  return CachedNetworkImage(
-                    imageUrl: state.postImageUrls[index],
-                    fit: BoxFit.cover,
-                  ).onTap(() {
-                    ref
-                        .read(profileProvider.notifier)
-                        .onPostTapped(index);
-                  });
-                },
-              ),
-            ],
-          ),
+
+                PinnedHeaderSliver(
+                  child: Container(
+                    color: context.theme.scaffoldBackgroundColor,
+                    child: HStack([
+                      'My Posts'.text.semiBold
+                          .size(20)
+                          .make()
+                          .pSymmetric(v: AppSpacing.sm)
+                          .pOnly(left: AppSpacing.lg),
+
+                      const Spacer(),
+
+                      Icon(
+                        Icons.grid_on_rounded,
+                        color: context.theme.primaryColor,
+                      ).pOnly(right: AppSpacing.lg),
+                    ]),
+                  ),
+                ),
+
+                SliverGrid.builder(
+                  itemCount: state.postImageUrls.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  itemBuilder: (context, index) {
+                    return CachedNetworkImage(
+                      imageUrl: state.postImageUrls[index],
+                      fit: BoxFit.cover,
+                    ).onTap(() {
+                      ref.read(profileProvider.notifier).onPostTapped(index);
+                    });
+                  },
+                ),
+              ],
+            );
+          },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(
-            child: Text('profile_notifier 에러 : $error'),
-          ),
+          error: (error, stack) =>
+              Center(child: Text('profile_notifier 에러 : $error')),
         ),
       ),
     );

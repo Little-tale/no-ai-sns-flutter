@@ -23,7 +23,13 @@ sealed class MeDTO with _$MeDTO {
 
     @JsonKey(name: 'profile_ai_score') int? profileAiScore,
 
-    @JsonKey(name: 'created_at') String? createdAt,
+    @JsonKey(name: 'created_at') required String createdAt,
+
+    @JsonKey(name: 'follower_count') required int followerCount,
+
+    @JsonKey(name: 'following_count') required int followingCount,
+
+    @JsonKey(name: 'is_me') required bool isMe,
   }) = _MeDTO;
 
   factory MeDTO.fromJson(Map<String, dynamic> json) => _$MeDTOFromJson(json);
