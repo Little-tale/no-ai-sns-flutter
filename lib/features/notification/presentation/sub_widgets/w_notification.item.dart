@@ -91,7 +91,7 @@ class NotificationItemWidget extends StatelessWidget {
       case AlertType.dm:
         return Icon(Icons.ac_unit_rounded, size: 24);
       case AlertType.profileImage:
-        return Icon(Icons.ac_unit_rounded, size: 24);
+        return Image.asset(AppImages.virus3D, width: 30, height: 30);
       case AlertType.postLike:
         return Image.asset(AppIcons.likePerspective, width: 30, height: 30);
       case AlertType.postComment:

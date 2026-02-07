@@ -10,4 +10,6 @@ class AppImages {
   static const String appLogoText = '$_base/app_logo_text.png';
 
   static const String error3D = '$_base/error_3d.png';
+
+  static const String virus3D = '$_base/virus_3d.png';
 }
