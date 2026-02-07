@@ -54,4 +54,10 @@ abstract class FeedPostsClient {
     @Part(name: 'body') required String body,
     @Part(name: 'images') required List<MultipartFile> images,
   });
+
+  @GET('/posts/me')
+  Future<List<FeedListItemDTO>> getMyPosts({
+    @Query('limit') required int limit,
+    @Query('cursor') String? cursor,
+  });
 }

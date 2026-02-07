@@ -1,4 +1,3 @@
-import 'package:no_ai_sns/core/data/DTO/author/dto_author.gen.dart';
 import 'package:no_ai_sns/core/domain/entity/search_author_entity.gen.dart';
 import 'package:no_ai_sns/core/utils/image_url_path_helper.dart';
 import 'package:no_ai_sns/features/search/data/dto/dto_search_user.gen.dart';

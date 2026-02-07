@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:no_ai_sns/core/data/DTO/author/dto_author.gen.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_list_item_dto/dto_feed_list_item.gen.dart';
 import 'package:no_ai_sns/features/search/data/dto/dto_search_user.gen.dart';
 import 'package:no_ai_sns/features/search/data/request_dto/search_feed/rdto_search_feed.gen.dart';

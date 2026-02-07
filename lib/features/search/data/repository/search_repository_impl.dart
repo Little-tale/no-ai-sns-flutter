@@ -7,7 +7,7 @@ import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_enti
 import 'package:no_ai_sns/features/search/data/request_dto/search_feed/rdto_search_feed.gen.dart';
 import 'package:no_ai_sns/features/search/data/request_dto/search_user/rdto_search_user.gen.dart';
 import 'package:no_ai_sns/features/search/domain/repository/search_repository.dart';
-import 'package:no_ai_sns/features/search/network/search_client.dart';
+import 'package:no_ai_sns/core/network/search/search_client.dart';
 
 final class SearchRepositoryImpl implements SearchRepository {
   // dio client

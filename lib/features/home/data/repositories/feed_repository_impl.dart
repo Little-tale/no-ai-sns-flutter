@@ -5,7 +5,7 @@ import 'package:no_ai_sns/core/utils/result.dart';
 import 'package:no_ai_sns/features/home/data/DTO/feed_comment_item_request_dto/dto_comment_item_request.gen.dart';
 import 'package:no_ai_sns/features/home/data/mapper/comment_mapper.dart';
 import 'package:no_ai_sns/features/home/domain/entities/comment_item/comment._item_entity.gen.dart';
-import 'package:no_ai_sns/features/home/network/client/feed/feed_posts_client.dart';
+import 'package:no_ai_sns/core/network/feed/feed_posts_client.dart';
 import 'package:no_ai_sns/features/home/data/mapper/feed_mapper.dart';
 import 'package:no_ai_sns/features/home/domain/entities/feed_item/feed_item_entity.gen.dart';
 import 'package:no_ai_sns/features/home/domain/repositories/feed_repository.dart';
